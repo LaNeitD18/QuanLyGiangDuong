@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace QuanLyGiangDuong.View
 {
     /// <summary>
-    /// Interaction logic for MainPage.xaml
+    /// Interaction logic for HomePage.xaml
     /// </summary>
-    public partial class MainPage : Page
+    public partial class HomePage : Page
     {
-        public MainPage()
+        public HomePage()
         {
             InitializeComponent();
         }
