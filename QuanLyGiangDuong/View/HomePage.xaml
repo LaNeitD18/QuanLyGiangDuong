@@ -14,8 +14,8 @@
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0" Background="AliceBlue"></Grid>
-        <Grid Grid.Row="1" Background="RosyBrown"></Grid>
-        <Grid Grid.Row="2" Background="Gainsboro"></Grid>
+        <Grid Grid.Row="0" Background="Red"></Grid>
+        <Grid Grid.Row="1" Background="Green"></Grid>
+        <Grid Grid.Row="2" Background="Orange"></Grid>
     </Grid>
 </Page>
