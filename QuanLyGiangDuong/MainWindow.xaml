@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:QuanLyGiangDuong"
         xmlns:s="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="MainWindow" Height="720" Width="1080"
+        Title="MainWindow" Height="720" Width="1080" MinHeight="360" MinWidth="640"
         
         DataContext="{StaticResource MainVM}"
         
@@ -86,8 +86,18 @@
         <DockPanel 
             Grid.Column="0" Grid.Row="1" Grid.RowSpan="17"
             Background="#3F51B5" Panel.ZIndex="2" LastChildFill="True"
-            Margin="0,10,10,0">
-            <WrapPanel DockPanel.Dock="Top" Margin="0,10,0,10">
+            Margin="0">
+            <WrapPanel DockPanel.Dock="Top" Margin="10,10,0,10">
+                <Button Command="{Binding Menu_Click_Command}" Background="#3F51B5" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0" Margin="0">
+
+                    <md:PackIcon Kind="Menu" Foreground="White" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="30" Height="30" />
+
+                    <Button.CommandParameter>
+                        <s:Int32>0</s:Int32>
+                    </Button.CommandParameter>
+                </Button>
+            </WrapPanel>
+            <WrapPanel DockPanel.Dock="Top" Margin="10,10,0,10">
                 <Button Command="{Binding Home_Page_SelectedCommand}" Background="#3F51B5" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0" Margin="0">
 
                     <md:PackIcon Kind="Home" Foreground="White" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="30" Height="30" />
@@ -96,8 +106,11 @@
                         <s:Int32>0</s:Int32>
                     </Button.CommandParameter>
                 </Button>
+                <Canvas VerticalAlignment="Center"  Visibility="{Binding ElementName=canvasExtendedSideBar, Path=Visibility, Mode=OneWay}" Margin="0,0,0,27" >
+                    <Label  Content="   Trang chính" VerticalAlignment="Center" Foreground="White" FontSize="14" FontWeight="Bold" />
+                </Canvas>
             </WrapPanel>
-            <WrapPanel DockPanel.Dock="Top" Margin="0,10,0,10">
+            <WrapPanel DockPanel.Dock="Top" Margin="10,10,0,10">
                 <Button Command="{Binding TimeTable_Page_SelectedCommand}" Background="#3F51B5" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0" Margin="0">
 
                     <md:PackIcon Kind="Timetable" Foreground="White" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="30" Height="30" />
@@ -108,7 +121,7 @@
                 </Button>
                 
             </WrapPanel>
-            <WrapPanel DockPanel.Dock="Top" Margin="0,10,0,10">
+            <WrapPanel DockPanel.Dock="Top" Margin="10,10,0,10">
                 <Button Command="{Binding Room_Page_SelectedCommand}" Background="#3F51B5" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0" Margin="0">
 
                     <md:PackIcon Kind="HomeModern" Foreground="White" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="30" Height="30" />
@@ -119,7 +132,7 @@
                 </Button>
                 
             </WrapPanel>
-            <WrapPanel DockPanel.Dock="Top" Margin="0,10,0,10">
+            <WrapPanel DockPanel.Dock="Top" Margin="10,10,0,10">
                 <Button Command="{Binding TimeTableInput_Page_SelectedCommand}" Background="#3F51B5" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0" Margin="0">
 
                     <md:PackIcon Kind="CalendarPlus" Foreground="White" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="30" Height="30" />
@@ -130,7 +143,7 @@
                 </Button>
                 
             </WrapPanel>
-            <WrapPanel DockPanel.Dock="Top" Margin="0,10,0,10">
+            <WrapPanel DockPanel.Dock="Top" Margin="10,10,0,10">
                 <Button Command="{Binding EventInput_Page_SelectedCommand}" Background="#3F51B5" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0" Margin="0">
 
                     <md:PackIcon Kind="CalendarPlus" Foreground="White" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="30" Height="30" />
@@ -142,7 +155,21 @@
                 
             </WrapPanel>
         </DockPanel>
-        <Grid Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="31" Grid.RowSpan="17">
+        <Canvas 
+            x:Name="canvasExtendedSideBar" 
+            Background="#3F51B5" 
+            Grid.Column="1" Grid.Row="1" 
+            Grid.RowSpan="17" Grid.ColumnSpan="4" 
+            Panel.ZIndex="1" 
+            Visibility="{Binding IsVisibleCanvas}" 
+            Margin="0,0,0,0">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseLeave">
+                    <i:InvokeCommandAction Command="{Binding Canvas_MouseLeave_Command}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Canvas>
+        <Grid Grid.Column="{Binding FrameColumn}" Grid.Row="1" Grid.ColumnSpan="31" Grid.RowSpan="17">
             <Frame x:Name="main" Margin="10,10,10.4,10" NavigationUIVisibility="Hidden"
                        Content="{Binding FrameContent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
             </Frame>

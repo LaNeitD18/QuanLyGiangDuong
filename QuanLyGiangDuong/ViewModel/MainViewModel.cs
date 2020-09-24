@@ -8,6 +8,8 @@ using System.Windows.Input;
 
 using QuanLyGiangDuong.ViewModel;
 using QuanLyGiangDuong.View;
+using Syncfusion.UI.Xaml.Grid;
+using System.Windows;
 
 namespace QuanLyGiangDuong.ViewModel
 {
@@ -21,6 +23,22 @@ namespace QuanLyGiangDuong.ViewModel
             get { return _FrameContent; }
             set { _FrameContent = value; OnPropertyChanged(); }
         }
+
+        private Visibility _IsVisibleCanvas;
+
+        public Visibility IsVisibleCanvas
+        {
+            get { return _IsVisibleCanvas; }
+            set { _IsVisibleCanvas = value; OnPropertyChanged(); }
+        }
+
+        private int _FrameColumn;
+
+        public int FrameColumn
+        {
+            get { return _FrameColumn; }
+            set { _FrameColumn = value; OnPropertyChanged(); }
+        }
         #endregion
 
         #region ICommand
@@ -29,12 +47,17 @@ namespace QuanLyGiangDuong.ViewModel
         public ICommand EventInput_Page_SelectedCommand { get; set; }
         public ICommand Room_Page_SelectedCommand { get; set; }
         public ICommand TimeTable_Page_SelectedCommand { get; set; }
+        public ICommand Menu_Click_Command { get; set; }
+        public ICommand Canvas_MouseLeave_Command { get; set; }
 
 
         #endregion
 
         public MainViewModel()
         {
+            IsVisibleCanvas = Visibility.Hidden;
+            FrameColumn = 1;
+
             Home_Page_SelectedCommand = new RelayCommand((p) => {
                 FrameContent = new HomePage();
                 FrameContent.DataContext = new HomePage_ViewModel();
@@ -59,6 +82,16 @@ namespace QuanLyGiangDuong.ViewModel
             EventInput_Page_SelectedCommand = new RelayCommand((p) => {
                 FrameContent = new EventInputPage();
                 FrameContent.DataContext = new EventInputViewModel();
+            });
+
+            Menu_Click_Command = new RelayCommand((p) => {
+                IsVisibleCanvas = Visibility.Visible;
+                FrameColumn = 6;
+            });
+
+            Canvas_MouseLeave_Command = new RelayCommand((p) => {
+                IsVisibleCanvas = Visibility.Hidden;
+                FrameColumn = 1;
             });
         }
     }
