@@ -1,0 +1,66 @@
+﻿<Page
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:QuanLyGiangDuong.View"
+      xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" x:Class="QuanLyGiangDuong.View.EventInputPage"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="EventInputPage">
+
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="59*"/>
+            <RowDefinition Height="28*"/>
+        </Grid.RowDefinitions>
+        <Label Content="Danh sách yêu cầu phòng thi đang chờ:" HorizontalAlignment="Left" Margin="45,10,0,0" VerticalAlignment="Top"/>
+        <DataGrid HorizontalAlignment="Left" Height="361" Margin="45,37,0,0" VerticalAlignment="Top" Width="275" Grid.RowSpan="2">
+            <DataGrid.Columns>
+                <DataGridCheckBoxColumn Header="chọn"/>
+                <DataGridTextColumn Header="Trạng thái"/>
+                <DataGridTextColumn Header="Mã yêu cầu"/>
+                <DataGridTextColumn Header="Tên môn thi"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Button Content="Xoá" HorizontalAlignment="Left" Margin="245,108,0,0" VerticalAlignment="Top" Width="75" Grid.Row="1"/>
+
+        <Label Content="Thêm yêu cầu phòng thi mới" HorizontalAlignment="Left" Margin="395,10,0,0" VerticalAlignment="Top"/>
+
+        <Label Content="Mã yêu cầu:" HorizontalAlignment="Left" Margin="395,40,0,0" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="505,39,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="260"/>
+
+        <Label Content="Môn thi:" HorizontalAlignment="Left" Margin="395,84,0,0" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="505,83,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="260"/>
+
+        <Label Content="Hệ:" HorizontalAlignment="Left" Margin="395,111,0,0" VerticalAlignment="Top"/>
+        <ComboBox HorizontalAlignment="Left" Margin="432,111,0,0" VerticalAlignment="Top" Width="115"/>
+
+        <Label Content="Học kỳ:" HorizontalAlignment="Left" Margin="595,111,0,0" VerticalAlignment="Top"/>
+        <ComboBox HorizontalAlignment="Left" Margin="650,111,0,0" VerticalAlignment="Top" Width="115"/>
+
+        <Label Content="Khoá:" HorizontalAlignment="Left" Margin="395,138,0,0" VerticalAlignment="Top"/>
+        <ComboBox HorizontalAlignment="Left" Margin="432,138,0,0" VerticalAlignment="Top" Width="115"/>
+
+        <Label Content="Năm học:" HorizontalAlignment="Left" Margin="595,138,0,0" VerticalAlignment="Top"/>
+        <ComboBox HorizontalAlignment="Left" Margin="650,138,0,0" VerticalAlignment="Top" Width="115"/>
+
+        <Label Content="Ngày tổ chức:" HorizontalAlignment="Left" Margin="393,185,0,0" VerticalAlignment="Top"/>
+        <Label Content="Từ:" HorizontalAlignment="Left" Margin="513,185,0,0" VerticalAlignment="Top"/>
+        <DatePicker HorizontalAlignment="Left" Margin="545,184,0,0" VerticalAlignment="Top" Width="220"/>
+        <Label Content="Đến:" HorizontalAlignment="Left" Margin="505,212,0,0" VerticalAlignment="Top"/>
+        <DatePicker HorizontalAlignment="Left" Margin="545,212,0,0" VerticalAlignment="Top" Width="220"/>
+
+        <Label Content="Thời gian thi:" HorizontalAlignment="Left" Margin="395,243,0,0" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="505,242,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="260"/>
+
+        <Label Content="Sỉ số:" HorizontalAlignment="Left" Margin="393,270,0,0" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="505,270,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="260"/>
+
+        <Label Content="Ghi chú:" HorizontalAlignment="Left" Margin="393,15,0,0" VerticalAlignment="Top" Grid.Row="1"/>
+        <TextBox HorizontalAlignment="Left" Height="66" Margin="393,37,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="372" Grid.Row="1"/>
+
+        <Button Content="Thêm" HorizontalAlignment="Left" Margin="690,108,0,0" VerticalAlignment="Top" Width="75" Grid.Row="1"/>
+        <Button Content="Huỷ" HorizontalAlignment="Left" Margin="595,108,0,0" VerticalAlignment="Top" Width="75" Grid.Row="1"/>
+    </Grid>
+</Page>
