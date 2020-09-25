@@ -5,6 +5,10 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:QuanLyGiangDuong.View"
       mc:Ignorable="d" 
+      
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:materialDesignColors="clr-namespace:MaterialDesignColors;assembly=MaterialDesignColors"
+      
       d:DesignHeight="640" d:DesignWidth="1200"
       Title="HomePage">
 
@@ -61,5 +65,23 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+        <Grid Grid.Column="0" Grid.ColumnSpan="10" Grid.Row="0" Grid.RowSpan="3">
+            <materialDesign:Card 
+                Background="{StaticResource PrimaryHueMidBrush}" 
+                Foreground="White"
+                materialDesign:ShadowAssist.ShadowDepth="Depth3"
+                materialDesign:ShadowAssist.ShadowEdges="All" 
+                Margin="10" 
+                VerticalAlignment="Stretch" 
+                HorizontalAlignment="Stretch" 
+                UniformCornerRadius="20">
+                <StackPanel 
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center">
+                    <TextBlock Text="Thời gian hiện tại" HorizontalAlignment="Center" LineHeight="26"></TextBlock>
+                    <TextBlock Text="{Binding CurrentDateTime}" HorizontalAlignment="Center" LineHeight="26" FontSize="18" FontWeight="SemiBold"/>
+                </StackPanel>
+            </materialDesign:Card>
+        </Grid>
     </Grid>
 </Page>

@@ -141,11 +141,17 @@
     <Compile Include="View\EventInputPage.xaml.cs">
       <DependentUpon>EventInputPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\ExamInputPage.xaml.cs">
+      <DependentUpon>ExamInputPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\HomePage.xaml.cs">
       <DependentUpon>HomePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\RoomPage.xaml.cs">
       <DependentUpon>RoomPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\TestPage.xaml.cs">
+      <DependentUpon>TestPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\TimeTableInputPage.xaml.cs">
       <DependentUpon>TimeTableInputPage.xaml</DependentUpon>
@@ -169,6 +175,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="View\ExamInputPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\HomePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -176,6 +186,10 @@
     <Page Include="View\RoomPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\TestPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\TimeTableInputPage.xaml">
       <Generator>MSBuild:Compile</Generator>
