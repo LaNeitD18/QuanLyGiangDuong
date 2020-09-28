@@ -10,7 +10,6 @@
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
       
-      
       d:DesignHeight="640" d:DesignWidth="1200"
       Title="TimeTableInputPage">
 
@@ -128,49 +127,58 @@
                         <ColumnDefinition></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Row="0" Grid.Column="0">
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <TextBox 
-                                Width="200" 
-                                FontSize="18" 
-                                materialDesign:HintAssist.Hint="Mã yêu cầu" 
-                                IsEnabled="False"
-                                Style="{StaticResource MaterialDesignFloatingHintTextBox}" Foreground="{StaticResource SecondaryAccentBrush}" VerticalAlignment="Center"
-                                Text="{Binding NgayMoSo, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-                        </StackPanel>
+                        <TextBox 
+                            Margin="20,5,20,5"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Center"
+                            FontSize="18" 
+                            materialDesign:HintAssist.Hint="Mã yêu cầu" 
+                            IsEnabled="False"
+                            Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                            Foreground="{StaticResource SecondaryAccentBrush}" 
+                            Text="{Binding NgayMoSo, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                     </Grid>
                     <Grid Grid.Row="1" Grid.Column="0">
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <TextBox 
-                                Width="200" 
-                                FontSize="18" 
-                                materialDesign:HintAssist.Hint="Môn học" 
-                                IsEnabled="True"
-                                Style="{StaticResource MaterialDesignFloatingHintTextBox}" Foreground="{StaticResource SecondaryAccentBrush}" VerticalAlignment="Center"
-                                Text="{Binding NgayMoSo, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-                        </StackPanel>
+                        <TextBox 
+                            Margin="20,5,20,5"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Center"
+                            FontSize="18" 
+                            materialDesign:HintAssist.Hint="Môn học" 
+                            IsEnabled="True"
+                            Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                            Foreground="{StaticResource SecondaryAccentBrush}" 
+                            Text="{Binding NgayMoSo, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                     </Grid>
                     <Grid Grid.Row="1" Grid.Column="1">
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <TextBox 
-                                Width="200" 
-                                FontSize="18" 
-                                materialDesign:HintAssist.Hint="Giảng viên" 
-                                IsEnabled="True"
-                                Style="{StaticResource MaterialDesignFloatingHintTextBox}" Foreground="{StaticResource SecondaryAccentBrush}" VerticalAlignment="Center"
-                                Text="{Binding NgayMoSo, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-                        </StackPanel>
+                        <TextBox 
+                            Margin="20,5,20,5"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Center"
+                            FontSize="18" 
+                            materialDesign:HintAssist.Hint="Giảng viên" 
+                            IsEnabled="True"
+                            Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                            Foreground="{StaticResource SecondaryAccentBrush}" 
+                            Text="{Binding NgayMoSo, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                     </Grid>
                     <Grid Grid.Row="2" Grid.Column="0">
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <ComboBox Width="200" materialDesign:HintAssist.Hint="Hệ" VerticalAlignment="Center" Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                                  ItemsSource="{Binding TenLoaiTietKiem}" KeyboardNavigation.TabIndex="1" Text ="{Binding CbxTenLoaiTietKiem}" SelectedItem="{Binding SelectedTenLoaiTietKiem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }" >
-                                <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="SelectionChanged">
-                                        <i:InvokeCommandAction Command="{Binding LTK_SelectionChangedCommand}"/>
-                                    </i:EventTrigger>
-                                </i:Interaction.Triggers>
-                            </ComboBox>
-                        </StackPanel>
+                        <ComboBox 
+                            Margin="20,5,20,5"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Center"
+                            materialDesign:HintAssist.Hint="Hệ" 
+                            Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                            ItemsSource="{Binding TenLoaiTietKiem}" 
+                            KeyboardNavigation.TabIndex="1" 
+                            Text ="{Binding CbxTenLoaiTietKiem}" 
+                            SelectedItem="{Binding SelectedTenLoaiTietKiem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }" >
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="SelectionChanged">
+                                    <i:InvokeCommandAction Command="{Binding LTK_SelectionChangedCommand}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </ComboBox>
                     </Grid>
                     <Grid Grid.Row="2" Grid.Column="1">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">

@@ -1,0 +1,603 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="QLGDModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CLASS">
+          <Key>
+            <PropertyRef Name="ClassID" />
+          </Key>
+          <Property Name="ClassID" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="SubjectID" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="ClassName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Semester" Type="int" Nullable="false" />
+          <Property Name="Year_" Type="int" Nullable="false" />
+          <Property Name="Population_" Type="int" Nullable="false" />
+          <Property Name="LecturerID" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Description_" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="EVENT_">
+          <Key>
+            <PropertyRef Name="EventID" />
+          </Key>
+          <Property Name="EventID" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="EventName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Status_" Type="int" Nullable="false" />
+          <Property Name="Population_" Type="int" Nullable="false" />
+          <Property Name="LecturerID" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Description_" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="ROOM">
+          <Key>
+            <PropertyRef Name="RoomID" />
+          </Key>
+          <Property Name="RoomID" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Capacity" Type="int" Nullable="false" />
+          <Property Name="Description_" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="ROOMIGNORE">
+          <Key>
+            <PropertyRef Name="RoomIgnoreID" />
+          </Key>
+          <Property Name="RoomIgnoreID" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="UsingClassID" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="IgnoreDate" Type="smalldatetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SUBJECT_">
+          <Key>
+            <PropertyRef Name="SubjectID" />
+          </Key>
+          <Property Name="SubjectID" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="SubjectName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="StartDate" Type="smalldatetime" Nullable="false" />
+          <Property Name="EndDate" Type="smalldatetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="USINGCLASS">
+          <Key>
+            <PropertyRef Name="UsingClassID" />
+          </Key>
+          <Property Name="UsingClassID" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="RoomID" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="ClassID" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="StartDate" Type="smalldatetime" Nullable="false" />
+          <Property Name="EndDate" Type="smalldatetime" Nullable="false" />
+          <Property Name="StartTime" Type="smalldatetime" Nullable="false" />
+          <Property Name="EndTime" Type="smalldatetime" Nullable="false" />
+          <Property Name="RepeatCycle" Type="int" Nullable="false" />
+          <Property Name="Description_" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="USINGEVENT">
+          <Key>
+            <PropertyRef Name="UsingEventID" />
+          </Key>
+          <Property Name="UsingEventID" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="RoomID" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="EventID" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Date_" Type="smalldatetime" Nullable="false" />
+          <Property Name="StartTime" Type="smalldatetime" Nullable="false" />
+          <Property Name="EndTime" Type="smalldatetime" Nullable="false" />
+          <Property Name="Description_" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="USINGEXAM">
+          <Key>
+            <PropertyRef Name="UsingExamID" />
+          </Key>
+          <Property Name="UsingExamID" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="RoomID" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="SubjectID" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Date_" Type="smalldatetime" Nullable="false" />
+          <Property Name="StartTime" Type="smalldatetime" Nullable="false" />
+          <Property Name="EndTime" Type="smalldatetime" Nullable="false" />
+          <Property Name="Description_" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK__CLASS__SubjectID__286302EC">
+          <End Role="SUBJECT_" Type="Self.SUBJECT_" Multiplicity="1" />
+          <End Role="CLASS" Type="Self.CLASS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SUBJECT_">
+              <PropertyRef Name="SubjectID" />
+            </Principal>
+            <Dependent Role="CLASS">
+              <PropertyRef Name="SubjectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ROOMIGNOR__Using__3F466844">
+          <End Role="USINGCLASS" Type="Self.USINGCLASS" Multiplicity="1" />
+          <End Role="ROOMIGNORE" Type="Self.ROOMIGNORE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USINGCLASS">
+              <PropertyRef Name="UsingClassID" />
+            </Principal>
+            <Dependent Role="ROOMIGNORE">
+              <PropertyRef Name="UsingClassID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__USINGCLAS__Class__2E1BDC42">
+          <End Role="CLASS" Type="Self.CLASS" Multiplicity="1" />
+          <End Role="USINGCLASS" Type="Self.USINGCLASS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CLASS">
+              <PropertyRef Name="ClassID" />
+            </Principal>
+            <Dependent Role="USINGCLASS">
+              <PropertyRef Name="ClassID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__USINGCLAS__RoomI__2D27B809">
+          <End Role="ROOM" Type="Self.ROOM" Multiplicity="1" />
+          <End Role="USINGCLASS" Type="Self.USINGCLASS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ROOM">
+              <PropertyRef Name="RoomID" />
+            </Principal>
+            <Dependent Role="USINGCLASS">
+              <PropertyRef Name="RoomID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__USINGEVEN__Event__31EC6D26">
+          <End Role="EVENT_" Type="Self.EVENT_" Multiplicity="1" />
+          <End Role="USINGEVENT" Type="Self.USINGEVENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EVENT_">
+              <PropertyRef Name="EventID" />
+            </Principal>
+            <Dependent Role="USINGEVENT">
+              <PropertyRef Name="EventID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__USINGEVEN__RoomI__30F848ED">
+          <End Role="ROOM" Type="Self.ROOM" Multiplicity="1" />
+          <End Role="USINGEVENT" Type="Self.USINGEVENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ROOM">
+              <PropertyRef Name="RoomID" />
+            </Principal>
+            <Dependent Role="USINGEVENT">
+              <PropertyRef Name="RoomID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__USINGEXAM__RoomI__34C8D9D1">
+          <End Role="ROOM" Type="Self.ROOM" Multiplicity="1" />
+          <End Role="USINGEXAM" Type="Self.USINGEXAM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ROOM">
+              <PropertyRef Name="RoomID" />
+            </Principal>
+            <Dependent Role="USINGEXAM">
+              <PropertyRef Name="RoomID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__USINGEXAM__Subje__35BCFE0A">
+          <End Role="SUBJECT_" Type="Self.SUBJECT_" Multiplicity="1" />
+          <End Role="USINGEXAM" Type="Self.USINGEXAM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SUBJECT_">
+              <PropertyRef Name="SubjectID" />
+            </Principal>
+            <Dependent Role="USINGEXAM">
+              <PropertyRef Name="SubjectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="QLGDModelStoreContainer">
+          <EntitySet Name="CLASS" EntityType="Self.CLASS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EVENT_" EntityType="Self.EVENT_" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ROOM" EntityType="Self.ROOM" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ROOMIGNORE" EntityType="Self.ROOMIGNORE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SUBJECT_" EntityType="Self.SUBJECT_" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="USINGCLASS" EntityType="Self.USINGCLASS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="USINGEVENT" EntityType="Self.USINGEVENT" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="USINGEXAM" EntityType="Self.USINGEXAM" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__CLASS__SubjectID__286302EC" Association="Self.FK__CLASS__SubjectID__286302EC">
+            <End Role="SUBJECT_" EntitySet="SUBJECT_" />
+            <End Role="CLASS" EntitySet="CLASS" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ROOMIGNOR__Using__3F466844" Association="Self.FK__ROOMIGNOR__Using__3F466844">
+            <End Role="USINGCLASS" EntitySet="USINGCLASS" />
+            <End Role="ROOMIGNORE" EntitySet="ROOMIGNORE" />
+          </AssociationSet>
+          <AssociationSet Name="FK__USINGCLAS__Class__2E1BDC42" Association="Self.FK__USINGCLAS__Class__2E1BDC42">
+            <End Role="CLASS" EntitySet="CLASS" />
+            <End Role="USINGCLASS" EntitySet="USINGCLASS" />
+          </AssociationSet>
+          <AssociationSet Name="FK__USINGCLAS__RoomI__2D27B809" Association="Self.FK__USINGCLAS__RoomI__2D27B809">
+            <End Role="ROOM" EntitySet="ROOM" />
+            <End Role="USINGCLASS" EntitySet="USINGCLASS" />
+          </AssociationSet>
+          <AssociationSet Name="FK__USINGEVEN__Event__31EC6D26" Association="Self.FK__USINGEVEN__Event__31EC6D26">
+            <End Role="EVENT_" EntitySet="EVENT_" />
+            <End Role="USINGEVENT" EntitySet="USINGEVENT" />
+          </AssociationSet>
+          <AssociationSet Name="FK__USINGEVEN__RoomI__30F848ED" Association="Self.FK__USINGEVEN__RoomI__30F848ED">
+            <End Role="ROOM" EntitySet="ROOM" />
+            <End Role="USINGEVENT" EntitySet="USINGEVENT" />
+          </AssociationSet>
+          <AssociationSet Name="FK__USINGEXAM__RoomI__34C8D9D1" Association="Self.FK__USINGEXAM__RoomI__34C8D9D1">
+            <End Role="ROOM" EntitySet="ROOM" />
+            <End Role="USINGEXAM" EntitySet="USINGEXAM" />
+          </AssociationSet>
+          <AssociationSet Name="FK__USINGEXAM__Subje__35BCFE0A" Association="Self.FK__USINGEXAM__Subje__35BCFE0A">
+            <End Role="SUBJECT_" EntitySet="SUBJECT_" />
+            <End Role="USINGEXAM" EntitySet="USINGEXAM" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="QLGDModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="CLASS">
+          <Key>
+            <PropertyRef Name="ClassID" />
+          </Key>
+          <Property Name="ClassID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="SubjectID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ClassName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Semester" Type="Int32" Nullable="false" />
+          <Property Name="Year_" Type="Int32" Nullable="false" />
+          <Property Name="Population_" Type="Int32" Nullable="false" />
+          <Property Name="LecturerID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Description_" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="SUBJECT_" Relationship="Self.FK__CLASS__SubjectID__286302EC" FromRole="CLASS" ToRole="SUBJECT_" />
+          <NavigationProperty Name="USINGCLASSes" Relationship="Self.FK__USINGCLAS__Class__2E1BDC42" FromRole="CLASS" ToRole="USINGCLASS" />
+        </EntityType>
+        <EntityType Name="EVENT_">
+          <Key>
+            <PropertyRef Name="EventID" />
+          </Key>
+          <Property Name="EventID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="EventName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Status_" Type="Int32" Nullable="false" />
+          <Property Name="Population_" Type="Int32" Nullable="false" />
+          <Property Name="LecturerID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Description_" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="USINGEVENTs" Relationship="Self.FK__USINGEVEN__Event__31EC6D26" FromRole="EVENT_" ToRole="USINGEVENT" />
+        </EntityType>
+        <EntityType Name="ROOM">
+          <Key>
+            <PropertyRef Name="RoomID" />
+          </Key>
+          <Property Name="RoomID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Capacity" Type="Int32" Nullable="false" />
+          <Property Name="Description_" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="USINGCLASSes" Relationship="Self.FK__USINGCLAS__RoomI__2D27B809" FromRole="ROOM" ToRole="USINGCLASS" />
+          <NavigationProperty Name="USINGEVENTs" Relationship="Self.FK__USINGEVEN__RoomI__30F848ED" FromRole="ROOM" ToRole="USINGEVENT" />
+          <NavigationProperty Name="USINGEXAMs" Relationship="Self.FK__USINGEXAM__RoomI__34C8D9D1" FromRole="ROOM" ToRole="USINGEXAM" />
+        </EntityType>
+        <EntityType Name="ROOMIGNORE">
+          <Key>
+            <PropertyRef Name="RoomIgnoreID" />
+          </Key>
+          <Property Name="RoomIgnoreID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UsingClassID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IgnoreDate" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="USINGCLASS" Relationship="Self.FK__ROOMIGNOR__Using__3F466844" FromRole="ROOMIGNORE" ToRole="USINGCLASS" />
+        </EntityType>
+        <EntityType Name="SUBJECT_">
+          <Key>
+            <PropertyRef Name="SubjectID" />
+          </Key>
+          <Property Name="SubjectID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="SubjectName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="CLASSes" Relationship="Self.FK__CLASS__SubjectID__286302EC" FromRole="SUBJECT_" ToRole="CLASS" />
+          <NavigationProperty Name="USINGEXAMs" Relationship="Self.FK__USINGEXAM__Subje__35BCFE0A" FromRole="SUBJECT_" ToRole="USINGEXAM" />
+        </EntityType>
+        <EntityType Name="USINGCLASS">
+          <Key>
+            <PropertyRef Name="UsingClassID" />
+          </Key>
+          <Property Name="UsingClassID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="RoomID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ClassID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="StartTime" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="EndTime" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="RepeatCycle" Type="Int32" Nullable="false" />
+          <Property Name="Description_" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="CLASS" Relationship="Self.FK__USINGCLAS__Class__2E1BDC42" FromRole="USINGCLASS" ToRole="CLASS" />
+          <NavigationProperty Name="ROOM" Relationship="Self.FK__USINGCLAS__RoomI__2D27B809" FromRole="USINGCLASS" ToRole="ROOM" />
+          <NavigationProperty Name="ROOMIGNOREs" Relationship="Self.FK__ROOMIGNOR__Using__3F466844" FromRole="USINGCLASS" ToRole="ROOMIGNORE" />
+        </EntityType>
+        <EntityType Name="USINGEVENT">
+          <Key>
+            <PropertyRef Name="UsingEventID" />
+          </Key>
+          <Property Name="UsingEventID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="RoomID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="EventID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Date_" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="StartTime" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="EndTime" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Description_" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="EVENT_" Relationship="Self.FK__USINGEVEN__Event__31EC6D26" FromRole="USINGEVENT" ToRole="EVENT_" />
+          <NavigationProperty Name="ROOM" Relationship="Self.FK__USINGEVEN__RoomI__30F848ED" FromRole="USINGEVENT" ToRole="ROOM" />
+        </EntityType>
+        <EntityType Name="USINGEXAM">
+          <Key>
+            <PropertyRef Name="UsingExamID" />
+          </Key>
+          <Property Name="UsingExamID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="RoomID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="SubjectID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Date_" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="StartTime" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="EndTime" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Description_" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ROOM" Relationship="Self.FK__USINGEXAM__RoomI__34C8D9D1" FromRole="USINGEXAM" ToRole="ROOM" />
+          <NavigationProperty Name="SUBJECT_" Relationship="Self.FK__USINGEXAM__Subje__35BCFE0A" FromRole="USINGEXAM" ToRole="SUBJECT_" />
+        </EntityType>
+        <Association Name="FK__CLASS__SubjectID__286302EC">
+          <End Role="SUBJECT_" Type="Self.SUBJECT_" Multiplicity="1" />
+          <End Role="CLASS" Type="Self.CLASS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SUBJECT_">
+              <PropertyRef Name="SubjectID" />
+            </Principal>
+            <Dependent Role="CLASS">
+              <PropertyRef Name="SubjectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__USINGCLAS__Class__2E1BDC42">
+          <End Role="CLASS" Type="Self.CLASS" Multiplicity="1" />
+          <End Role="USINGCLASS" Type="Self.USINGCLASS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CLASS">
+              <PropertyRef Name="ClassID" />
+            </Principal>
+            <Dependent Role="USINGCLASS">
+              <PropertyRef Name="ClassID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__USINGEVEN__Event__31EC6D26">
+          <End Role="EVENT_" Type="Self.EVENT_" Multiplicity="1" />
+          <End Role="USINGEVENT" Type="Self.USINGEVENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EVENT_">
+              <PropertyRef Name="EventID" />
+            </Principal>
+            <Dependent Role="USINGEVENT">
+              <PropertyRef Name="EventID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__USINGCLAS__RoomI__2D27B809">
+          <End Role="ROOM" Type="Self.ROOM" Multiplicity="1" />
+          <End Role="USINGCLASS" Type="Self.USINGCLASS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ROOM">
+              <PropertyRef Name="RoomID" />
+            </Principal>
+            <Dependent Role="USINGCLASS">
+              <PropertyRef Name="RoomID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__USINGEVEN__RoomI__30F848ED">
+          <End Role="ROOM" Type="Self.ROOM" Multiplicity="1" />
+          <End Role="USINGEVENT" Type="Self.USINGEVENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ROOM">
+              <PropertyRef Name="RoomID" />
+            </Principal>
+            <Dependent Role="USINGEVENT">
+              <PropertyRef Name="RoomID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__USINGEXAM__RoomI__34C8D9D1">
+          <End Role="ROOM" Type="Self.ROOM" Multiplicity="1" />
+          <End Role="USINGEXAM" Type="Self.USINGEXAM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ROOM">
+              <PropertyRef Name="RoomID" />
+            </Principal>
+            <Dependent Role="USINGEXAM">
+              <PropertyRef Name="RoomID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ROOMIGNOR__Using__3F466844">
+          <End Role="USINGCLASS" Type="Self.USINGCLASS" Multiplicity="1" />
+          <End Role="ROOMIGNORE" Type="Self.ROOMIGNORE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USINGCLASS">
+              <PropertyRef Name="UsingClassID" />
+            </Principal>
+            <Dependent Role="ROOMIGNORE">
+              <PropertyRef Name="UsingClassID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__USINGEXAM__Subje__35BCFE0A">
+          <End Role="SUBJECT_" Type="Self.SUBJECT_" Multiplicity="1" />
+          <End Role="USINGEXAM" Type="Self.USINGEXAM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SUBJECT_">
+              <PropertyRef Name="SubjectID" />
+            </Principal>
+            <Dependent Role="USINGEXAM">
+              <PropertyRef Name="SubjectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="QLGDEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CLASSes" EntityType="Self.CLASS" />
+          <EntitySet Name="EVENT_" EntityType="Self.EVENT_" />
+          <EntitySet Name="ROOMs" EntityType="Self.ROOM" />
+          <EntitySet Name="ROOMIGNOREs" EntityType="Self.ROOMIGNORE" />
+          <EntitySet Name="SUBJECT_" EntityType="Self.SUBJECT_" />
+          <EntitySet Name="USINGCLASSes" EntityType="Self.USINGCLASS" />
+          <EntitySet Name="USINGEVENTs" EntityType="Self.USINGEVENT" />
+          <EntitySet Name="USINGEXAMs" EntityType="Self.USINGEXAM" />
+          <AssociationSet Name="FK__CLASS__SubjectID__286302EC" Association="Self.FK__CLASS__SubjectID__286302EC">
+            <End Role="SUBJECT_" EntitySet="SUBJECT_" />
+            <End Role="CLASS" EntitySet="CLASSes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__USINGCLAS__Class__2E1BDC42" Association="Self.FK__USINGCLAS__Class__2E1BDC42">
+            <End Role="CLASS" EntitySet="CLASSes" />
+            <End Role="USINGCLASS" EntitySet="USINGCLASSes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__USINGEVEN__Event__31EC6D26" Association="Self.FK__USINGEVEN__Event__31EC6D26">
+            <End Role="EVENT_" EntitySet="EVENT_" />
+            <End Role="USINGEVENT" EntitySet="USINGEVENTs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__USINGCLAS__RoomI__2D27B809" Association="Self.FK__USINGCLAS__RoomI__2D27B809">
+            <End Role="ROOM" EntitySet="ROOMs" />
+            <End Role="USINGCLASS" EntitySet="USINGCLASSes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__USINGEVEN__RoomI__30F848ED" Association="Self.FK__USINGEVEN__RoomI__30F848ED">
+            <End Role="ROOM" EntitySet="ROOMs" />
+            <End Role="USINGEVENT" EntitySet="USINGEVENTs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__USINGEXAM__RoomI__34C8D9D1" Association="Self.FK__USINGEXAM__RoomI__34C8D9D1">
+            <End Role="ROOM" EntitySet="ROOMs" />
+            <End Role="USINGEXAM" EntitySet="USINGEXAMs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ROOMIGNOR__Using__3F466844" Association="Self.FK__ROOMIGNOR__Using__3F466844">
+            <End Role="USINGCLASS" EntitySet="USINGCLASSes" />
+            <End Role="ROOMIGNORE" EntitySet="ROOMIGNOREs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__USINGEXAM__Subje__35BCFE0A" Association="Self.FK__USINGEXAM__Subje__35BCFE0A">
+            <End Role="SUBJECT_" EntitySet="SUBJECT_" />
+            <End Role="USINGEXAM" EntitySet="USINGEXAMs" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="QLGDModelStoreContainer" CdmEntityContainer="QLGDEntities">
+          <EntitySetMapping Name="CLASSes">
+            <EntityTypeMapping TypeName="QLGDModel.CLASS">
+              <MappingFragment StoreEntitySet="CLASS">
+                <ScalarProperty Name="ClassID" ColumnName="ClassID" />
+                <ScalarProperty Name="SubjectID" ColumnName="SubjectID" />
+                <ScalarProperty Name="ClassName" ColumnName="ClassName" />
+                <ScalarProperty Name="Semester" ColumnName="Semester" />
+                <ScalarProperty Name="Year_" ColumnName="Year_" />
+                <ScalarProperty Name="Population_" ColumnName="Population_" />
+                <ScalarProperty Name="LecturerID" ColumnName="LecturerID" />
+                <ScalarProperty Name="Description_" ColumnName="Description_" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EVENT_">
+            <EntityTypeMapping TypeName="QLGDModel.EVENT_">
+              <MappingFragment StoreEntitySet="EVENT_">
+                <ScalarProperty Name="EventID" ColumnName="EventID" />
+                <ScalarProperty Name="EventName" ColumnName="EventName" />
+                <ScalarProperty Name="Status_" ColumnName="Status_" />
+                <ScalarProperty Name="Population_" ColumnName="Population_" />
+                <ScalarProperty Name="LecturerID" ColumnName="LecturerID" />
+                <ScalarProperty Name="Description_" ColumnName="Description_" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ROOMs">
+            <EntityTypeMapping TypeName="QLGDModel.ROOM">
+              <MappingFragment StoreEntitySet="ROOM">
+                <ScalarProperty Name="RoomID" ColumnName="RoomID" />
+                <ScalarProperty Name="Capacity" ColumnName="Capacity" />
+                <ScalarProperty Name="Description_" ColumnName="Description_" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ROOMIGNOREs">
+            <EntityTypeMapping TypeName="QLGDModel.ROOMIGNORE">
+              <MappingFragment StoreEntitySet="ROOMIGNORE">
+                <ScalarProperty Name="RoomIgnoreID" ColumnName="RoomIgnoreID" />
+                <ScalarProperty Name="UsingClassID" ColumnName="UsingClassID" />
+                <ScalarProperty Name="IgnoreDate" ColumnName="IgnoreDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SUBJECT_">
+            <EntityTypeMapping TypeName="QLGDModel.SUBJECT_">
+              <MappingFragment StoreEntitySet="SUBJECT_">
+                <ScalarProperty Name="SubjectID" ColumnName="SubjectID" />
+                <ScalarProperty Name="SubjectName" ColumnName="SubjectName" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="USINGCLASSes">
+            <EntityTypeMapping TypeName="QLGDModel.USINGCLASS">
+              <MappingFragment StoreEntitySet="USINGCLASS">
+                <ScalarProperty Name="UsingClassID" ColumnName="UsingClassID" />
+                <ScalarProperty Name="RoomID" ColumnName="RoomID" />
+                <ScalarProperty Name="ClassID" ColumnName="ClassID" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+                <ScalarProperty Name="RepeatCycle" ColumnName="RepeatCycle" />
+                <ScalarProperty Name="Description_" ColumnName="Description_" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="USINGEVENTs">
+            <EntityTypeMapping TypeName="QLGDModel.USINGEVENT">
+              <MappingFragment StoreEntitySet="USINGEVENT">
+                <ScalarProperty Name="UsingEventID" ColumnName="UsingEventID" />
+                <ScalarProperty Name="RoomID" ColumnName="RoomID" />
+                <ScalarProperty Name="EventID" ColumnName="EventID" />
+                <ScalarProperty Name="Date_" ColumnName="Date_" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+                <ScalarProperty Name="Description_" ColumnName="Description_" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="USINGEXAMs">
+            <EntityTypeMapping TypeName="QLGDModel.USINGEXAM">
+              <MappingFragment StoreEntitySet="USINGEXAM">
+                <ScalarProperty Name="UsingExamID" ColumnName="UsingExamID" />
+                <ScalarProperty Name="RoomID" ColumnName="RoomID" />
+                <ScalarProperty Name="SubjectID" ColumnName="SubjectID" />
+                <ScalarProperty Name="Date_" ColumnName="Date_" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+                <ScalarProperty Name="Description_" ColumnName="Description_" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

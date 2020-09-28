@@ -1,4 +1,5 @@
-﻿using System;
+﻿using QuanLyGiangDuong.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,6 +21,19 @@ namespace QuanLyGiangDuong.ViewModel
                 if (_CurrentDateTime == value)
                     return;
                 _CurrentDateTime = value; OnPropertyChanged(); 
+            }
+        }
+
+        private string _TextBlock;
+
+        public string TextBlock
+        {
+            get { return _TextBlock; }
+            set
+            {
+                if (_TextBlock == value)
+                    return;
+                _TextBlock = value; OnPropertyChanged();
             }
         }
 
@@ -50,6 +64,7 @@ namespace QuanLyGiangDuong.ViewModel
 
         public HomePage_ViewModel()
         {
+            TextBlock = DataProvider.Ins.DB.ROOMs.Find("001").Description_;
             GetTimeNow();
         }
     }

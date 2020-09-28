@@ -83,5 +83,13 @@
                 </StackPanel>
             </materialDesign:Card>
         </Grid>
+        <Grid Grid.Column="5" Grid.Row="5" Grid.RowSpan="5" Grid.ColumnSpan="5">
+            <materialDesign:Card 
+                  Background="{DynamicResource PrimaryHueDarkBrush}"
+                  Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
+                  Padding="5">
+                <TextBlock FontWeight="SemiBold" TextAlignment="Center" FontSize="20" Text="{Binding TextBlock}"></TextBlock>
+            </materialDesign:Card>
+        </Grid>
     </Grid>
 </Page>
