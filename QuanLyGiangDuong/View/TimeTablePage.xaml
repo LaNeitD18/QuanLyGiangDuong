@@ -26,19 +26,19 @@
                    Margin="0,10,0,0"
             />
 
-            <syncfusion:SfDataGrid Height="329" ColumnSizer="Star">
+            <syncfusion:SfDataGrid Height="329" ColumnSizer="Star" ItemsSource="{Binding tb}">
                 <syncfusion:SfDataGrid.Columns>
-                    <syncfusion:GridCheckBoxColumn DisplayBinding="{x:Null}" FilteredFrom="None" HeaderText="Phòng" ValueBinding="{x:Null}" TextAlignment="Center"/>
-                    <syncfusion:GridCheckBoxColumn DisplayBinding="{x:Null}" FilteredFrom="None" HeaderText="Tiết 1" ValueBinding="{x:Null}" TextAlignment="Center"/>
-                    <syncfusion:GridCheckBoxColumn DisplayBinding="{x:Null}" FilteredFrom="None" HeaderText="Tiết 2" ValueBinding="{x:Null}" TextAlignment="Center"/>
-                    <syncfusion:GridCheckBoxColumn DisplayBinding="{x:Null}" FilteredFrom="None" HeaderText="Tiết 3" ValueBinding="{x:Null}" TextAlignment="Center"/>
-                    <syncfusion:GridCheckBoxColumn DisplayBinding="{x:Null}" FilteredFrom="None" HeaderText="Tiết 4" ValueBinding="{x:Null}" TextAlignment="Center"/>
-                    <syncfusion:GridCheckBoxColumn DisplayBinding="{x:Null}" FilteredFrom="None" HeaderText="Tiết 5" ValueBinding="{x:Null}" TextAlignment="Center"/>
-                    <syncfusion:GridCheckBoxColumn DisplayBinding="{x:Null}" FilteredFrom="None" HeaderText="Tiết 6" ValueBinding="{x:Null}" TextAlignment="Center"/>
-                    <syncfusion:GridCheckBoxColumn DisplayBinding="{x:Null}" FilteredFrom="None" HeaderText="Tiết 7" ValueBinding="{x:Null}" TextAlignment="Center"/>
-                    <syncfusion:GridCheckBoxColumn DisplayBinding="{x:Null}" FilteredFrom="None" HeaderText="Tiết 8" ValueBinding="{x:Null}" TextAlignment="Center"/>
-                    <syncfusion:GridCheckBoxColumn DisplayBinding="{x:Null}" FilteredFrom="None" HeaderText="Tiết 9" ValueBinding="{x:Null}" TextAlignment="Center"/>
-                    <syncfusion:GridCheckBoxColumn DisplayBinding="{x:Null}" FilteredFrom="None" HeaderText="Tiết 10" ValueBinding="{x:Null}" TextAlignment="Center"/>
+                    <syncfusion:GridTextColumn DisplayBinding="{x:Null}" MappingName="phong" FilteredFrom="None" HeaderText="Phòng" ValueBinding="{x:Null}" TextAlignment="Center"/>
+                    <syncfusion:GridTextColumn DisplayBinding="{x:Null}" MappingName="tiet[0]" FilteredFrom="None" HeaderText="Tiết 1" ValueBinding="{x:Null}" TextAlignment="Center"/>
+                    <syncfusion:GridTextColumn DisplayBinding="{x:Null}" MappingName="tiet[1]" FilteredFrom="None" HeaderText="Tiết 2" ValueBinding="{x:Null}" TextAlignment="Center"/>
+                    <syncfusion:GridTextColumn DisplayBinding="{x:Null}" MappingName="tiet[2]" FilteredFrom="None" HeaderText="Tiết 3" ValueBinding="{x:Null}" TextAlignment="Center"/>
+                    <syncfusion:GridTextColumn DisplayBinding="{x:Null}" MappingName="tiet[3]" FilteredFrom="None" HeaderText="Tiết 4" ValueBinding="{x:Null}" TextAlignment="Center"/>
+                    <syncfusion:GridTextColumn DisplayBinding="{x:Null}" MappingName="tiet[4]" FilteredFrom="None" HeaderText="Tiết 5" ValueBinding="{x:Null}" TextAlignment="Center"/>
+                    <syncfusion:GridTextColumn DisplayBinding="{x:Null}" MappingName="tiet[5]" FilteredFrom="None" HeaderText="Tiết 6" ValueBinding="{x:Null}" TextAlignment="Center"/>
+                    <syncfusion:GridTextColumn DisplayBinding="{x:Null}" MappingName="tiet[6]" FilteredFrom="None" HeaderText="Tiết 7" ValueBinding="{x:Null}" TextAlignment="Center"/>
+                    <syncfusion:GridTextColumn DisplayBinding="{x:Null}" MappingName="tiet[7]" FilteredFrom="None" HeaderText="Tiết 8" ValueBinding="{x:Null}" TextAlignment="Center"/>
+                    <syncfusion:GridTextColumn DisplayBinding="{x:Null}" MappingName="tiet[8]" FilteredFrom="None" HeaderText="Tiết 9" ValueBinding="{x:Null}" TextAlignment="Center"/>
+                    <syncfusion:GridTextColumn DisplayBinding="{x:Null}" MappingName="tiet[9]" FilteredFrom="None" HeaderText="Tiết 10" ValueBinding="{x:Null}" TextAlignment="Center"/>
                 </syncfusion:SfDataGrid.Columns>
 
             </syncfusion:SfDataGrid>
