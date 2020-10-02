@@ -1,66 +1,276 @@
-﻿<Page
+﻿<Page x:Class="QuanLyGiangDuong.View.ExamInputPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:QuanLyGiangDuong.View"
-      xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" x:Class="QuanLyGiangDuong.View.EventInputPage"
+      xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="EventInputPage">
+      
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+      
+      
+      d:DesignHeight="640" d:DesignWidth="1200"
+      Title="TimeTableInputPage">
 
-    <Grid Background="White">
+    <Grid x:Name="timeTableInputPage" Background="WhiteSmoke">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="59*"/>
-            <RowDefinition Height="28*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Label Content="Danh sách yêu cầu phòng thi đang chờ:" HorizontalAlignment="Left" Margin="45,10,0,0" VerticalAlignment="Top"/>
-        <DataGrid HorizontalAlignment="Left" Height="361" Margin="45,37,0,0" VerticalAlignment="Top" Width="275" Grid.RowSpan="2">
-            <DataGrid.Columns>
-                <DataGridCheckBoxColumn Header="chọn"/>
-                <DataGridTextColumn Header="Trạng thái"/>
-                <DataGridTextColumn Header="Mã yêu cầu"/>
-                <DataGridTextColumn Header="Tên môn thi"/>
-            </DataGrid.Columns>
-        </DataGrid>
-        <Button Content="Xoá" HorizontalAlignment="Left" Margin="245,108,0,0" VerticalAlignment="Top" Width="75" Grid.Row="1"/>
-
-        <Label Content="Thêm yêu cầu phòng thi mới" HorizontalAlignment="Left" Margin="395,10,0,0" VerticalAlignment="Top"/>
-
-        <Label Content="Mã yêu cầu:" HorizontalAlignment="Left" Margin="395,40,0,0" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="505,39,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="260"/>
-
-        <Label Content="Môn thi:" HorizontalAlignment="Left" Margin="395,84,0,0" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="505,83,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="260"/>
-
-        <Label Content="Hệ:" HorizontalAlignment="Left" Margin="395,111,0,0" VerticalAlignment="Top"/>
-        <ComboBox HorizontalAlignment="Left" Margin="432,111,0,0" VerticalAlignment="Top" Width="115"/>
-
-        <Label Content="Học kỳ:" HorizontalAlignment="Left" Margin="595,111,0,0" VerticalAlignment="Top"/>
-        <ComboBox HorizontalAlignment="Left" Margin="650,111,0,0" VerticalAlignment="Top" Width="115"/>
-
-        <Label Content="Khoá:" HorizontalAlignment="Left" Margin="395,138,0,0" VerticalAlignment="Top"/>
-        <ComboBox HorizontalAlignment="Left" Margin="432,138,0,0" VerticalAlignment="Top" Width="115"/>
-
-        <Label Content="Năm học:" HorizontalAlignment="Left" Margin="595,138,0,0" VerticalAlignment="Top"/>
-        <ComboBox HorizontalAlignment="Left" Margin="650,138,0,0" VerticalAlignment="Top" Width="115"/>
-
-        <Label Content="Ngày tổ chức:" HorizontalAlignment="Left" Margin="393,185,0,0" VerticalAlignment="Top"/>
-        <Label Content="Từ:" HorizontalAlignment="Left" Margin="513,185,0,0" VerticalAlignment="Top"/>
-        <DatePicker HorizontalAlignment="Left" Margin="545,184,0,0" VerticalAlignment="Top" Width="220"/>
-        <Label Content="Đến:" HorizontalAlignment="Left" Margin="505,212,0,0" VerticalAlignment="Top"/>
-        <DatePicker HorizontalAlignment="Left" Margin="545,212,0,0" VerticalAlignment="Top" Width="220"/>
-
-        <Label Content="Thời gian thi:" HorizontalAlignment="Left" Margin="395,243,0,0" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="505,242,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="260"/>
-
-        <Label Content="Sỉ số:" HorizontalAlignment="Left" Margin="393,270,0,0" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="505,270,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="260"/>
-
-        <Label Content="Ghi chú:" HorizontalAlignment="Left" Margin="393,15,0,0" VerticalAlignment="Top" Grid.Row="1"/>
-        <TextBox HorizontalAlignment="Left" Height="66" Margin="393,37,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="372" Grid.Row="1"/>
-
-        <Button Content="Thêm" HorizontalAlignment="Left" Margin="690,108,0,0" VerticalAlignment="Top" Width="75" Grid.Row="1"/>
-        <Button Content="Huỷ" HorizontalAlignment="Left" Margin="595,108,0,0" VerticalAlignment="Top" Width="75" Grid.Row="1"/>
+        <Grid 
+            Grid.Column="0" Grid.ColumnSpan="15"
+            Grid.Row="0" Grid.RowSpan="1">
+            <Grid Grid.Row="0">
+                <materialDesign:Card 
+                  Background="{DynamicResource PrimaryHueDarkBrush}"
+                  Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
+                  Padding="5">
+                    <TextBlock FontWeight="SemiBold" TextAlignment="Center" FontSize="20" Text="Danh sách yêu cầu phòng thi đang chờ"></TextBlock>
+                </materialDesign:Card>
+            </Grid>
+        </Grid>
+        <Grid
+            Grid.Column="0" Grid.ColumnSpan="15"
+            Grid.Row="1" Grid.RowSpan="16"
+            Margin="0,10,0,0">
+            <DataGrid 
+                HorizontalAlignment="Stretch" 
+                VerticalAlignment="Top" 
+                Grid.RowSpan="2">
+                <DataGrid.Columns>
+                    <DataGridCheckBoxColumn Header="Chọn"/>
+                    <DataGridTextColumn Header="Trạng thái"/>
+                    <DataGridTextColumn Header="Mã yêu cầu"/>
+                    <DataGridTextColumn Header="Tên môn học"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+        <Grid
+            Grid.Column="16" Grid.ColumnSpan="15"
+            Grid.Row="0" Grid.RowSpan="1">
+            <Grid Grid.Row="0">
+                <materialDesign:Card 
+                  Background="{DynamicResource PrimaryHueDarkBrush}"
+                  Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
+                  Padding="5">
+                    <TextBlock FontWeight="SemiBold" TextAlignment="Center" FontSize="20" Text="Thông tin phòng thi"></TextBlock>
+                </materialDesign:Card>
+            </Grid>
+        </Grid>
+        <Grid
+            Grid.Column="16" Grid.ColumnSpan="15"
+            Grid.Row="1" Grid.RowSpan="16"
+            Margin="0,10,0,0">
+            <materialDesign:Card>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Row="0" Grid.Column="0">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <TextBox 
+                                Width="200" 
+                                FontSize="18" 
+                                materialDesign:HintAssist.Hint="Mã yêu cầu" 
+                                IsEnabled="False"
+                                Style="{StaticResource MaterialDesignFloatingHintTextBox}" Foreground="{StaticResource SecondaryAccentBrush}" VerticalAlignment="Center"
+                                Text="{Binding NgayMoSo, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                        </StackPanel>
+                    </Grid>
+                    <Grid Grid.Row="1" Grid.Column="0">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <TextBox 
+                                Width="200" 
+                                FontSize="18" 
+                                materialDesign:HintAssist.Hint="Môn thi" 
+                                IsEnabled="True"
+                                Style="{StaticResource MaterialDesignFloatingHintTextBox}" Foreground="{StaticResource SecondaryAccentBrush}" VerticalAlignment="Center"
+                                Text="{Binding NgayMoSo, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                        </StackPanel>
+                    </Grid>
+                    <Grid Grid.Row="1" Grid.Column="1">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <TextBox 
+                                Width="200" 
+                                FontSize="18" 
+                                materialDesign:HintAssist.Hint="Giảng viên" 
+                                IsEnabled="True"
+                                Style="{StaticResource MaterialDesignFloatingHintTextBox}" Foreground="{StaticResource SecondaryAccentBrush}" VerticalAlignment="Center"
+                                Text="{Binding NgayMoSo, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                        </StackPanel>
+                    </Grid>
+                    <Grid Grid.Row="2" Grid.Column="0">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <ComboBox Width="200" materialDesign:HintAssist.Hint="Hệ" VerticalAlignment="Center" Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                  ItemsSource="{Binding TenLoaiTietKiem}" KeyboardNavigation.TabIndex="1" Text ="{Binding CbxTenLoaiTietKiem}" SelectedItem="{Binding SelectedTenLoaiTietKiem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }" >
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectionChanged">
+                                        <i:InvokeCommandAction Command="{Binding LTK_SelectionChangedCommand}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </ComboBox>
+                        </StackPanel>
+                    </Grid>
+                    <Grid Grid.Row="2" Grid.Column="1">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <ComboBox Width="200" materialDesign:HintAssist.Hint="Khoa" VerticalAlignment="Center" Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                  ItemsSource="{Binding TenLoaiTietKiem}" KeyboardNavigation.TabIndex="1" Text ="{Binding CbxTenLoaiTietKiem}" SelectedItem="{Binding SelectedTenLoaiTietKiem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }" >
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectionChanged">
+                                        <i:InvokeCommandAction Command="{Binding LTK_SelectionChangedCommand}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </ComboBox>
+                        </StackPanel>
+                    </Grid>
+                    <Grid Grid.Row="3" Grid.Column="0">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <ComboBox Width="200" materialDesign:HintAssist.Hint="Học kỳ" VerticalAlignment="Center" Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                  ItemsSource="{Binding TenLoaiTietKiem}" KeyboardNavigation.TabIndex="1" Text ="{Binding CbxTenLoaiTietKiem}" SelectedItem="{Binding SelectedTenLoaiTietKiem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }" >
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectionChanged">
+                                        <i:InvokeCommandAction Command="{Binding LTK_SelectionChangedCommand}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </ComboBox>
+                        </StackPanel>
+                    </Grid>
+                    <Grid Grid.Row="3" Grid.Column="1">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <ComboBox Width="200" materialDesign:HintAssist.Hint="Năm học" VerticalAlignment="Center" Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                  ItemsSource="{Binding TenLoaiTietKiem}" KeyboardNavigation.TabIndex="1" Text ="{Binding CbxTenLoaiTietKiem}" SelectedItem="{Binding SelectedTenLoaiTietKiem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }" >
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectionChanged">
+                                        <i:InvokeCommandAction Command="{Binding LTK_SelectionChangedCommand}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </ComboBox>
+                        </StackPanel>
+                    </Grid>
+                    <Grid Grid.Row="4" Grid.Column="0">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <DatePicker
+                                Width="200"
+                                materialDesign:HintAssist.Hint="Từ ngày"
+                                Style="{StaticResource MaterialDesignFloatingHintDatePicker}"/>
+                        </StackPanel>
+                    </Grid>
+                    <Grid Grid.Row="4" Grid.Column="1">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <DatePicker
+                                Width="200"
+                                materialDesign:HintAssist.Hint="Đến ngày"
+                                Style="{StaticResource MaterialDesignFloatingHintDatePicker}"/>
+                        </StackPanel>
+                    </Grid>
+                    <Grid Grid.Row="5" Grid.Column="0">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <TextBox 
+                                Width="200" 
+                                FontSize="18" 
+                                materialDesign:HintAssist.Hint="Thời gian thi" 
+                                IsEnabled="True"
+                                Style="{StaticResource MaterialDesignFloatingHintTextBox}" Foreground="{StaticResource SecondaryAccentBrush}" VerticalAlignment="Center"
+                                Text="{Binding NgayMoSo, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                        </StackPanel>
+                    </Grid>
+                    <Grid Grid.Row="5" Grid.Column="1">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <TextBox 
+                                Width="200" 
+                                FontSize="18" 
+                                materialDesign:HintAssist.Hint="Sĩ số" 
+                                IsEnabled="True"
+                                Style="{StaticResource MaterialDesignFloatingHintTextBox}" Foreground="{StaticResource SecondaryAccentBrush}" VerticalAlignment="Center"
+                                Text="{Binding NgayMoSo, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                        </StackPanel>
+                    </Grid>
+                    <Grid Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <TextBox 
+                                Width="400" 
+                                FontSize="18" 
+                                materialDesign:HintAssist.Hint="Ghi chú" 
+                                IsEnabled="True"
+                                Style="{StaticResource MaterialDesignFloatingHintTextBox}" Foreground="{StaticResource SecondaryAccentBrush}" VerticalAlignment="Center"
+                                Text="{Binding NgayMoSo, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                        </StackPanel>
+                    </Grid>
+                    <Grid Grid.Row="7" Grid.Column="0">
+                        <Button Style="{StaticResource MaterialDesignRaisedButton}" 
+                            Margin="5,0,5,0" Content="Thêm" HorizontalAlignment="Center"
+                            Width="150" Height="35"
+                            Command="{Binding AddLTKCommand}"/>
+                    </Grid>
+                    <Grid Grid.Row="7" Grid.Column="1">
+                        <Button Style="{StaticResource MaterialDesignRaisedButton}" 
+                            Margin="5,0,5,0" Content="Hủy" HorizontalAlignment="Center"
+                            Width="150" Height="35"
+                            Command="{Binding AddLTKCommand}"/>
+                    </Grid>
+                </Grid>
+            </materialDesign:Card>
+        </Grid>
     </Grid>
 </Page>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="81e7eba50b0148cabeab4c13d482da14" Name="Diagram1" ZoomLevel="150">
+        <EntityTypeShape EntityType="QLGDModel.CLASS" Width="1.5" PointX="0.75" PointY="9" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLGDModel.EVENT_" Width="1.5" PointX="3.75" PointY="13.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLGDModel.ROOM" Width="1.5" PointX="0.75" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLGDModel.ROOMIGNORE" Width="1.5" PointX="5.25" PointY="9.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLGDModel.SUBJECT_" Width="1.5" PointX="0.75" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLGDModel.USINGCLASS" Width="1.5" PointX="3" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLGDModel.USINGEVENT" Width="1.5" PointX="6" PointY="5.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLGDModel.USINGEXAM" Width="1.5" PointX="3" PointY="1.125" IsExpanded="true" />
+        <AssociationConnector Association="QLGDModel.FK__CLASS__SubjectID__286302EC" ManuallyRouted="false" />
+        <AssociationConnector Association="QLGDModel.FK__USINGCLAS__Class__2E1BDC42" ManuallyRouted="false" />
+        <AssociationConnector Association="QLGDModel.FK__USINGEVEN__Event__31EC6D26" ManuallyRouted="false" />
+        <AssociationConnector Association="QLGDModel.FK__USINGCLAS__RoomI__2D27B809" ManuallyRouted="false" />
+        <AssociationConnector Association="QLGDModel.FK__USINGEVEN__RoomI__30F848ED" ManuallyRouted="false" />
+        <AssociationConnector Association="QLGDModel.FK__USINGEXAM__RoomI__34C8D9D1" ManuallyRouted="false" />
+        <AssociationConnector Association="QLGDModel.FK__ROOMIGNOR__Using__3F466844" ManuallyRouted="false" />
+        <AssociationConnector Association="QLGDModel.FK__USINGEXAM__Subje__35BCFE0A" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
