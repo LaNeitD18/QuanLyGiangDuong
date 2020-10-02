@@ -16,7 +16,7 @@
                 <ComboBox Width="150" Margin="10,0,10,0"/>
                 <ComboBox Width="150" Margin="0,0,10,0"/>
                 <ComboBox Width="150" Margin="0,0,10,0"/>
-                <Button Content="Xem TKB" FontSize="15" Width="70"/>
+                <Button Content="Xem TKB" FontSize="15" Width="70" Click="Button_Click"/>
             </StackPanel>
             <Label Content="Thứ 3 - ngày 22/9/2020" 
                    FontSize="16" 
@@ -26,21 +26,80 @@
                    Margin="0,10,0,0"
             />
 
-            <syncfusion:SfDataGrid Height="329" ColumnSizer="Star" ItemsSource="{Binding tb}">
+            <syncfusion:SfDataGrid x:Name="dataGrid" SelectionUnit="Cell" SelectedItem="{Binding selectedTB}"  NavigationMode="Cell" Height="329" ColumnSizer="Star" ItemsSource="{Binding tb}" QueryCoveredRange="sfDataGrid1_QueryCoveredRange">
                 <syncfusion:SfDataGrid.Columns>
                     <syncfusion:GridTextColumn DisplayBinding="{x:Null}" MappingName="phong" FilteredFrom="None" HeaderText="Phòng" ValueBinding="{x:Null}" TextAlignment="Center"/>
-                    <syncfusion:GridTextColumn DisplayBinding="{x:Null}" MappingName="tiet[0]" FilteredFrom="None" HeaderText="Tiết 1" ValueBinding="{x:Null}" TextAlignment="Center"/>
-                    <syncfusion:GridTextColumn DisplayBinding="{x:Null}" MappingName="tiet[1]" FilteredFrom="None" HeaderText="Tiết 2" ValueBinding="{x:Null}" TextAlignment="Center"/>
-                    <syncfusion:GridTextColumn DisplayBinding="{x:Null}" MappingName="tiet[2]" FilteredFrom="None" HeaderText="Tiết 3" ValueBinding="{x:Null}" TextAlignment="Center"/>
-                    <syncfusion:GridTextColumn DisplayBinding="{x:Null}" MappingName="tiet[3]" FilteredFrom="None" HeaderText="Tiết 4" ValueBinding="{x:Null}" TextAlignment="Center"/>
-                    <syncfusion:GridTextColumn DisplayBinding="{x:Null}" MappingName="tiet[4]" FilteredFrom="None" HeaderText="Tiết 5" ValueBinding="{x:Null}" TextAlignment="Center"/>
-                    <syncfusion:GridTextColumn DisplayBinding="{x:Null}" MappingName="tiet[5]" FilteredFrom="None" HeaderText="Tiết 6" ValueBinding="{x:Null}" TextAlignment="Center"/>
-                    <syncfusion:GridTextColumn DisplayBinding="{x:Null}" MappingName="tiet[6]" FilteredFrom="None" HeaderText="Tiết 7" ValueBinding="{x:Null}" TextAlignment="Center"/>
-                    <syncfusion:GridTextColumn DisplayBinding="{x:Null}" MappingName="tiet[7]" FilteredFrom="None" HeaderText="Tiết 8" ValueBinding="{x:Null}" TextAlignment="Center"/>
-                    <syncfusion:GridTextColumn DisplayBinding="{x:Null}" MappingName="tiet[8]" FilteredFrom="None" HeaderText="Tiết 9" ValueBinding="{x:Null}" TextAlignment="Center"/>
-                    <syncfusion:GridTextColumn DisplayBinding="{x:Null}" MappingName="tiet[9]" FilteredFrom="None" HeaderText="Tiết 10" ValueBinding="{x:Null}" TextAlignment="Center"/>
+                    <syncfusion:GridTemplateColumn MappingName="tiet[0]" HeaderText="Tiết 1">
+                        <syncfusion:GridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Label Content="{Binding tiet[0].Item2}"/>
+                            </DataTemplate>
+                        </syncfusion:GridTemplateColumn.CellTemplate>
+                    </syncfusion:GridTemplateColumn>
+                    <syncfusion:GridTemplateColumn MappingName="tiet[1]" HeaderText="Tiết 2">
+                        <syncfusion:GridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Label Content="{Binding tiet[1].Item2}"/>
+                            </DataTemplate>
+                        </syncfusion:GridTemplateColumn.CellTemplate>
+                    </syncfusion:GridTemplateColumn>
+                    <syncfusion:GridTemplateColumn MappingName="tiet[2]" HeaderText="Tiết 3">
+                        <syncfusion:GridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Label Content="{Binding tiet[2].Item2}"/>
+                            </DataTemplate>
+                        </syncfusion:GridTemplateColumn.CellTemplate>
+                    </syncfusion:GridTemplateColumn>
+                    <syncfusion:GridTemplateColumn MappingName="tiet[3]" HeaderText="Tiết 4">
+                        <syncfusion:GridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Label Content="{Binding tiet[3].Item2}"/>
+                            </DataTemplate>
+                        </syncfusion:GridTemplateColumn.CellTemplate>
+                    </syncfusion:GridTemplateColumn>
+                    <syncfusion:GridTemplateColumn MappingName="tiet[4]" HeaderText="Tiết 5">
+                        <syncfusion:GridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Label Content="{Binding tiet[4].Item2}"/>
+                            </DataTemplate>
+                        </syncfusion:GridTemplateColumn.CellTemplate>
+                    </syncfusion:GridTemplateColumn>
+                    <syncfusion:GridTemplateColumn MappingName="tiet[5]" HeaderText="Tiết 6">
+                        <syncfusion:GridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Label Content="{Binding tiet[5].Item2}"/>
+                            </DataTemplate>
+                        </syncfusion:GridTemplateColumn.CellTemplate>
+                    </syncfusion:GridTemplateColumn>
+                    <syncfusion:GridTemplateColumn MappingName="tiet[6]" HeaderText="Tiết 7">
+                        <syncfusion:GridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Label Content="{Binding tiet[6].Item2}"/>
+                            </DataTemplate>
+                        </syncfusion:GridTemplateColumn.CellTemplate>
+                    </syncfusion:GridTemplateColumn>
+                    <syncfusion:GridTemplateColumn MappingName="tiet[7]" HeaderText="Tiết 8">
+                        <syncfusion:GridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Label Content="{Binding tiet[7].Item2}"/>
+                            </DataTemplate>
+                        </syncfusion:GridTemplateColumn.CellTemplate>
+                    </syncfusion:GridTemplateColumn>
+                    <syncfusion:GridTemplateColumn MappingName="tiet[8]" HeaderText="Tiết 9">
+                        <syncfusion:GridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Label Content="{Binding tiet[8].Item2}"/>
+                            </DataTemplate>
+                        </syncfusion:GridTemplateColumn.CellTemplate>
+                    </syncfusion:GridTemplateColumn>
+                    <syncfusion:GridTemplateColumn MappingName="tiet[9]" HeaderText="Tiết 10">
+                        <syncfusion:GridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Label Content="{Binding tiet[9].Item2}"/>
+                            </DataTemplate>
+                        </syncfusion:GridTemplateColumn.CellTemplate>
+                    </syncfusion:GridTemplateColumn>
                 </syncfusion:SfDataGrid.Columns>
-
             </syncfusion:SfDataGrid>
 
         </StackPanel>

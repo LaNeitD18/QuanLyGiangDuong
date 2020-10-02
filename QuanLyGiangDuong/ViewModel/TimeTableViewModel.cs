@@ -19,18 +19,19 @@ namespace QuanLyGiangDuong.ViewModel
             set { _phong = value; }
         }
 
-        private List<string> _tiet;
+        private List<Tuple<string, string>> _tiet;
         
-        public List<string> tiet
+        public List<Tuple<string, string>> tiet
         {
             get
             {
                 if (_tiet == null)
                 {
-                    _tiet = new List<string>();
+                    _tiet = new List<Tuple<string, string>>();
 
                     for (int i = 0; i < 10; i++)
-                        _tiet.Add(i.ToString());
+                        _tiet.Add(new Tuple<string, string>("a" + (i/3).ToString(), (i/3).ToString()));
+
                 }
 
                 return _tiet;
@@ -63,6 +64,32 @@ namespace QuanLyGiangDuong.ViewModel
             }
 
             set { _tb = value; }
+        }
+
+        private table _selectedTB;
+
+        public table selectedTB
+        {
+            get
+            {
+                return _selectedTB;
+            }
+
+            set 
+            { 
+                _selectedTB = value; 
+            }
+        }
+
+        private int _si;
+
+        public int si
+        {
+            get { return _si; }
+            set 
+            { 
+                _si = value; 
+            }
         }
     }
 }

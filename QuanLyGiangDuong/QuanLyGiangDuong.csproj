@@ -75,9 +75,6 @@
     <Reference Include="Syncfusion.Core.XForms.WPF, Version=18.2460.0.58, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Syncfusion.Xamarin.Core.WPF.18.2.0.58\lib\net46\Syncfusion.Core.XForms.WPF.dll</HintPath>
     </Reference>
-    <Reference Include="Syncfusion.Data.Portable, Version=18.2451.0.58, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Syncfusion.Xamarin.SfDataGrid.18.2.0.58\lib\netstandard2.0\Syncfusion.Data.Portable.dll</HintPath>
-    </Reference>
     <Reference Include="Syncfusion.Data.WPF, Version=18.2460.0.58, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
       <HintPath>..\packages\Syncfusion.Data.WPF.18.2.0.58\lib\net46\Syncfusion.Data.WPF.dll</HintPath>
     </Reference>
