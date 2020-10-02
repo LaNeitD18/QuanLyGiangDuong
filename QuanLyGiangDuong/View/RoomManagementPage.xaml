@@ -1,0 +1,272 @@
+﻿<Page x:Class="QuanLyGiangDuong.View.RoomManagementPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:QuanLyGiangDuong.View"
+      mc:Ignorable="d" 
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+      d:DesignHeight="640" d:DesignWidth="1200"
+      Title="RoomManagementPage"
+      
+      DataContext= "{StaticResource RoomManagementVM}">
+
+    <Grid Background="WhiteSmoke">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid 
+            Grid.Column="0" Grid.ColumnSpan="15"
+            Grid.Row="0" Grid.RowSpan="1">
+                <materialDesign:Card 
+                  Background="{DynamicResource PrimaryHueDarkBrush}"
+                  Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
+                  Padding="5">
+                    <TextBlock FontWeight="SemiBold" TextAlignment="Center" FontSize="20" Text="Danh sách phòng"></TextBlock>
+                </materialDesign:Card>
+        </Grid>
+        <Grid
+            Grid.Column="0" Grid.ColumnSpan="15"
+            Grid.Row="1" Grid.RowSpan="12"
+            Margin="0,10,0,0">
+            <DataGrid x:Name="listRoom"
+                HorizontalAlignment="Stretch" 
+                VerticalAlignment="Top" 
+                ItemsSource="{Binding ListRoom}"
+                ScrollViewer.VerticalScrollBarVisibility="Auto"
+                SelectionMode="Single"
+                AutoGenerateColumns="False"
+                SelectedItem="{Binding SelectedRoom, Mode=TwoWay}"
+                SelectionUnit="FullRow" >
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Mã phòng" Binding="{Binding RoomID}" />
+                    <DataGridTextColumn Header="Sức chứa" Binding="{Binding Capacity}"/>
+                    <DataGridTextColumn Header="Mô tả" Binding="{Binding Description_}"/>
+                    <DataGridComboBoxColumn Header="Trạng thái" />
+                </DataGrid.Columns>
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <i:InvokeCommandAction Command="{Binding SelectionChangedCommand}"
+                                                   CommandParameter="{Binding ElementName=listRoom}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </DataGrid>
+        </Grid>
+        <Grid
+            Grid.Column="0" Grid.ColumnSpan="15"
+            Grid.Row="14" Grid.RowSpan="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <Button 
+                    Style="{StaticResource MaterialDesignRaisedButton}" 
+                    Margin="5,0,5,0" Content="Thêm" HorizontalAlignment="Center"
+                    Width="150" Height="35"
+                    IsEnabled="{Binding IsAddingEnabled}"
+                    Command="{Binding AddRoomCommand}"/>
+            </Grid>
+            <Grid Grid.Column="1">
+                <Button 
+                    Style="{StaticResource MaterialDesignRaisedButton}" 
+                    Margin="5,0,5,0" Content="Sửa" HorizontalAlignment="Center"
+                    Width="150" Height="35"
+                    IsEnabled="{Binding IsEditingEnabled}"
+                    Command="{Binding EditRoomCommand}"/>
+            </Grid>
+            <Grid Grid.Column="2">
+                <Button 
+                    Style="{StaticResource MaterialDesignRaisedButton}" 
+                    Margin="5,0,5,0" Content="Xóa" HorizontalAlignment="Center"
+                    Width="150" Height="35"
+                    IsEnabled="{Binding IsDeletingEnabled}"
+                    Command="{Binding DeleteRoomCommand}"/>
+            </Grid>
+        </Grid>
+        <Grid
+            Grid.Column="16" Grid.ColumnSpan="15"
+            Grid.Row="0" Grid.RowSpan="1">
+            <Grid Grid.Row="0">
+                <materialDesign:Card 
+                  Background="{DynamicResource PrimaryHueDarkBrush}"
+                  Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
+                  Padding="5">
+                    <TextBlock FontWeight="SemiBold" TextAlignment="Center" FontSize="20" Text="Thông tin phòng học"></TextBlock>
+                </materialDesign:Card>
+            </Grid>
+        </Grid>
+        <Grid
+            Grid.Column="16" Grid.ColumnSpan="15"
+            Grid.Row="1" Grid.RowSpan="12"
+            Margin="0,10,0,0">
+            <materialDesign:Card>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="0">
+                            <TextBox 
+                            Margin="20,5,20,5"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Width="200" 
+                            FontSize="18" 
+                            materialDesign:HintAssist.Hint="Mã phòng" 
+                            IsEnabled="{Binding IsIDEnabled}"
+                            Style="{StaticResource MaterialDesignFloatingHintTextBox}" Foreground="{StaticResource SecondaryAccentBrush}"
+                            Text="{Binding RoomID, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                        </Grid>
+                    </Grid>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="0">
+                            <TextBox 
+                            Margin="20,5,20,5"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Width="200" 
+                            FontSize="18" 
+                            materialDesign:HintAssist.Hint="Sức chứa" 
+                            IsEnabled="{Binding IsCapacityEnabled}"
+                            Style="{StaticResource MaterialDesignFloatingHintTextBox}" Foreground="{StaticResource SecondaryAccentBrush}"
+                            Text="{Binding Capacity, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                        </Grid>
+                    </Grid>
+                    <Grid Grid.Row="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="0">
+                            <TextBox 
+                            Margin="20,5,20,5"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Width="200" 
+                            FontSize="18" 
+                            materialDesign:HintAssist.Hint="Mô tả" 
+                            IsEnabled="{Binding IsDescriptionEnabled}"
+                            Style="{StaticResource MaterialDesignFloatingHintTextBox}" Foreground="{StaticResource SecondaryAccentBrush}"
+                            Text="{Binding Description, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                        </Grid>
+                    </Grid>
+                    <Grid Grid.Row="3">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="0">
+                            <Button 
+                                Style="{StaticResource MaterialDesignRaisedButton}" 
+                                Margin="5,0,5,0" Content="Xác nhận" HorizontalAlignment="Center"
+                                Width="150" Height="35"
+                                Command="{Binding ConfirmCommand}"
+                                IsEnabled="False"/>
+                        </Grid>
+                        <Grid Grid.Column="1">
+                            <Button Style="{StaticResource MaterialDesignRaisedButton}" 
+                            Margin="5,0,5,0" Content="Hủy" HorizontalAlignment="Center"
+                            Width="150" Height="35"
+                            Command="{Binding CancelCommand}"/>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </materialDesign:Card>
+        </Grid>
+        <Grid 
+            Grid.Column="16" Grid.ColumnSpan="15"
+            Grid.Row="14" Grid.RowSpan="3">
+            <materialDesign:Card>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0">
+                        <TextBox 
+                            Margin="20,0,20,10"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Width="200" 
+                            FontSize="18" 
+                            materialDesign:HintAssist.Hint="Mã phòng" 
+                            IsEnabled="True"
+                            Style="{StaticResource MaterialDesignFloatingHintTextBox}" Foreground="{StaticResource SecondaryAccentBrush}"
+                            Text="{Binding RoomIDForSearching, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                    </Grid>
+                    <Grid Grid.Column="1">
+                        <Button 
+                            Style="{StaticResource MaterialDesignRaisedButton}" 
+                            Margin="5,0,5,0" Content="Tra cứu" HorizontalAlignment="Center"
+                            Width="150" Height="35"
+                            Command="{Binding SearchRoomCommand}"/>
+
+                    </Grid>
+                </Grid>
+            </materialDesign:Card>
+        </Grid>
+    </Grid>
+</Page>

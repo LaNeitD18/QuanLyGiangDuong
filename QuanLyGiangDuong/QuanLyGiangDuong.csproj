@@ -185,6 +185,7 @@
     <Compile Include="ViewModel\EventInputViewModel.cs" />
     <Compile Include="ViewModel\HomePage_ViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\RoomManagementViewModel.cs" />
     <Compile Include="ViewModel\RoomViewModel.cs" />
     <Compile Include="ViewModel\TimeTableInputViewModel.cs" />
     <Compile Include="ViewModel\TimeTableViewModel.cs" />
@@ -196,6 +197,9 @@
     </Compile>
     <Compile Include="View\HomePage.xaml.cs">
       <DependentUpon>HomePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\RoomManagementPage.xaml.cs">
+      <DependentUpon>RoomManagementPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\RoomPage.xaml.cs">
       <DependentUpon>RoomPage.xaml</DependentUpon>
@@ -227,6 +231,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\HomePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\RoomManagementPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -53,13 +53,27 @@ namespace QuanLyGiangDuong.ViewModel
 
         #endregion
 
+        #region Functions
+        private void ChangePage(Page currentPage, BaseViewModel currentViewModel)
+        {
+            FrameContent = currentPage;
+            FrameContent.DataContext = currentViewModel;
+        }
+
+        #endregion
+
         public MainViewModel()
         {
             IsVisibleCanvas = Visibility.Hidden;
             FrameColumn = 1;
 
+            // initial page
+            FrameContent = new RoomManagementPage();
+            //FrameContent.DataContext = new RoomManagementViewModel();
+
+            // commands
             Home_Page_SelectedCommand = new RelayCommand((p) => {
-                FrameContent = new HomePage();
+                FrameContent = new RoomManagementPage();
                 FrameContent.DataContext = new HomePage_ViewModel();
             });
 
@@ -73,8 +87,7 @@ namespace QuanLyGiangDuong.ViewModel
                 FrameContent.DataContext = new RoomViewModel();
             });
 
-            TimeTableInput_Page_SelectedCommand = new RelayCommand((p) =>
-            {
+            TimeTableInput_Page_SelectedCommand = new RelayCommand((p) => {
                 FrameContent = new TimeTableInputPage();
                 FrameContent.DataContext = new TimeTableInputViewModel();
             });
