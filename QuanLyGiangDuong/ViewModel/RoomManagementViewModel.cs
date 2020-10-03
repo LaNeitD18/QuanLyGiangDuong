@@ -73,6 +73,13 @@ namespace QuanLyGiangDuong.ViewModel
             set { _IsDeletingEnabled = value; OnPropertyChanged(); }
         }
 
+        private bool _IsBeingInTask;
+        public bool IsBeingInTask
+        {
+            get { return _IsBeingInTask; }
+            set { _IsBeingInTask = value; OnPropertyChanged(); }
+        }
+
         private bool _IsIDEnabled;
         public bool IsIDEnabled
         {
@@ -113,6 +120,7 @@ namespace QuanLyGiangDuong.ViewModel
         public ICommand AddRoomCommand { get; set; }
         public ICommand EditRoomCommand { get; set; }
         public ICommand DeleteRoomCommand { get; set; }
+        public ICommand ConfirmCommand { get; set; }
         public ICommand CancelCommand { get; set; }
         public ICommand SearchRoomCommand { get; set; }
         public ICommand SelectionChangedCommand { get; set; }
@@ -141,23 +149,49 @@ namespace QuanLyGiangDuong.ViewModel
             // add room to listroom for displaying
             ListRoom.Add(room);
         }
+        private void EditRoom() {
+            SelectedRoom.Capacity = Int32.Parse(Capacity);
+            SelectedRoom.Description_ = Description;
+            DataProvider.Ins.DB.SaveChanges();
+
+            var temp = SelectedRoom;
+            int length = ListRoom.Count();
+            for (int i = 0; i < length; i++)
+            {
+                if (ListRoom[i].RoomID == SelectedRoom.RoomID)
+                {
+                    ListRoom.RemoveAt(i);
+                    ListRoom.Insert(i, temp);
+                    break;
+                }
+            }
+
+            SelectedRoom = temp;
+        }
+        private void DeleteRoom() {
+
+        }
         // disable 3 buttons: add, edit, delete
         private void DisableButtons() {
             IsAddingEnabled = false;
             IsEditingEnabled = false;
             IsDeletingEnabled = false;
+            IsBeingInTask = false;
         }
         private void EnableOnlyAdding() {
             DisableButtons();
             IsAddingEnabled = true;
+            IsBeingInTask = true;
         }
         private void EnableOnlyEditing() {
             DisableButtons();
             IsEditingEnabled = true;
+            IsBeingInTask = true;
         }
         private void EnableOnlyDeleting() {
             DisableButtons();
             IsDeletingEnabled = true;
+            IsBeingInTask = true;
         }
         private void EnableTextboxes() {
             IsIDEnabled = true;
@@ -174,10 +208,14 @@ namespace QuanLyGiangDuong.ViewModel
             RoomID = null;
             Capacity = null;
             Description = null;
+
+            RoomIDForSearching = null;
         }
         private void ResetAll() {
             ResetTextbox();
+            DisableTextboxes();
             EnableOnlyAdding();
+            IsBeingInTask = false;
 
             SelectedRoom = null;
         }
@@ -186,7 +224,9 @@ namespace QuanLyGiangDuong.ViewModel
             Capacity = SelectedRoom.Capacity.ToString();
             Description = SelectedRoom.Description_;
         }
-        private bool IsValidForAdding(ref bool flag) {
+        private bool IsValidInput() {
+            bool flag = true;
+
             if (string.IsNullOrWhiteSpace(RoomID)) {
                 flag = false;
             }
@@ -195,7 +235,8 @@ namespace QuanLyGiangDuong.ViewModel
             }
             return flag;
         }
-        private bool IsNotDuplicatedForAdding(ref bool flag) {
+        private bool IsNotDuplicatedForAdding() {
+            bool flag = true;
             var roomID = DataProvider.Ins.DB.ROOMs.Where(x => x.RoomID == RoomID);
 
             if(roomID.Count() != 0) {
@@ -205,30 +246,43 @@ namespace QuanLyGiangDuong.ViewModel
 
             return flag;
         }
-        private bool CheckValidData() {
+        private bool IsNotDuplicatedForEditing()
+        {
             bool flag = true;
-
-            IsValidForAdding(ref flag);
-            IsNotDuplicatedForAdding(ref flag);
+            
+            if(Capacity == SelectedRoom.Capacity.ToString()) {
+                if (SelectedRoom.Description_ != null && Description == SelectedRoom.Description_) {
+                    MessageBox.Show("Trung desc vaf capa");
+                    flag = false;
+                }
+            }
 
             return flag;
         }
+        //private bool CheckValidData() {
+        //    bool flag = true;
+
+        //    if(IsIDEnabled) {
+        //        IsValidForAdding(ref flag);
+        //        IsNotDuplicatedForAdding(ref flag);
+        //        return flag;
+        //    }
+
+        //    return false;
+        //}
         #endregion
 
         public RoomManagementViewModel()
         {
             // init values
             LoadData();
+
             EnableOnlyAdding();
+            IsBeingInTask = false;
             DisableTextboxes();
 
             // ICommands
             AddRoomCommand = new RelayCommand((p) => {
-                //if(CheckValidData()) {
-                //    AddRoom();
-                //}
-                //ResetAll();
-
                 EnableOnlyAdding(); // buttons
 
                 EnableTextboxes();
@@ -255,6 +309,22 @@ namespace QuanLyGiangDuong.ViewModel
                     SelectedRoom = room;
 
                     SetValueForTextbox();
+                }
+            });
+
+            // confirm button is enabled only when adding, editing or deleting
+            ConfirmCommand = new RelayCommand((p) => {
+                if(IsIDEnabled) {
+                    if(IsValidInput() && IsNotDuplicatedForAdding()) {
+                        AddRoom();
+                        ResetAll();
+                    }
+                }
+                if(IsBeingInTask && IsEditingEnabled) {
+                    if(IsValidInput() && IsNotDuplicatedForEditing()) {
+                        EditRoom();
+                        ResetAll();
+                    }
                 }
             });
 

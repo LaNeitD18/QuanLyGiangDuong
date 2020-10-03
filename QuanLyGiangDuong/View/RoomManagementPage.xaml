@@ -224,13 +224,14 @@
                                 Margin="5,0,5,0" Content="Xác nhận" HorizontalAlignment="Center"
                                 Width="150" Height="35"
                                 Command="{Binding ConfirmCommand}"
-                                IsEnabled="False"/>
+                                IsEnabled="{Binding IsBeingInTask}"/>
                         </Grid>
                         <Grid Grid.Column="1">
                             <Button Style="{StaticResource MaterialDesignRaisedButton}" 
                             Margin="5,0,5,0" Content="Hủy" HorizontalAlignment="Center"
                             Width="150" Height="35"
-                            Command="{Binding CancelCommand}"/>
+                            Command="{Binding CancelCommand}"
+                            IsEnabled="{Binding IsBeingInTask}"/>
                         </Grid>
                     </Grid>
                 </Grid>
