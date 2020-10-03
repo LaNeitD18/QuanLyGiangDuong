@@ -5,49 +5,68 @@ using Syncfusion.Windows.Shared;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
+using QuanLyGiangDuong.Utilities;
+
 namespace QuanLyGiangDuong.ViewModel
 {
     class EventInputViewModel: BaseViewModel
     {
         #region Note
-        // Event status should be in USING EVENT
-
         /*
         CREATE TABLE EVENT_
         (
             EventID VARCHAR(20) NOT NULL PRIMARY KEY,
+            LecturerID VARCHAR(20) NOT NULL FOREIGN KEY REFERENCES LECTURER(LecturerID),
             EventName NVARCHAR(MAX) NOT NULL,
-            Status_ INT NOT NULL,
             Population_ INT NOT NULL,
-            LecturerID VARCHAR(20) NOT NULL,
             Description_ NVARCHAR(MAX),
         )
-        
         CREATE TABLE USINGEVENT
         (
             UsingEventID VARCHAR(20) NOT NULL PRIMARY KEY,
             RoomID VARCHAR(20) NOT NULL FOREIGN KEY REFERENCES ROOM(RoomID),
             EventID VARCHAR(20) NOT NULL FOREIGN KEY REFERENCES EVENT_(EventID),
             Date_ SMALLDATETIME NOT NULL,
-            StartTime SMALLDATETIME NOT NULL,
-            EndTime SMALLDATETIME NOT NULL,
+            StartPeriod INT NOT NULL FOREIGN KEY REFERENCES PERIOD_TIMERANGE(PeriodID),
+            EndPeriod INT NOT NULL FOREIGN KEY REFERENCES PERIOD_TIMERANGE(PeriodID),
+            Status_ INT NOT NULL,
             Description_ NVARCHAR(50),
         )
-        */
+         */
         #endregion
 
         #region Fields
+
+        #region Default Fields
+        private string _defaultLecturerId = null;
+        public string DefaultLecturerId
+        {
+            // CuteTN: current user ID, will be fixed later
+            get
+            {
+                if(_defaultLecturerId == null)
+                    _defaultLecturerId = "001";
+                return _defaultLecturerId;
+            }
+        }
+
+        private const string _nullEventIdPlaceholder = "[ Sự kiện mới ]";
+
+        #endregion
+
+
         #region Simple Fields
         private string _eventId = null;
         public string EventId
         {
-            get => _eventId;
+            get => _eventId ?? _nullEventIdPlaceholder;
             set
             {
                 _eventId = value;
@@ -66,7 +85,7 @@ namespace QuanLyGiangDuong.ViewModel
             }
         }
 
-        private string _lecturerId = null;
+        private string _lecturerId = "001";
         public string LecturerId
         {
             get => _lecturerId;
@@ -77,7 +96,7 @@ namespace QuanLyGiangDuong.ViewModel
             }
         }
 
-        private DateTime _dateOccurs;
+        private DateTime _dateOccurs = DateTime.Now;
         public DateTime DateOccurs
         {
             get => _dateOccurs;
@@ -99,28 +118,6 @@ namespace QuanLyGiangDuong.ViewModel
             }
         }
 
-        private DateTime _fromTime;
-        public DateTime FromTime
-        {
-            get => _fromTime;
-            set
-            {
-                _fromTime = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private DateTime _toTime;
-        public DateTime ToTime
-        {
-            get => _toTime;
-            set
-            {
-                _toTime = value;
-                OnPropertyChanged();
-            }
-        }
-
         private string _description = null;
         public string Description
         {
@@ -131,10 +128,24 @@ namespace QuanLyGiangDuong.ViewModel
                 OnPropertyChanged();
             }
         }
+
+
+        private bool _enableEdittingForm = false;
+
+        public bool EnableEdittingForm
+        { 
+            get => _enableEdittingForm;
+            set
+            {
+                _enableEdittingForm = value;
+                OnPropertyChanged();
+            }
+        }
         #endregion
 
-        #region Combobox Room
-        private BindingList<ROOM> _loadRooms()
+
+        #region Room List
+        private BindingList<ROOM> LoadRooms()
         {
             BindingList<ROOM> result = new BindingList<ROOM>( DataProvider.Ins.DB.ROOMs.ToList() );
             return result;
@@ -146,7 +157,7 @@ namespace QuanLyGiangDuong.ViewModel
             get
             {
                 if(_listRoom == null)
-                    _listRoom = _loadRooms();
+                    _listRoom = LoadRooms();
                 return _listRoom;
             }
             set
@@ -167,38 +178,96 @@ namespace QuanLyGiangDuong.ViewModel
             }
         }
         #endregion
-        #endregion
 
-        #region Add button handler
-        private ICommand _addEventToPendingListCmd = null;
-        public ICommand AddEventToPendingListCmd
+
+        #region TimeRange List
+        private BindingList<PERIOD_TIMERANGE> LoadPeriod_TimeRanges()
+        {
+            BindingList<PERIOD_TIMERANGE> result = new BindingList<PERIOD_TIMERANGE>(DataProvider.Ins.DB.PERIOD_TIMERANGE.ToList());
+            return result;
+        }
+
+        private BindingList<PERIOD_TIMERANGE> _listTimeRange = null;
+        public BindingList<PERIOD_TIMERANGE> ListTimeRange
         {
             get
             {
-                MessageBox.Show("Yen");
-                if(_addEventToPendingListCmd == null)
-                    _addEventToPendingListCmd = new RelayCommand(obj => _addEventToPendingList());
-                return _addEventToPendingListCmd;
+                if (_listTimeRange == null)
+                    _listTimeRange = LoadPeriod_TimeRanges();
+                return _listTimeRange;
             }
             set
             {
-                _addEventToPendingListCmd = value;
+                _listTimeRange = value;
                 OnPropertyChanged();
             }
         }
 
-        private void _addEventToPendingList()
+        private PERIOD_TIMERANGE _selectedStartTimeRange = null;
+        public PERIOD_TIMERANGE SelectedStartTimeRange
         {
-            _printEventInfoTest();
+            get => _selectedStartTimeRange;
+            set
+            {
+                _selectedStartTimeRange = value;
+                OnPropertyChanged();
+            }
         }
 
+        private PERIOD_TIMERANGE _selectedEndTimeRange = null;
+        public PERIOD_TIMERANGE SelectedEndTimeRange
+        {
+            get => _selectedEndTimeRange;
+            set
+            {
+                _selectedEndTimeRange = value;
+                OnPropertyChanged();
+            }
+        }
+        #endregion
+
+        #endregion
+
+        #region button handler
+
+        #region confirm button
+        private void HandleConfirmButtonClick()
+        {
+            // CuteTN: More code here...
+            PrintEventInfoTest();
+            AddEventToPendingList();
+        }
+        private ICommand _confirmCmd = null;
+        public ICommand ConfirmCmd
+        {
+            get
+            {
+                if(_confirmCmd == null)
+                    _confirmCmd = new RelayCommand(obj => HandleConfirmButtonClick());
+                return _confirmCmd;
+            }
+            set
+            {
+                _confirmCmd = value;
+                OnPropertyChanged();
+            }
+        }
+        #endregion
+
+
+        #region cancel button
+        private void HandleCancelButton()
+        {
+            MessageBox.Show("cancel");
+            Reset();
+        }
         private ICommand _cancelCmd = null;
         public ICommand CancelCmd
         {
             get
             {
                 if (_cancelCmd == null)
-                    _cancelCmd = new RelayCommand(obj => _cancel());
+                    _cancelCmd = new RelayCommand(obj => HandleCancelButton());
                 return _cancelCmd;
             }
             set
@@ -207,28 +276,155 @@ namespace QuanLyGiangDuong.ViewModel
                 OnPropertyChanged();
             }
         }
+        #endregion
 
-        private void _cancel()
+
+        #region add button
+        private void HandleAddButtonClick()
         {
-            _resetAllFields();
+            // CuteTN: More code here...
+            MessageBox.Show("add");
+            ChangeToAddState();
+        }
+        private ICommand _addCmd = null;
+        public ICommand AddCmd
+        {
+            get
+            {
+                if (_addCmd == null)
+                    _addCmd = new RelayCommand(obj => HandleAddButtonClick());
+                return _addCmd;
+            }
+            set
+            {
+                _addCmd = value;
+                OnPropertyChanged();
+            }
         }
         #endregion
 
-        #region Utils
-        private void _resetAllFields()
+
+        #region edit button
+        private void HandleEditButtonClick()
         {
-            EventId = "";
+            // CuteTN: More code here...
+            MessageBox.Show("edit");
+            ChangeToEditState();
+        }
+
+        private ICommand _editCmd = null;
+        public ICommand EditCmd
+        {
+            get
+            {
+                if (_editCmd == null)
+                    _editCmd = new RelayCommand(obj => HandleEditButtonClick());
+                return _editCmd;
+            }
+            set
+            {
+                _editCmd = value;
+                OnPropertyChanged();
+            }
+        }
+        #endregion
+
+
+        #region delete button
+        private void HandleDeleteButtonClick()
+        {
+            // CuteTN: More code here...
+            MessageBox.Show("delete");
+        }
+        private ICommand _deleteCmd = null;
+        public ICommand DeleteCmd
+        {
+            get
+            {
+                if (_deleteCmd == null)
+                    _deleteCmd = new RelayCommand(obj => HandleDeleteButtonClick());
+                return _deleteCmd;
+            }
+            set
+            {
+                _deleteCmd = value;
+                OnPropertyChanged();
+            }
+        }
+        #endregion
+
+        #endregion
+
+        #region Utils
+        private void AddNewEvent()
+        {
+            EVENT_ e = DataProvider.Ins.DB.EVENT_.Find(EventId);
+            bool isNewEvent = e == null;
+            if(isNewEvent) 
+                e = new EVENT_();            
+
+            e.EventName = EventName;
+            e.LecturerID = LecturerId;
+            e.Population_ = Population;
+            e.Description_ = Description;
+
+            if(isNewEvent)
+            {
+                EventId = Utils.GenerateStringId(DataProvider.Ins.DB.EVENT_);
+                e.EventID = EventId;
+                DataProvider.Ins.DB.EVENT_.Add(e);
+            }
+
+            // if found, e is a reference to an EVENT_ in model...
+            // lets hope it changed, too...
+
+            SaveDB();
+        }
+
+        private void AddNewUsingEvent()
+        {
+            USINGEVENT ue = new USINGEVENT();
+            
+            ue.UsingEventID = Utils.GenerateStringId(DataProvider.Ins.DB.USINGEVENTs);
+
+            ue.RoomID = SelectedRoom.RoomID;
+            ue.EventID = EventId;
+            ue.Date_ = DateOccurs;
+            ue.StartPeriod = (int)SelectedStartTimeRange.PeriodID;
+            ue.EndPeriod = (int)SelectedEndTimeRange.PeriodID;
+            ue.Status_ = (int)Enums.UsingStatus.Pending;
+            ue.Description_ = Description;
+
+            DataProvider.Ins.DB.USINGEVENTs.Add(ue);
+            SaveDB();
+        }
+
+        private void AddEventToPendingList()
+        {
+            AddNewEvent();
+            AddNewUsingEvent();
+        }
+
+        private void ResetForm()
+        {
+            EventId = null;
             EventName = "";
-            LecturerId = "";
+            LecturerId = DefaultLecturerId;
             DateOccurs = DateTime.Today;
+            SelectedStartTimeRange = null;
+            SelectedEndTimeRange = null;
             Population = 50;
-            FromTime = DateTime.Now;
-            ToTime = DateTime.Now;
             SelectedRoom = null;
             Description = "";
         }
 
-        private void _printEventInfoTest()
+        private void Reset()
+        {
+            ResetForm();
+            EnableEdittingForm = false;
+        }
+
+        private void PrintEventInfoTest()
         {
             // CuteNote: TEST
             string toPrint = "";
@@ -237,14 +433,38 @@ namespace QuanLyGiangDuong.ViewModel
             toPrint += "Lecturer = " + LecturerId + "\n";
             toPrint += "Date = " + DateOccurs.Date.ToString() + "\n";
             toPrint += "Population = " + Population.ToString() + "\n";
-            toPrint += "From = " + FromTime.TimeOfDay.ToString() + "\n";
-            toPrint += "To = " + ToTime.TimeOfDay.ToString() + "\n";
-            toPrint += "Room ID = " + SelectedRoom.RoomID + "\n";
+            toPrint += "From = " + SelectedStartTimeRange.PeriodName.ToString() + "\n";
+            toPrint += "To = " + SelectedEndTimeRange.PeriodName.ToString() + "\n";
+            toPrint += "Room ID = " + SelectedRoom?.RoomID + "\n";
             toPrint += "Desc = " + Description + "\n";
 
             MessageBox.Show(toPrint);
         }
-        #endregion
 
+        private void EnableEditingForm()
+        {
+            EnableEdittingForm = true;
+        }
+
+        private void DeleteSelectedRowsFromList()
+        {
+        }
+
+        private void ChangeToAddState()
+        {
+            EnableEditingForm();
+            ResetForm();
+        }
+
+        private void ChangeToEditState()
+        {
+            EnableEditingForm();
+        }
+
+        private void SaveDB()
+        {
+            DataProvider.Ins.DB.SaveChanges();
+        }
+        #endregion
     }
 }

@@ -23,8 +23,6 @@ namespace QuanLyGiangDuong.Model
     
         public string SubjectID { get; set; }
         public string SubjectName { get; set; }
-        public System.DateTime StartDate { get; set; }
-        public System.DateTime EndDate { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CLASS> CLASSes { get; set; }

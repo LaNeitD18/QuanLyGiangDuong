@@ -28,9 +28,12 @@ namespace QuanLyGiangDuong.Model
         public int Population_ { get; set; }
         public string LecturerID { get; set; }
         public string Description_ { get; set; }
+        public System.DateTime StartDate { get; set; }
+        public System.DateTime EndDate { get; set; }
     
         public virtual SUBJECT_ SUBJECT_ { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<USINGCLASS> USINGCLASSes { get; set; }
+        public virtual LECTURER LECTURER { get; set; }
     }
 }

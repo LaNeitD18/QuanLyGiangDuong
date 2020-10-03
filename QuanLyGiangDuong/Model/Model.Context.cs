@@ -33,5 +33,7 @@ namespace QuanLyGiangDuong.Model
         public virtual DbSet<USINGCLASS> USINGCLASSes { get; set; }
         public virtual DbSet<USINGEVENT> USINGEVENTs { get; set; }
         public virtual DbSet<USINGEXAM> USINGEXAMs { get; set; }
+        public virtual DbSet<LECTURER> LECTURERs { get; set; }
+        public virtual DbSet<PERIOD_TIMERANGE> PERIOD_TIMERANGE { get; set; }
     }
 }

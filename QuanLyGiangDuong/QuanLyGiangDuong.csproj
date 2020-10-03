@@ -148,6 +148,9 @@
     <Compile Include="Model\EVENT_.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\LECTURER.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\Model.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -162,6 +165,9 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Model.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Model\PERIOD_TIMERANGE.cs">
+      <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\ROOM.cs">
       <DependentUpon>Model.tt</DependentUpon>
@@ -181,7 +187,9 @@
     <Compile Include="Model\USINGEXAM.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Utilities\Utilities.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
+    <Compile Include="ViewModel\Enums.cs" />
     <Compile Include="ViewModel\EventInputViewModel.cs" />
     <Compile Include="ViewModel\HomePage_ViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />

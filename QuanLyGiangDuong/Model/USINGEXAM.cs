@@ -18,11 +18,14 @@ namespace QuanLyGiangDuong.Model
         public string RoomID { get; set; }
         public string SubjectID { get; set; }
         public System.DateTime Date_ { get; set; }
-        public System.DateTime StartTime { get; set; }
-        public System.DateTime EndTime { get; set; }
         public string Description_ { get; set; }
+        public int StartPeriod { get; set; }
+        public int EndPeriod { get; set; }
+        public int Status_ { get; set; }
     
         public virtual ROOM ROOM { get; set; }
         public virtual SUBJECT_ SUBJECT_ { get; set; }
+        public virtual PERIOD_TIMERANGE PERIOD_TIMERANGE { get; set; }
+        public virtual PERIOD_TIMERANGE PERIOD_TIMERANGE1 { get; set; }
     }
 }
