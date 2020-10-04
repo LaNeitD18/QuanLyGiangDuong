@@ -13,10 +13,16 @@
         <StackPanel>
             <Label Content="Thời gian" FontSize="14" Margin="10,0,0,0" FontWeight="Bold"/>
             <StackPanel Orientation="Horizontal">
-                <ComboBox Width="150" Margin="10,0,10,0"/>
-                <ComboBox Width="150" Margin="0,0,10,0"/>
-                <ComboBox Width="150" Margin="0,0,10,0"/>
-                <Button Content="Xem TKB" FontSize="15" Width="70" Click="Button_Click"/>
+                <ComboBox Width="150" Margin="10,0,10,0" ItemsSource="{Binding dayList}" SelectedItem="{Binding selectedDay}"/>
+                <ComboBox Width="150" Margin="0,0,10,0" ItemsSource="{Binding monthList}" SelectedItem="{Binding selectedMonth}" DisplayMemberPath="monthStr">
+                    <!--<ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <Label Content="{Binding monthStr}"></Label>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>-->
+                </ComboBox>
+                <ComboBox Width="150" Margin="0,0,10,0" ItemsSource="{Binding yearList}" SelectedItem="{Binding selectedYear}"/>
+                <Button Content="Xem TKB" FontSize="15" Width="70" Command="{Binding Path=GetTimeTableCommand}"/>
             </StackPanel>
             <Label Content="Thứ 3 - ngày 22/9/2020" 
                    FontSize="16" 
@@ -26,9 +32,18 @@
                    Margin="0,10,0,0"
             />
 
-            <syncfusion:SfDataGrid x:Name="dataGrid" SelectionUnit="Cell" SelectedItem="{Binding selectedTB}"  NavigationMode="Cell" Height="329" ColumnSizer="Star" ItemsSource="{Binding tb}" QueryCoveredRange="sfDataGrid1_QueryCoveredRange">
+            <syncfusion:SfDataGrid 
+                x:Name="dataGrid" 
+                SelectionUnit="Cell" 
+                SelectedItem="{Binding selectedTB}" 
+                NavigationMode="Cell" Height="329" 
+                ColumnSizer="Star" 
+                ItemsSource="{Binding tb}" 
+                QueryCoveredRange="sfDataGrid1_QueryCoveredRange"
+                RowHeight="40"
+                >
                 <syncfusion:SfDataGrid.Columns>
-                    <syncfusion:GridTextColumn DisplayBinding="{x:Null}" MappingName="phong" FilteredFrom="None" HeaderText="Phòng" ValueBinding="{x:Null}" TextAlignment="Center"/>
+                    <syncfusion:GridTextColumn DisplayBinding="{x:Null}" MappingName="roomID" FilteredFrom="None" HeaderText="Phòng" ValueBinding="{x:Null}" TextAlignment="Center" AllowFocus="False"/>
                     <syncfusion:GridTemplateColumn MappingName="tiet[0]" HeaderText="Tiết 1">
                         <syncfusion:GridTemplateColumn.CellTemplate>
                             <DataTemplate>

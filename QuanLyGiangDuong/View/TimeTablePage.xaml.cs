@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using Syncfusion.Data;
 using Syncfusion.UI.Xaml.Grid;
 using Syncfusion.UI.Xaml.Grid.Helpers;
+using QuanLyGiangDuong.ViewModel;
 
 namespace QuanLyGiangDuong.View
 {
@@ -38,6 +39,7 @@ namespace QuanLyGiangDuong.View
 
             e.Range = range;
             e.Handled = true;
+
         }
 
         private CoveredCellInfo GetRange(GridColumn column, int rowIndex, int columnIndex, object rowData)

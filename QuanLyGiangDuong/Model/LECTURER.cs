@@ -12,22 +12,21 @@ namespace QuanLyGiangDuong.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class EVENT_
+    public partial class LECTURER
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public EVENT_()
+        public LECTURER()
         {
-            this.USINGEVENTs = new HashSet<USINGEVENT>();
+            this.CLASSes = new HashSet<CLASS>();
+            this.EVENT_ = new HashSet<EVENT_>();
         }
     
-        public string EventID { get; set; }
         public string LecturerID { get; set; }
-        public string EventName { get; set; }
-        public int Population_ { get; set; }
-        public string Description_ { get; set; }
+        public string LecturerName { get; set; }
     
-        public virtual LECTURER LECTURER { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<USINGEVENT> USINGEVENTs { get; set; }
+        public virtual ICollection<CLASS> CLASSes { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<EVENT_> EVENT_ { get; set; }
     }
 }
