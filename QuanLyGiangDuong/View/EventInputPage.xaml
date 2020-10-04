@@ -98,7 +98,7 @@
                     <DataGridTextColumn Binding="{Binding UsingEventID, Mode=TwoWay}" Header="Mã đăng ký"/>
                     <DataGridTextColumn Binding="{Binding RoomID, Mode=TwoWay}" Header="Mã phòng"/>
                     <DataGridTextColumn Binding="{Binding EVENT_.EventName, Mode=TwoWay}" Header="Tên sự kiện"/>
-                    <DataGridTextColumn Binding="{Binding Date_, Mode=TwoWay}" Header="Ngày tổ chức"/>
+                    <DataGridTextColumn Binding="{Binding ShortDateString, Mode=TwoWay}" Header="Ngày tổ chức"/>
                 </DataGrid.Columns>
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
@@ -141,7 +141,7 @@
                     Style="{StaticResource MaterialDesignRaisedButton}" 
                     Margin="5,0,5,0" Content="Thêm" HorizontalAlignment="Center"
                     Width="150" Height="35"
-                    IsEnabled="{Binding IsAddingEnabled}"
+                    IsEnabled="{Binding IsAddButtonEnabled}"
                     Command="{Binding AddCmd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
             <Grid Grid.Column="1">
@@ -149,7 +149,7 @@
                     Style="{StaticResource MaterialDesignRaisedButton}" 
                     Margin="5,0,5,0" Content="Sửa" HorizontalAlignment="Center"
                     Width="150" Height="35"
-                    IsEnabled="{Binding IsEditingEnabled}"
+                    IsEnabled="{Binding IsEditButtonEnabled}"
                     Command="{Binding EditCmd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
             <Grid Grid.Column="2">
@@ -157,7 +157,7 @@
                     Style="{StaticResource MaterialDesignRaisedButton}" 
                     Margin="5,0,5,0" Content="Xóa" HorizontalAlignment="Center"
                     Width="150" Height="35"
-                    IsEnabled="{Binding IsDeletingEnabled}"
+                    IsEnabled="{Binding IsDeleteButtonEnabled}"
                     Command="{Binding DeleteCmd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
             <Grid Grid.Column="3">
@@ -165,7 +165,7 @@
                     Style="{StaticResource MaterialDesignRaisedButton}" 
                     Margin="5,0,5,0" Content="Duyệt" HorizontalAlignment="Center"
                     Width="150" Height="35"
-                    IsEnabled="{Binding IsApproveEnabled}"
+                    IsEnabled="{Binding IsApproveButtonEnabled}"
                     Command="{Binding ApproveCmd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
             <Grid Grid.Column="4">
@@ -173,7 +173,7 @@
                     Style="{StaticResource MaterialDesignRaisedButton}" 
                     Margin="5,0,5,0" Content="Từ chối" HorizontalAlignment="Center"
                     Width="150" Height="35"
-                    IsEnabled="{Binding IsRejectEnabled}"
+                    IsEnabled="{Binding IsRejectButtonEnabled}"
                     Command="{Binding RejectCmd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
         </Grid>
@@ -193,7 +193,7 @@
             Grid.Column="16" Grid.ColumnSpan="15"
             Grid.Row="1" Grid.RowSpan="16"
             Margin="0,10,0,0"
-            IsEnabled="{Binding EnableEdittingForm}">
+            IsEnabled="{Binding IsEdittingFormMode}">
             <materialDesign:Card>
                 <Grid>
                     <Grid.RowDefinitions>
@@ -267,8 +267,23 @@
                                 Width="200"
                                 materialDesign:HintAssist.Hint="Ngày tổ chức"
                                 Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
-                                SelectedDate="{Binding DateOccurs}"
-                                />
+                                SelectedDate="{Binding DateOccurs, StringFormat='dd MM yyyy'}">
+                                <!-- not works :(((
+                                <DatePicker.Resources>
+                                    <Style TargetType="DatePickerTextBox">
+                                        <Setter Property="Control.Template">
+                                            <Setter.Value>
+                                                <ControlTemplate>
+                                                    <TextBox x:Name="PART_TextBox"
+                                                             Text="{Binding Path=SelectedDate, StringFormat='dd MM yyyy', 
+                                                             RelativeSource={RelativeSource AncestorType={x:Type DatePicker}}}" />
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </DatePicker.Resources>
+                                -->
+                            </DatePicker>
                         </StackPanel>
                     </Grid>
                     <Grid Grid.Row="2" Grid.Column="1">

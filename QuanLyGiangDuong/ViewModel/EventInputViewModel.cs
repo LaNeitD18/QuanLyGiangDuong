@@ -15,6 +15,7 @@ using System.Windows.Input;
 using QuanLyGiangDuong.Utilities;
 using System.Collections.ObjectModel;
 using System.Windows.Controls;
+using System.Runtime.CompilerServices;
 
 namespace QuanLyGiangDuong.ViewModel
 {
@@ -63,6 +64,67 @@ namespace QuanLyGiangDuong.ViewModel
         private const string _nullUsingEventIdPlaceholder = "[ Phiếu mượn mới ]";
         readonly private EVENT_ _nullEvent = new EVENT_{ EventID = _nullEventIdPlaceholder, };
 
+        #endregion
+
+
+        #region Enabled bool
+        private bool _isEdittingFormMode = false;
+        public bool IsEdittingFormMode
+        {
+            get => _isEdittingFormMode;
+            set
+            {
+                _isEdittingFormMode = value;
+                UpdateEnabledViewElements();
+                OnPropertyChanged();
+            }
+        }
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////// 
+        /// all the boolean variables below doesnt actually have its own value
+        /// it depends on the state of the form (Datagrid number of selected rows, and editting mode)
+        
+        public bool IsAddButtonEnabled
+        { 
+            get => (!IsEdittingFormMode);
+            set => OnPropertyChanged();
+        }
+
+        public bool IsEditButtonEnabled
+        {
+            get => (!IsEdittingFormMode) && SelectedUsingEvents.Count == 1;
+            set => OnPropertyChanged();
+        }
+
+        public bool IsDeleteButtonEnabled
+        {
+            get => (!IsEdittingFormMode) && SelectedUsingEvents.Count > 0;
+            set => OnPropertyChanged();
+        }
+
+        public bool IsApproveButtonEnabled
+        {
+            get => (!IsEdittingFormMode) && SelectedUsingEvents.Count > 0;
+            set => OnPropertyChanged();
+        }
+
+        public bool IsRejectButtonEnabled
+        {
+            get => (!IsEdittingFormMode) && SelectedUsingEvents.Count > 0;
+            set => OnPropertyChanged();
+        }
+
+        /// <summary>
+        /// we also have to invoke changes to view by calling enabled bools setter when needed.
+        ///</summary> 
+        private void UpdateEnabledViewElements()
+        {
+            IsAddButtonEnabled = true;
+            IsEditButtonEnabled = true;
+            IsDeleteButtonEnabled = true;
+            IsApproveButtonEnabled = true;
+            IsRejectButtonEnabled = true;
+        }
         #endregion
 
 
@@ -133,18 +195,6 @@ namespace QuanLyGiangDuong.ViewModel
             }
         }
 
-
-        private bool _enableEdittingForm = false;
-
-        public bool EnableEdittingForm
-        { 
-            get => _enableEdittingForm;
-            set
-            {
-                _enableEdittingForm = value;
-                OnPropertyChanged();
-            }
-        }
         #endregion
 
 
@@ -313,7 +363,7 @@ namespace QuanLyGiangDuong.ViewModel
             get => _selectedUsingEvents;
             set
             {
-                SelectedUsingEvents = value;
+                _selectedUsingEvents = value;
                 ListUsingEvent_OnSelectionChanged();
                 OnPropertyChanged();
             }
@@ -346,9 +396,20 @@ namespace QuanLyGiangDuong.ViewModel
         private void HandleConfirmButtonClick()
         {
             // CuteTN: More code here...
-            PrintEventInfoTest();
-            AddEventToPendingList();
-            Reset();
+            var errors = Validate();
+
+            // if there was no error, print test, save DB and reset the form
+            if(errors.Count == 0)
+            { 
+                PrintEventInfoTest();
+                AddEventToPendingList();
+                Reset();
+            }
+            else
+            { 
+                string msg = errors.Aggregate((x, y) => x + "\n" + y);
+                MessageBox.Show(msg);
+            }
         }
         private ICommand _confirmCmd = null;
         public ICommand ConfirmCmd
@@ -396,7 +457,6 @@ namespace QuanLyGiangDuong.ViewModel
         private void HandleAddButtonClick()
         {
             // CuteTN: More code here...
-            MessageBox.Show("add");
             ChangeToAddState();
         }
         private ICommand _addCmd = null;
@@ -421,7 +481,6 @@ namespace QuanLyGiangDuong.ViewModel
         private void HandleEditButtonClick()
         {
             // CuteTN: More code here...
-            MessageBox.Show("edit");
             ChangeToEditState();
         }
 
@@ -469,6 +528,37 @@ namespace QuanLyGiangDuong.ViewModel
         #endregion
 
         #region Utils
+        /// <summary>
+        /// return a list of strings to notify error message. if all the fields are valid, return an empty list
+        /// </summary>
+        /// <returns></returns>
+        private List<string> Validate()
+        {
+            List<string> result = new List<string>();
+
+            if(string.IsNullOrEmpty(EventName))
+                result.Add("Vui lòng nhập tên sự kiện");
+
+            if(SelectedStartTimeRange == null)
+                result.Add("Vui lòng chọn thời điểm bắt đầu sự kiện");
+
+            if(SelectedEndTimeRange == null)
+                result.Add("Vui lòng chọn thời điểm kết thúc sự kiện");
+
+            if(SelectedStartTimeRange != null && SelectedEndTimeRange != null)
+                if(TimeSpan.Compare(SelectedStartTimeRange.StartTime.TimeOfDay, SelectedEndTimeRange.EndTime.TimeOfDay) >= 0)
+                    result.Add("Vui lòng chọn thời điểm bắt đầu ở trước thời điểm kết thúc");
+
+            if(SelectedRoom == null)
+                result.Add("Vui lòng chọn mã phòng tổ chức sự kiện");
+
+            return result;
+        }
+
+        /// <summary>
+        /// Add NEW entry if the id has not exist. otherwise update the old entry
+        /// Causion: this function does not validate data before saving
+        /// </summary>
         private void AddEventDB()
         {
             // CuteTN note:
@@ -497,6 +587,11 @@ namespace QuanLyGiangDuong.ViewModel
             SelectedEvent = e;
         }
 
+
+        /// <summary>
+        /// Add NEW entry if the id has not exist. otherwise update the old entry
+        /// Causion: this function does not validate data before saving
+        /// </summary>
         private void AddUsingEventDB()
         {
             USINGEVENT ue;
@@ -519,11 +614,19 @@ namespace QuanLyGiangDuong.ViewModel
             ue.Description_ = Description;
 
             if(isNewUsingEvent)
+            { 
+                ue.UsingEventID = Utils.GenerateStringId(DataProvider.Ins.DB.USINGEVENTs);
                 DataProvider.Ins.DB.USINGEVENTs.Add(ue);
+            }
 
             SaveDB();
         }
 
+        /// <summary>
+        /// Add Event then Add Using Event.
+        /// Causion: this function does not validate data before saving
+        /// </summary>
+        /// <returns></returns>
         private void AddEventToPendingList()
         {
             AddEventDB();
@@ -548,7 +651,7 @@ namespace QuanLyGiangDuong.ViewModel
         {
             ResetForm();
             RefreshData();
-            EnableEdittingForm = false;
+            IsEdittingFormMode = false;
         }
 
         private void PrintEventInfoTest()
@@ -570,17 +673,18 @@ namespace QuanLyGiangDuong.ViewModel
 
         private void EnableEditingForm()
         {
-            EnableEdittingForm = true;
+            IsEdittingFormMode = true;
         }
 
         private void DeleteSelectedRowsFromList()
         {
+            // CuteTN: more code
         }
 
         private void ChangeToAddState()
         {
-            EnableEditingForm();
             ResetForm();
+            EnableEditingForm();
         }
 
         private void ChangeToEditState()
@@ -588,6 +692,10 @@ namespace QuanLyGiangDuong.ViewModel
             EnableEditingForm();
         }
 
+        /// <summary>
+        /// Get selected item info from datagrid for previewing.
+        /// </summary>
+        /// <param name="usingEvent"></param>
         private void LoadContentToForm(USINGEVENT usingEvent)
         {
             UsingEventId = usingEvent.UsingEventID;
@@ -620,19 +728,28 @@ namespace QuanLyGiangDuong.ViewModel
             if(dataGrid == null)
                 return;
 
-            GetDataGridSelectedItems(dataGrid);
 
-            if(SelectedUsingEvents.Count == 1)
-            {
-                var selectedUE = SelectedUsingEvents[0];
-                LoadContentToForm(selectedUE);
-            }
-            else
-            {
-                ResetForm();
+            GetDataGridSelectedItems(dataGrid);
+            UpdateEnabledViewElements();
+
+            // update form content when user is not in editting mode
+            if(!IsEdittingFormMode)
+            { 
+                if(SelectedUsingEvents.Count == 1)
+                {
+                    var selectedUE = SelectedUsingEvents[0];
+                    LoadContentToForm(selectedUE);
+                }
+                else
+                {
+                    ResetForm();
+                }
             }
         }
 
+        /// <summary>
+        /// reload all list including comboboxes, datagrids data sources
+        /// </summary>
         private void RefreshData()
         {
             ListEvent = LoadEvents();

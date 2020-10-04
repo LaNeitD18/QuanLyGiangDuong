@@ -33,6 +33,12 @@ namespace QuanLyGiangDuong.Model
             set { /* cant set this field */ }
         }
 
+        public string ShortDateString
+        {
+            get => Date_.ToString("dd/MM/yyyy");
+            set { /* cant set this field */ }
+        }
+
         public USINGEVENT USINGEVENT
         {
             get
