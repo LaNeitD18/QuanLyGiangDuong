@@ -26,7 +26,7 @@ namespace QuanLyGiangDuong.Utilities
                 if (dbset.Find(i.ToString()) == null)
                     return i.ToString();
 
-            throw new Exception("out of IDs for events");
+            throw new Exception("out of IDs");
         }
     }
 }

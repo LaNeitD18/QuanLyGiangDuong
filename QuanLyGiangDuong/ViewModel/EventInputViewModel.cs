@@ -13,6 +13,8 @@ using System.Windows;
 using System.Windows.Input;
 
 using QuanLyGiangDuong.Utilities;
+using System.Collections.ObjectModel;
+using System.Windows.Controls;
 
 namespace QuanLyGiangDuong.ViewModel
 {
@@ -224,6 +226,67 @@ namespace QuanLyGiangDuong.ViewModel
                 OnPropertyChanged();
             }
         }
+        #endregion
+
+
+        #region datagrid using events
+        private ObservableCollection<UsingEventExtensionModel> LoadUsingEvents()
+        {
+            ObservableCollection<UsingEventExtensionModel> result = new ObservableCollection<UsingEventExtensionModel>();
+            
+            foreach(var ue in DataProvider.Ins.DB.USINGEVENTs)
+            {
+                result.Add(new UsingEventExtensionModel(ue));
+            }
+
+            return result;
+        }
+
+        private ObservableCollection<UsingEventExtensionModel> _listUsingEvent = null;
+        public ObservableCollection<UsingEventExtensionModel> ListUsingEvent
+        {
+            get
+            {
+                if(_listUsingEvent == null)
+                    _listUsingEvent = LoadUsingEvents();
+                return _listUsingEvent;
+            }
+            set
+            {
+                _listUsingEvent = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private ObservableCollection<UsingEventExtensionModel> _selectedUsingEvents = new ObservableCollection<UsingEventExtensionModel>();
+        public ObservableCollection<UsingEventExtensionModel> SelectedUsingEvents
+        {
+            get => _selectedUsingEvents;
+            set
+            {
+                SelectedUsingEvents = value;
+                ListUsingEvent_OnSelectionChanged();
+                OnPropertyChanged();
+            }
+        }
+
+        private ICommand _listUsingEvent_SelectionChangedCmd = null;
+        public ICommand ListUsingEvent_SelectionChangedCmd
+        {
+            get
+            {
+                if(_listUsingEvent_SelectionChangedCmd == null)
+                    _listUsingEvent_SelectionChangedCmd = new RelayCommand(obj => ListUsingEvent_OnSelectionChanged(obj));
+                return _listUsingEvent_SelectionChangedCmd;
+            }
+            set
+            {
+                _listUsingEvent_SelectionChangedCmd = value;
+                OnPropertyChanged();
+            }
+        }
+
+
         #endregion
 
         #endregion
@@ -461,9 +524,59 @@ namespace QuanLyGiangDuong.ViewModel
             EnableEditingForm();
         }
 
+        private void LoadContentToForm(USINGEVENT usingEvent)
+        {
+            EventId = usingEvent.EventID;
+            EventName = usingEvent.EVENT_.EventName;
+            LecturerId = usingEvent.EVENT_.LecturerID;
+            DateOccurs = usingEvent.Date_;
+            Population = usingEvent.EVENT_.Population_;
+            SelectedStartTimeRange = usingEvent.PERIOD_TIMERANGE1;  // auto generated code, idk
+            SelectedEndTimeRange = usingEvent.PERIOD_TIMERANGE;     // auto generated code, idk
+            SelectedRoom = usingEvent.ROOM;
+            Description = usingEvent.Description_;
+        }
+
+        private void GetDataGridSelectedItems(DataGrid datagrid)
+        {
+            SelectedUsingEvents.Clear();
+
+            foreach(var item in datagrid.SelectedItems)
+            {
+                UsingEventExtensionModel ue = (UsingEventExtensionModel)item;
+                if( ue != null && !SelectedUsingEvents.Contains(ue) )
+                    SelectedUsingEvents.Add(ue);
+            }
+        }
+
+        private void ListUsingEvent_OnSelectionChanged(Object obj = null)
+        {
+            DataGrid dataGrid = obj as DataGrid;
+            if(dataGrid == null)
+                return;
+
+            GetDataGridSelectedItems(dataGrid);
+
+            if(SelectedUsingEvents.Count == 1)
+            {
+                var selectedUE = SelectedUsingEvents[0];
+                LoadContentToForm(selectedUE);
+            }
+            else
+            {
+                ResetForm();
+            }
+        }
+
+        private void UpdateFromDB()
+        {
+            ListUsingEvent = LoadUsingEvents();
+        }
+
         private void SaveDB()
         {
             DataProvider.Ins.DB.SaveChanges();
+            UpdateFromDB();
         }
         #endregion
     }

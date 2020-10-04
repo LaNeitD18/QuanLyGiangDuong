@@ -64,7 +64,6 @@ namespace QuanLyGiangDuong.ViewModel
 
         public HomePage_ViewModel()
         {
-            TextBlock = DataProvider.Ins.DB.ROOMs.Find("001").Description_;
             GetTimeNow();
         }
     }

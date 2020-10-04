@@ -184,6 +184,7 @@
     <Compile Include="Model\USINGEVENT.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\UsingEventModel.cs" />
     <Compile Include="Model\USINGEXAM.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>

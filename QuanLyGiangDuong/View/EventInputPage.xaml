@@ -13,6 +13,7 @@
       d:DesignHeight="640" d:DesignWidth="1200"
       Title="TimeTableInputPage">
 
+
     <Grid x:Name="timeTableInputPage" Background="WhiteSmoke">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -80,19 +81,37 @@
         </Grid>
         <Grid
             Grid.Column="0" Grid.ColumnSpan="15"
-            Grid.Row="1" Grid.RowSpan="16"
+            Grid.Row="1" Grid.RowSpan="12"
             Margin="0,10,0,0">
-            <DataGrid 
+            <DataGrid x:Name="datagrid_UsingEvents"
+                ItemsSource = "{Binding ListUsingEvent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                SelectionUnit="FullRow"
+                SelectionMode="Extended"
                 HorizontalAlignment="Stretch" 
                 VerticalAlignment="Top" 
+                AutoGenerateColumns="False"
+                IsReadOnly="True"
                 Grid.RowSpan="2">
                 <DataGrid.Columns>
-                    <DataGridCheckBoxColumn Header="Chọn"/>
-                    <DataGridTextColumn Header="Trạng thái"/>
-                    <DataGridTextColumn Header="Mã sự kiện"/>
-                    <DataGridTextColumn Header="Tên sự kiện"/>
+                    <DataGridTextColumn Binding="{Binding StatusString, Mode=TwoWay}" Header="Trạng thái"/>
+                    <DataGridTextColumn Binding="{Binding EVENT_.LECTURER.LecturerName, Mode=TwoWay}" Header="Người đăng ký"/>
+                    <DataGridTextColumn Binding="{Binding UsingEventID, Mode=TwoWay}" Header="Mã đăng ký"/>
+                    <DataGridTextColumn Binding="{Binding RoomID, Mode=TwoWay}" Header="Mã phòng"/>
+                    <DataGridTextColumn Binding="{Binding EVENT_.EventName, Mode=TwoWay}" Header="Tên sự kiện"/>
+                    <DataGridTextColumn Binding="{Binding Date_, Mode=TwoWay}" Header="Ngày tổ chức"/>
                 </DataGrid.Columns>
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <i:InvokeCommandAction 
+                            Command="{Binding ListUsingEvent_SelectionChangedCmd}"
+                            CommandParameter="{Binding ElementName=datagrid_UsingEvents}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                <!--<ListBox x:Name="listBoxSelectedItems" 
+                     DisplayMemberPath="Name" 
+                     ItemsSource="{Binding SelectedItems, ElementName=datagrid_UsingEvents}" />-->
             </DataGrid>
+            <!--
             <Button Style="{StaticResource MaterialDesignRaisedButton}" 
                             Margin="55,532,380,29" Content="Thêm" HorizontalAlignment="Center"
                             Width="150" Height="35"
@@ -104,7 +123,59 @@
             <Button Style="{StaticResource MaterialDesignRaisedButton}" 
                 Margin="400,532,35,29" Content="Xoá" HorizontalAlignment="Center"
                 Width="150" Height="35"
-                Command="{Binding DeleteCmd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                Command="{Binding DeleteCmd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/> -->
+        </Grid>
+
+        <Grid
+            Grid.Column="0" Grid.ColumnSpan="15"
+            Grid.Row="14" Grid.RowSpan="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <Button 
+                    Style="{StaticResource MaterialDesignRaisedButton}" 
+                    Margin="5,0,5,0" Content="Thêm" HorizontalAlignment="Center"
+                    Width="150" Height="35"
+                    IsEnabled="{Binding IsAddingEnabled}"
+                    Command="{Binding AddCmd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </Grid>
+            <Grid Grid.Column="1">
+                <Button 
+                    Style="{StaticResource MaterialDesignRaisedButton}" 
+                    Margin="5,0,5,0" Content="Sửa" HorizontalAlignment="Center"
+                    Width="150" Height="35"
+                    IsEnabled="{Binding IsEditingEnabled}"
+                    Command="{Binding EditCmd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </Grid>
+            <Grid Grid.Column="2">
+                <Button 
+                    Style="{StaticResource MaterialDesignRaisedButton}" 
+                    Margin="5,0,5,0" Content="Xóa" HorizontalAlignment="Center"
+                    Width="150" Height="35"
+                    IsEnabled="{Binding IsDeletingEnabled}"
+                    Command="{Binding DeleteCmd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </Grid>
+            <Grid Grid.Column="3">
+                <Button 
+                    Style="{StaticResource MaterialDesignRaisedButton}" 
+                    Margin="5,0,5,0" Content="Duyệt" HorizontalAlignment="Center"
+                    Width="150" Height="35"
+                    IsEnabled="{Binding IsApproveEnabled}"
+                    Command="{Binding ApproveCmd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </Grid>
+            <Grid Grid.Column="4">
+                <Button 
+                    Style="{StaticResource MaterialDesignRaisedButton}" 
+                    Margin="5,0,5,0" Content="Từ chối" HorizontalAlignment="Center"
+                    Width="150" Height="35"
+                    IsEnabled="{Binding IsRejectEnabled}"
+                    Command="{Binding RejectCmd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </Grid>
         </Grid>
         <Grid
             Grid.Column="16" Grid.ColumnSpan="15"
