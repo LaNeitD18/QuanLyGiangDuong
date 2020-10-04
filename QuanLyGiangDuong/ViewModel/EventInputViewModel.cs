@@ -230,20 +230,20 @@ namespace QuanLyGiangDuong.ViewModel
 
 
         #region datagrid using events
-        private ObservableCollection<UsingEventExtensionModel> LoadUsingEvents()
+        private ObservableCollection<UsingEventModel> LoadUsingEvents()
         {
-            ObservableCollection<UsingEventExtensionModel> result = new ObservableCollection<UsingEventExtensionModel>();
+            ObservableCollection<UsingEventModel> result = new ObservableCollection<UsingEventModel>();
             
             foreach(var ue in DataProvider.Ins.DB.USINGEVENTs)
             {
-                result.Add(new UsingEventExtensionModel(ue));
+                result.Add(new UsingEventModel(ue));
             }
 
             return result;
         }
 
-        private ObservableCollection<UsingEventExtensionModel> _listUsingEvent = null;
-        public ObservableCollection<UsingEventExtensionModel> ListUsingEvent
+        private ObservableCollection<UsingEventModel> _listUsingEvent = null;
+        public ObservableCollection<UsingEventModel> ListUsingEvent
         {
             get
             {
@@ -258,8 +258,8 @@ namespace QuanLyGiangDuong.ViewModel
             }
         }
 
-        private ObservableCollection<UsingEventExtensionModel> _selectedUsingEvents = new ObservableCollection<UsingEventExtensionModel>();
-        public ObservableCollection<UsingEventExtensionModel> SelectedUsingEvents
+        private ObservableCollection<UsingEventModel> _selectedUsingEvents = new ObservableCollection<UsingEventModel>();
+        public ObservableCollection<UsingEventModel> SelectedUsingEvents
         {
             get => _selectedUsingEvents;
             set
@@ -543,7 +543,7 @@ namespace QuanLyGiangDuong.ViewModel
 
             foreach(var item in datagrid.SelectedItems)
             {
-                UsingEventExtensionModel ue = (UsingEventExtensionModel)item;
+                UsingEventModel ue = (UsingEventModel)item;
                 if( ue != null && !SelectedUsingEvents.Contains(ue) )
                     SelectedUsingEvents.Add(ue);
             }
