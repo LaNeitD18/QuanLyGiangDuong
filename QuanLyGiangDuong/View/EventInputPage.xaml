@@ -214,13 +214,32 @@
                             <TextBox 
                                 Width="200" 
                                 FontSize="18" 
-                                materialDesign:HintAssist.Hint="Mã sự kiện" 
+                                materialDesign:HintAssist.Hint="Mã đăng ký sự kiện" 
                                 IsEnabled="False"
                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" Foreground="{StaticResource SecondaryAccentBrush}" VerticalAlignment="Center"
-                                Text="{Binding EventId, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                                Text="{Binding UsingEventId, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                         </StackPanel>
                     </Grid>
                     <Grid Grid.Row="1" Grid.Column="0">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <ComboBox Width="200" materialDesign:HintAssist.Hint="Mã sự kiện" VerticalAlignment="Center" Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                  ItemsSource="{Binding ListEvent}" KeyboardNavigation.TabIndex="1" SelectedItem="{Binding SelectedEvent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }" >
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding EventID}"></TextBlock>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectionChanged">
+                                        <i:InvokeCommandAction Command="{Binding YenCute}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </ComboBox>
+                        </StackPanel>
+                    </Grid>
+                    <Grid Grid.Row="1" Grid.Column="1">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                             <TextBox 
                                 Width="200" 
@@ -231,7 +250,7 @@
                                 Text="{Binding EventName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                         </StackPanel>
                     </Grid>
-                    <Grid Grid.Row="1" Grid.Column="1">
+                    <Grid Grid.Row="0" Grid.Column="1">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                             <TextBox 
                                 Width="200" 

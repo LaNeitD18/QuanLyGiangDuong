@@ -60,18 +60,20 @@ namespace QuanLyGiangDuong.ViewModel
         }
 
         private const string _nullEventIdPlaceholder = "[ Sự kiện mới ]";
+        private const string _nullUsingEventIdPlaceholder = "[ Phiếu mượn mới ]";
+        readonly private EVENT_ _nullEvent = new EVENT_{ EventID = _nullEventIdPlaceholder, };
 
         #endregion
 
 
         #region Simple Fields
-        private string _eventId = null;
-        public string EventId
+        private string _usingEventId = null;
+        public string UsingEventId
         {
-            get => _eventId ?? _nullEventIdPlaceholder;
+            get => _usingEventId ?? _nullUsingEventIdPlaceholder;
             set
             {
-                _eventId = value;
+                _usingEventId = value;
                 OnPropertyChanged();
             }
         }
@@ -140,6 +142,53 @@ namespace QuanLyGiangDuong.ViewModel
             set
             {
                 _enableEdittingForm = value;
+                OnPropertyChanged();
+            }
+        }
+        #endregion
+
+
+        #region Event list
+        private BindingList<EVENT_> LoadEvents()
+        {
+            BindingList<EVENT_> result = new BindingList<EVENT_>(DataProvider.Ins.DB.EVENT_.ToList());
+            
+            // CuteTN note: null object pattern: add a fake-null EVENT_ to let user create new event
+            result.Insert(0, _nullEvent);
+
+
+            return result;
+        }
+
+        private BindingList<EVENT_> _listEvent = null;
+        public BindingList<EVENT_> ListEvent
+        {
+            get
+            {
+                if (_listEvent == null)
+                    _listEvent = LoadEvents();
+                return _listEvent;
+            }
+            set
+            {
+                _listEvent = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private EVENT_ _selectedEvent = null;
+        public EVENT_ SelectedEvent
+        {
+            get
+            {
+                if(_selectedEvent == null)
+                    _selectedEvent = _nullEvent;
+                return _selectedEvent;
+            }
+            set
+            {
+                _selectedEvent = value ?? _nullEvent;
+                EventName = _selectedEvent.EventName;
                 OnPropertyChanged();
             }
         }
@@ -299,6 +348,7 @@ namespace QuanLyGiangDuong.ViewModel
             // CuteTN: More code here...
             PrintEventInfoTest();
             AddEventToPendingList();
+            Reset();
         }
         private ICommand _confirmCmd = null;
         public ICommand ConfirmCmd
@@ -419,11 +469,14 @@ namespace QuanLyGiangDuong.ViewModel
         #endregion
 
         #region Utils
-        private void AddNewEvent()
+        private void AddEventDB()
         {
-            EVENT_ e = DataProvider.Ins.DB.EVENT_.Find(EventId);
-            bool isNewEvent = e == null;
-            if(isNewEvent) 
+            // CuteTN note:
+            // why not using SelectedEvent directly?
+            // heck, I fixed this from my old code, too lazy re-write this.
+            EVENT_ e = DataProvider.Ins.DB.EVENT_.Find(SelectedEvent.EventID);
+            bool isNewEvent = SelectedEvent.EventID == _nullEventIdPlaceholder;
+            if(isNewEvent)
                 e = new EVENT_();            
 
             e.EventName = EventName;
@@ -433,8 +486,7 @@ namespace QuanLyGiangDuong.ViewModel
 
             if(isNewEvent)
             {
-                EventId = Utils.GenerateStringId(DataProvider.Ins.DB.EVENT_);
-                e.EventID = EventId;
+                e.EventID = Utils.GenerateStringId(DataProvider.Ins.DB.EVENT_);
                 DataProvider.Ins.DB.EVENT_.Add(e);
             }
 
@@ -442,35 +494,46 @@ namespace QuanLyGiangDuong.ViewModel
             // lets hope it changed, too...
 
             SaveDB();
+            SelectedEvent = e;
         }
 
-        private void AddNewUsingEvent()
+        private void AddUsingEventDB()
         {
-            USINGEVENT ue = new USINGEVENT();
-            
-            ue.UsingEventID = Utils.GenerateStringId(DataProvider.Ins.DB.USINGEVENTs);
-
+            USINGEVENT ue;
+            bool isNewUsingEvent = UsingEventId == _nullUsingEventIdPlaceholder;
+            if (isNewUsingEvent)
+            { 
+                ue = new USINGEVENT();
+            }
+            else
+            {
+                ue = DataProvider.Ins.DB.USINGEVENTs.Find(UsingEventId);
+            }
+                
             ue.RoomID = SelectedRoom.RoomID;
-            ue.EventID = EventId;
+            ue.EventID = SelectedEvent.EventID;
             ue.Date_ = DateOccurs;
             ue.StartPeriod = (int)SelectedStartTimeRange.PeriodID;
             ue.EndPeriod = (int)SelectedEndTimeRange.PeriodID;
             ue.Status_ = (int)Enums.UsingStatus.Pending;
             ue.Description_ = Description;
 
-            DataProvider.Ins.DB.USINGEVENTs.Add(ue);
+            if(isNewUsingEvent)
+                DataProvider.Ins.DB.USINGEVENTs.Add(ue);
+
             SaveDB();
         }
 
         private void AddEventToPendingList()
         {
-            AddNewEvent();
-            AddNewUsingEvent();
+            AddEventDB();
+            AddUsingEventDB();
         }
 
         private void ResetForm()
         {
-            EventId = null;
+            UsingEventId = null;
+            SelectedEvent = null;
             EventName = "";
             LecturerId = DefaultLecturerId;
             DateOccurs = DateTime.Today;
@@ -484,6 +547,7 @@ namespace QuanLyGiangDuong.ViewModel
         private void Reset()
         {
             ResetForm();
+            RefreshData();
             EnableEdittingForm = false;
         }
 
@@ -491,7 +555,7 @@ namespace QuanLyGiangDuong.ViewModel
         {
             // CuteNote: TEST
             string toPrint = "";
-            toPrint += "Event Id = " + EventId + "\n";
+            toPrint += "Event Id = " + SelectedEvent.EventID + "\n";
             toPrint += "Event Name = " + EventName + "\n";
             toPrint += "Lecturer = " + LecturerId + "\n";
             toPrint += "Date = " + DateOccurs.Date.ToString() + "\n";
@@ -526,7 +590,8 @@ namespace QuanLyGiangDuong.ViewModel
 
         private void LoadContentToForm(USINGEVENT usingEvent)
         {
-            EventId = usingEvent.EventID;
+            UsingEventId = usingEvent.UsingEventID;
+            SelectedEvent = usingEvent.EVENT_;
             EventName = usingEvent.EVENT_.EventName;
             LecturerId = usingEvent.EVENT_.LecturerID;
             DateOccurs = usingEvent.Date_;
@@ -568,15 +633,17 @@ namespace QuanLyGiangDuong.ViewModel
             }
         }
 
-        private void UpdateFromDB()
+        private void RefreshData()
         {
+            ListEvent = LoadEvents();
+            ListRoom = LoadRooms();
+            ListTimeRange = LoadPeriod_TimeRanges();
             ListUsingEvent = LoadUsingEvents();
         }
 
         private void SaveDB()
         {
             DataProvider.Ins.DB.SaveChanges();
-            UpdateFromDB();
         }
         #endregion
     }
