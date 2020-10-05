@@ -86,6 +86,28 @@ namespace QuanLyGiangDuong.ViewModel
             set { _tb = value; OnPropertyChange("tb"); }
         }
 
+        private string _selectedDate;
+        public string selectedDate
+        {
+            get
+            {
+                DateTime targetDate = new DateTime(selectedYear, selectedMonth.monthValue, selectedDay);
+                string dayOfWeek;
+
+                switch((int)targetDate.DayOfWeek)
+                {
+                    case 0: dayOfWeek = "Chủ nhật"; break;
+                    default: dayOfWeek = "Thứ " + ((int)targetDate.DayOfWeek + 1).ToString(); break;
+                }
+
+                _selectedDate = dayOfWeek + " - ngày " + selectedDay.ToString() + "/" + selectedMonth.monthValue.ToString() + "/" + selectedYear.ToString();
+
+                return _selectedDate;
+            }
+
+            set { _selectedDate = value; }
+        }
+
         #region Day Combobox
         private int _selectedDay = -1;
         public int selectedDay
@@ -225,9 +247,20 @@ namespace QuanLyGiangDuong.ViewModel
 
         public void GetTimeTable()
         {
+            DateTime targetDate;
+            try 
+            {
+                targetDate = new DateTime(selectedYear, selectedMonth.monthValue, selectedDay);
+            }
+            catch(Exception e)
+            {
+                throw new Exception("Invalid Date");
+            }
+
+            OnPropertyChange("selectedDate");
+
             tb.Clear();
 
-            DateTime targetDate = new DateTime(selectedYear, selectedMonth.monthValue, selectedDay);
             var data = (from u in DataProvider.Ins.DB.USINGCLASSes
                         join c in DataProvider.Ins.DB.CLASSes on u.ClassID equals c.ClassID
                         where targetDate >= c.StartDate && targetDate <= c.EndDate &&

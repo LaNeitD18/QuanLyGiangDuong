@@ -16,6 +16,7 @@ using Syncfusion.Data;
 using Syncfusion.UI.Xaml.Grid;
 using Syncfusion.UI.Xaml.Grid.Helpers;
 using QuanLyGiangDuong.ViewModel;
+using System.Globalization;
 
 namespace QuanLyGiangDuong.View
 {
@@ -186,6 +187,64 @@ namespace QuanLyGiangDuong.View
                 var propertyCollection = this.dataGrid.View.GetPropertyAccessProvider();
                 var cellvalue = propertyCollection.GetValue(cellinfo.RowData, cellinfo.Column.MappingName);
             }
+        }
+
+        private void BtnGetTimetable_Click(object sender, RoutedEventArgs args)
+        {
+            TimeTableViewModel vm = DataContext as TimeTableViewModel;
+
+            try
+            {
+                vm.GetTimeTable();
+            }
+            catch(Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+        }
+    }
+
+    public class ValueToColorBackgroundConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            Tuple<string, string> data = value as Tuple<string, string>;
+
+            if(data == null)
+            {
+                return new SolidColorBrush(Color.FromArgb(255, 200, 200, 200));
+            }
+            else
+            {
+                return new SolidColorBrush(Colors.White);
+            }
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class ValueToColorBorderBrush : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            Tuple<string, string> data = value as Tuple<string, string>;
+
+            if (data != null)
+            {
+                return new SolidColorBrush(Colors.LightGreen);
+            }
+            else
+            {
+                return new SolidColorBrush(Colors.LightGreen);
+            }
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
         }
     }
 }
