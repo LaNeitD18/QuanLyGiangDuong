@@ -154,7 +154,7 @@
                             <TextBox 
                                 Width="200" 
                                 FontSize="18" 
-                                materialDesign:HintAssist.Hint="Giảng viên" 
+                                materialDesign:HintAssist.Hint="Cán bộ coi thi" 
                                 IsEnabled="True"
                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" Foreground="{StaticResource SecondaryAccentBrush}" VerticalAlignment="Center"
                                 Text="{Binding NgayMoSo, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
@@ -174,7 +174,7 @@
                     </Grid>
                     <Grid Grid.Row="2" Grid.Column="1">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <ComboBox Width="200" materialDesign:HintAssist.Hint="Khoa" VerticalAlignment="Center" Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                            <ComboBox Width="200" materialDesign:HintAssist.Hint="Khoá" VerticalAlignment="Center" Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                   ItemsSource="{Binding TenLoaiTietKiem}" KeyboardNavigation.TabIndex="1" Text ="{Binding CbxTenLoaiTietKiem}" SelectedItem="{Binding SelectedTenLoaiTietKiem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }" >
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="SelectionChanged">
