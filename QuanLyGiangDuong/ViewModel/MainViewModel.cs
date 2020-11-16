@@ -11,6 +11,8 @@ using QuanLyGiangDuong.View;
 using Syncfusion.UI.Xaml.Grid;
 using System.Windows;
 
+using QuanLyGiangDuong.Utilities;
+
 namespace QuanLyGiangDuong.ViewModel
 {
     public class MainViewModel : BaseViewModel
@@ -64,6 +66,9 @@ namespace QuanLyGiangDuong.ViewModel
 
         public MainViewModel()
         {
+            // CuteTN: Initialize database for the first use of local DB Server, because there are some fake-Null-entries
+            Utils.InitDatabase();
+
             IsVisibleCanvas = Visibility.Hidden;
             FrameColumn = 1;
 
@@ -73,7 +78,7 @@ namespace QuanLyGiangDuong.ViewModel
 
             // commands
             Home_Page_SelectedCommand = new RelayCommand((p) => {
-                FrameContent = new RoomManagementPage();
+                FrameContent = new HomePage();
                 FrameContent.DataContext = new HomePage_ViewModel();
             });
 

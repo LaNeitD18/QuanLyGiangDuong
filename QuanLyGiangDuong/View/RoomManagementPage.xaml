@@ -79,12 +79,12 @@
             Grid.Column="0" Grid.ColumnSpan="15"
             Grid.Row="1" Grid.RowSpan="12"
             Margin="0,10,0,0">
-            <DataGrid x:Name="listRoom"
+            <DataGrid x:Name="listRoomDatagrid"
                 HorizontalAlignment="Stretch" 
                 VerticalAlignment="Top" 
                 ItemsSource="{Binding ListRoom}"
                 ScrollViewer.VerticalScrollBarVisibility="Auto"
-                SelectionMode="Single"
+                SelectionMode="Extended"
                 AutoGenerateColumns="False"
                 SelectedItem="{Binding SelectedRoom, Mode=TwoWay}"
                 SelectionUnit="FullRow" >
@@ -92,12 +92,12 @@
                     <DataGridTextColumn Header="Mã phòng" Binding="{Binding RoomID}" />
                     <DataGridTextColumn Header="Sức chứa" Binding="{Binding Capacity}"/>
                     <DataGridTextColumn Header="Mô tả" Binding="{Binding Description_}"/>
-                    <DataGridComboBoxColumn Header="Trạng thái" />
+                    <DataGridTextColumn Header="Trạng thái" Binding="{Binding Status_}"/>
                 </DataGrid.Columns>
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
                         <i:InvokeCommandAction Command="{Binding SelectionChangedCommand}"
-                                                   CommandParameter="{Binding ElementName=listRoom}"/>
+                                                   CommandParameter="{Binding ElementName=listRoomDatagrid}"/>
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </DataGrid>

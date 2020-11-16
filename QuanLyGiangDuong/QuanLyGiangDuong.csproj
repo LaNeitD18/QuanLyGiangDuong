@@ -75,9 +75,6 @@
     <Reference Include="Syncfusion.Core.XForms.WPF, Version=18.2460.0.58, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Syncfusion.Xamarin.Core.WPF.18.2.0.58\lib\net46\Syncfusion.Core.XForms.WPF.dll</HintPath>
     </Reference>
-    <Reference Include="Syncfusion.Data.Portable, Version=18.2451.0.58, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Syncfusion.Xamarin.SfDataGrid.18.2.0.58\lib\netstandard2.0\Syncfusion.Data.Portable.dll</HintPath>
-    </Reference>
     <Reference Include="Syncfusion.Data.WPF, Version=18.2460.0.58, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
       <HintPath>..\packages\Syncfusion.Data.WPF.18.2.0.58\lib\net46\Syncfusion.Data.WPF.dll</HintPath>
     </Reference>
@@ -148,6 +145,9 @@
     <Compile Include="Model\EVENT_.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\LECTURER.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\Model.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -162,6 +162,9 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Model.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Model\PERIOD_TIMERANGE.cs">
+      <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\ROOM.cs">
       <DependentUpon>Model.tt</DependentUpon>
@@ -186,9 +189,13 @@
     <Compile Include="ViewModel\HomePage_ViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\RoomManagementViewModel.cs" />
+    <Compile Include="Model\UsingEventModel.cs" />
+    <Compile Include="Utilities\Utilities.cs" />
+    <Compile Include="ViewModel\Enums.cs" />
     <Compile Include="ViewModel\RoomViewModel.cs" />
     <Compile Include="ViewModel\TimeTableInputViewModel.cs" />
     <Compile Include="ViewModel\TimeTableViewModel.cs" />
+    <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="View\EventInputPage.xaml.cs">
       <DependentUpon>EventInputPage.xaml</DependentUpon>
     </Compile>
@@ -311,6 +318,7 @@
     <Resource Include="res\Images\tinylogo.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Images\classroom.png" />
     <Content Include="Model\Model.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>Model.edmx</DependentUpon>

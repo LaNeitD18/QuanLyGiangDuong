@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace QuanLyGiangDuong.ViewModel
@@ -114,16 +115,13 @@ namespace QuanLyGiangDuong.ViewModel
             get { return _SelectedRoom; }
             set { _SelectedRoom = value; OnPropertyChanged(); }
         }
-        #endregion
 
-        #region ICommand
-        public ICommand AddRoomCommand { get; set; }
-        public ICommand EditRoomCommand { get; set; }
-        public ICommand DeleteRoomCommand { get; set; }
-        public ICommand ConfirmCommand { get; set; }
-        public ICommand CancelCommand { get; set; }
-        public ICommand SearchRoomCommand { get; set; }
-        public ICommand SelectionChangedCommand { get; set; }
+        private ObservableCollection<ROOM> _ListSelectedRoom;
+        public ObservableCollection<ROOM> ListSelectedRoom
+        {
+            get { return _ListSelectedRoom; }
+            set { _ListSelectedRoom = value; OnPropertyChanged(); }
+        }
         #endregion
 
         #region Function
@@ -131,6 +129,7 @@ namespace QuanLyGiangDuong.ViewModel
         {
             var listRoom = DataProvider.Ins.DB.ROOMs;
             ListRoom = new ObservableCollection<ROOM>(listRoom);
+            ListSelectedRoom = new ObservableCollection<ROOM>();
 
             IsEnabledInput = false;
         }
@@ -169,8 +168,34 @@ namespace QuanLyGiangDuong.ViewModel
             SelectedRoom = temp;
         }
         private void DeleteRoom() {
+            // check if not used anymore first
+            if(IsNotUsing()) {
+                SelectedRoom.Status_ = "Không còn sử dụng";
+                DataProvider.Ins.DB.SaveChanges();
 
+                var temp = SelectedRoom;
+                for (int i = 0; i < ListRoom.Count(); i++)
+                {
+                    if (ListRoom[i].RoomID == SelectedRoom.RoomID)
+                    {
+                        ListRoom.RemoveAt(i);
+                        ListRoom.Insert(i, temp);
+                        break;
+                    }
+                }
+            } else {
+                MessageBox.Show("Phong dang duoc su dung");
+            }
+            
         }
+        private void DeleteRooms() {
+            List<ROOM> list = ListSelectedRoom.ToList();
+            foreach(var room in list) {
+                SelectedRoom = room;
+                DeleteRoom();
+            }
+        }
+
         // disable 3 buttons: add, edit, delete
         private void DisableButtons() {
             IsAddingEnabled = false;
@@ -259,6 +284,16 @@ namespace QuanLyGiangDuong.ViewModel
 
             return flag;
         }
+        private bool IsNotUsing() {
+            var countUsingClass = DataProvider.Ins.DB.USINGCLASSes.Where(x => x.RoomID == SelectedRoom.RoomID).Count();
+            var countUsingEvent = DataProvider.Ins.DB.USINGEVENTs.Where(x => x.RoomID == SelectedRoom.RoomID).Count();
+            var countUsingExam = DataProvider.Ins.DB.USINGEXAMs.Where(x => x.RoomID == SelectedRoom.RoomID).Count();
+
+            if(countUsingClass==0 && countUsingEvent==0 && countUsingExam==0) {
+                return true;
+            }
+            return false;
+        }
         //private bool CheckValidData() {
         //    bool flag = true;
 
@@ -270,6 +305,23 @@ namespace QuanLyGiangDuong.ViewModel
 
         //    return false;
         //}
+        private void GetDataGridSelectedItems(DataGrid dataGrid) {
+            ListSelectedRoom.Clear();
+
+            foreach(var item in dataGrid.SelectedItems) {
+                ListSelectedRoom.Add((ROOM)item);
+            }
+        }
+        #endregion
+
+        #region ICommand
+        public ICommand AddRoomCommand { get; set; }
+        public ICommand EditRoomCommand { get; set; }
+        public ICommand DeleteRoomCommand { get; set; }
+        public ICommand ConfirmCommand { get; set; }
+        public ICommand CancelCommand { get; set; }
+        public ICommand SearchRoomCommand { get; set; }
+        public ICommand SelectionChangedCommand { get; set; }
         #endregion
 
         public RoomManagementViewModel()
@@ -287,6 +339,7 @@ namespace QuanLyGiangDuong.ViewModel
 
                 EnableTextboxes();
                 ResetTextbox();
+                SelectedRoom = null;
             });
 
             EditRoomCommand = new RelayCommand((p) => {
@@ -303,13 +356,19 @@ namespace QuanLyGiangDuong.ViewModel
             });
 
             SearchRoomCommand = new RelayCommand((p) => {
-                var room = DataProvider.Ins.DB.ROOMs.Find(RoomIDForSearching);
+                //var room = DataProvider.Ins.DB.ROOMs.Find(RoomIDForSearching);
 
-                if(room != null) {
-                    SelectedRoom = room;
+                //if(room != null) {
+                //    SelectedRoom = room;
 
-                    SetValueForTextbox();
-                }
+                //    SetValueForTextbox();
+                //}
+
+                //for(int i=0; i<SelectedRoom.Count(); i++)
+                //{
+                //    MessageBox.Show(ListRoom[i].RoomID);
+                //}
+                MessageBox.Show(ListSelectedRoom.Count().ToString());
             });
 
             // confirm button is enabled only when adding, editing or deleting
@@ -326,6 +385,15 @@ namespace QuanLyGiangDuong.ViewModel
                         ResetAll();
                     }
                 }
+                if(IsBeingInTask && IsDeletingEnabled) {
+                    if(ListSelectedRoom.Count() == 1) {
+                        DeleteRoom();
+                        ResetAll();
+                    } else {
+                        DeleteRooms();
+                        ResetAll();
+                    }
+                }
             });
 
             CancelCommand = new RelayCommand((p) => {
@@ -334,6 +402,12 @@ namespace QuanLyGiangDuong.ViewModel
 
             SelectionChangedCommand = new RelayCommand((p) =>
             {
+                if (!(p is  DataGrid))
+                    return;
+
+                var dataGrid = p as DataGrid;
+                GetDataGridSelectedItems(dataGrid);
+
                 if(SelectedRoom != null) {
                     SetValueForTextbox();
 
