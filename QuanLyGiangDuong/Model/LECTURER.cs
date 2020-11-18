@@ -23,6 +23,7 @@ namespace QuanLyGiangDuong.Model
     
         public string LecturerID { get; set; }
         public string LecturerName { get; set; }
+        public int LecturerType { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CLASS> CLASSes { get; set; }

@@ -11,6 +11,8 @@ using QuanLyGiangDuong.View;
 using Syncfusion.UI.Xaml.Grid;
 using System.Windows;
 
+using QuanLyGiangDuong.Utilities;
+
 namespace QuanLyGiangDuong.ViewModel
 {
     public class MainViewModel : BaseViewModel
@@ -53,11 +55,28 @@ namespace QuanLyGiangDuong.ViewModel
 
         #endregion
 
+        #region Functions
+        private void ChangePage(Page currentPage, BaseViewModel currentViewModel)
+        {
+            FrameContent = currentPage;
+            FrameContent.DataContext = currentViewModel;
+        }
+
+        #endregion
+
         public MainViewModel()
         {
+            // CuteTN: Initialize database for the first use of local DB Server, because there are some fake-Null-entries
+            Utils.InitDatabase();
+
             IsVisibleCanvas = Visibility.Hidden;
             FrameColumn = 1;
 
+            // initial page
+            FrameContent = new RoomManagementPage();
+            //FrameContent.DataContext = new RoomManagementViewModel();
+
+            // commands
             Home_Page_SelectedCommand = new RelayCommand((p) => {
                 FrameContent = new HomePage();
                 FrameContent.DataContext = new HomePage_ViewModel();
@@ -73,8 +92,7 @@ namespace QuanLyGiangDuong.ViewModel
                 FrameContent.DataContext = new RoomViewModel();
             });
 
-            TimeTableInput_Page_SelectedCommand = new RelayCommand((p) =>
-            {
+            TimeTableInput_Page_SelectedCommand = new RelayCommand((p) => {
                 FrameContent = new TimeTableInputPage();
                 FrameContent.DataContext = new TimeTableInputViewModel();
             });

@@ -70,6 +70,9 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+        <Grid Background="#3fc380">
+            <Image Source="/Images/classroom.png"></Image>
+        </Grid>
         <md:Card
             md:ShadowAssist.ShadowEdges="None" Grid.Column="1"
             Grid.ColumnSpan="31" Grid.RowSpan="1" Background="#3fc380">

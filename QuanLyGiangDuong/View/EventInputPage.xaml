@@ -10,9 +10,9 @@
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
       
-      
       d:DesignHeight="640" d:DesignWidth="1200"
       Title="TimeTableInputPage">
+
 
     <Grid x:Name="timeTableInputPage" Background="WhiteSmoke">
         <Grid.ColumnDefinitions>
@@ -81,19 +81,101 @@
         </Grid>
         <Grid
             Grid.Column="0" Grid.ColumnSpan="15"
-            Grid.Row="1" Grid.RowSpan="16"
+            Grid.Row="1" Grid.RowSpan="12"
             Margin="0,10,0,0">
-            <DataGrid 
+            <DataGrid x:Name="datagrid_UsingEvents"
+                ItemsSource = "{Binding ListUsingEvent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                SelectionUnit="FullRow"
+                SelectionMode="Extended"
                 HorizontalAlignment="Stretch" 
                 VerticalAlignment="Top" 
+                AutoGenerateColumns="False"
+                IsReadOnly="True"
                 Grid.RowSpan="2">
                 <DataGrid.Columns>
-                    <DataGridCheckBoxColumn Header="Chọn"/>
-                    <DataGridTextColumn Header="Trạng thái"/>
-                    <DataGridTextColumn Header="Mã sự kiện"/>
-                    <DataGridTextColumn Header="Tên sự kiện"/>
+                    <DataGridTextColumn Binding="{Binding StatusString, Mode=TwoWay}" Header="Trạng thái"/>
+                    <DataGridTextColumn Binding="{Binding EVENT_.LECTURER.LecturerName, Mode=TwoWay}" Header="Người đăng ký"/>
+                    <DataGridTextColumn Binding="{Binding UsingEventID, Mode=TwoWay}" Header="Mã đăng ký"/>
+                    <DataGridTextColumn Binding="{Binding RoomID, Mode=TwoWay}" Header="Mã phòng"/>
+                    <DataGridTextColumn Binding="{Binding EVENT_.EventName, Mode=TwoWay}" Header="Tên sự kiện"/>
+                    <DataGridTextColumn Binding="{Binding ShortDateString, Mode=TwoWay}" Header="Ngày tổ chức"/>
                 </DataGrid.Columns>
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <i:InvokeCommandAction 
+                            Command="{Binding ListUsingEvent_SelectionChangedCmd}"
+                            CommandParameter="{Binding ElementName=datagrid_UsingEvents}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                <!--<ListBox x:Name="listBoxSelectedItems" 
+                     DisplayMemberPath="Name" 
+                     ItemsSource="{Binding SelectedItems, ElementName=datagrid_UsingEvents}" />-->
             </DataGrid>
+            <!--
+            <Button Style="{StaticResource MaterialDesignRaisedButton}" 
+                            Margin="55,532,380,29" Content="Thêm" HorizontalAlignment="Center"
+                            Width="150" Height="35"
+                            Command="{Binding AddCmd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <Button Style="{StaticResource MaterialDesignRaisedButton}" 
+                Margin="230,532,205,29" Content="Sửa" HorizontalAlignment="Center"
+                Width="150" Height="35"
+                Command="{Binding EditCmd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <Button Style="{StaticResource MaterialDesignRaisedButton}" 
+                Margin="400,532,35,29" Content="Xoá" HorizontalAlignment="Center"
+                Width="150" Height="35"
+                Command="{Binding DeleteCmd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/> -->
+        </Grid>
+
+        <Grid
+            Grid.Column="0" Grid.ColumnSpan="15"
+            Grid.Row="14" Grid.RowSpan="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <Button 
+                    Style="{StaticResource MaterialDesignRaisedButton}" 
+                    Margin="5,0,5,0" Content="Thêm" HorizontalAlignment="Center"
+                    Width="150" Height="35"
+                    IsEnabled="{Binding IsAddButtonEnabled}"
+                    Command="{Binding AddCmd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </Grid>
+            <Grid Grid.Column="1">
+                <Button 
+                    Style="{StaticResource MaterialDesignRaisedButton}" 
+                    Margin="5,0,5,0" Content="Sửa" HorizontalAlignment="Center"
+                    Width="150" Height="35"
+                    IsEnabled="{Binding IsEditButtonEnabled}"
+                    Command="{Binding EditCmd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </Grid>
+            <Grid Grid.Column="2">
+                <Button 
+                    Style="{StaticResource MaterialDesignRaisedButton}" 
+                    Margin="5,0,5,0" Content="Xóa" HorizontalAlignment="Center"
+                    Width="150" Height="35"
+                    IsEnabled="{Binding IsDeleteButtonEnabled}"
+                    Command="{Binding DeleteCmd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </Grid>
+            <Grid Grid.Column="3">
+                <Button 
+                    Style="{StaticResource MaterialDesignRaisedButton}" 
+                    Margin="5,0,5,0" Content="Duyệt" HorizontalAlignment="Center"
+                    Width="150" Height="35"
+                    IsEnabled="{Binding IsApproveButtonEnabled}"
+                    Command="{Binding ApproveCmd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </Grid>
+            <Grid Grid.Column="4">
+                <Button 
+                    Style="{StaticResource MaterialDesignRaisedButton}" 
+                    Margin="5,0,5,0" Content="Từ chối" HorizontalAlignment="Center"
+                    Width="150" Height="35"
+                    IsEnabled="{Binding IsRejectButtonEnabled}"
+                    Command="{Binding RejectCmd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </Grid>
         </Grid>
         <Grid
             Grid.Column="16" Grid.ColumnSpan="15"
@@ -103,14 +185,15 @@
                   Background="{DynamicResource PrimaryHueDarkBrush}"
                   Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
                   Padding="5">
-                    <TextBlock FontWeight="SemiBold" TextAlignment="Center" FontSize="20" Text="Thông tin phòng học"></TextBlock>
+                    <TextBlock FontWeight="SemiBold" TextAlignment="Center" FontSize="20" Text="Thông tin sự kiện"></TextBlock>
                 </materialDesign:Card>
             </Grid>
         </Grid>
         <Grid
             Grid.Column="16" Grid.ColumnSpan="15"
             Grid.Row="1" Grid.RowSpan="16"
-            Margin="0,10,0,0">
+            Margin="0,10,0,0"
+            IsEnabled="{Binding IsEdittingFormMode}">
             <materialDesign:Card>
                 <Grid>
                     <Grid.RowDefinitions>
@@ -131,21 +214,29 @@
                             <TextBox 
                                 Width="200" 
                                 FontSize="18" 
-                                materialDesign:HintAssist.Hint="Mã sự kiện" 
+                                materialDesign:HintAssist.Hint="Mã đăng ký sự kiện" 
                                 IsEnabled="False"
                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" Foreground="{StaticResource SecondaryAccentBrush}" VerticalAlignment="Center"
-                                Text="{Binding NgayMoSo, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                                Text="{Binding UsingEventId, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                         </StackPanel>
                     </Grid>
                     <Grid Grid.Row="1" Grid.Column="0">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <TextBox 
-                                Width="200" 
-                                FontSize="18" 
-                                materialDesign:HintAssist.Hint="Tên sự kiện" 
-                                IsEnabled="True"
-                                Style="{StaticResource MaterialDesignFloatingHintTextBox}" Foreground="{StaticResource SecondaryAccentBrush}" VerticalAlignment="Center"
-                                Text="{Binding NgayMoSo, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                            <ComboBox Width="200" materialDesign:HintAssist.Hint="Mã sự kiện" VerticalAlignment="Center" Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                  ItemsSource="{Binding ListEvent}" KeyboardNavigation.TabIndex="1" SelectedItem="{Binding SelectedEvent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }" >
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding EventID}"></TextBlock>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectionChanged">
+                                        <i:InvokeCommandAction Command="{Binding YenCute}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </ComboBox>
                         </StackPanel>
                     </Grid>
                     <Grid Grid.Row="1" Grid.Column="1">
@@ -153,10 +244,21 @@
                             <TextBox 
                                 Width="200" 
                                 FontSize="18" 
-                                materialDesign:HintAssist.Hint="Người đăng ký" 
+                                materialDesign:HintAssist.Hint="Tên sự kiện" 
                                 IsEnabled="True"
                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" Foreground="{StaticResource SecondaryAccentBrush}" VerticalAlignment="Center"
-                                Text="{Binding NgayMoSo, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                                Text="{Binding EventName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                        </StackPanel>
+                    </Grid>
+                    <Grid Grid.Row="0" Grid.Column="1">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <TextBox 
+                                Width="200" 
+                                FontSize="18" 
+                                materialDesign:HintAssist.Hint="Người đăng ký" 
+                                IsEnabled="False"
+                                Style="{StaticResource MaterialDesignFloatingHintTextBox}" Foreground="{StaticResource SecondaryAccentBrush}" VerticalAlignment="Center"
+                                Text="{Binding LecturerId, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                         </StackPanel>
                     </Grid>
                     <Grid Grid.Row="2" Grid.Column="0">
@@ -164,7 +266,24 @@
                             <DatePicker
                                 Width="200"
                                 materialDesign:HintAssist.Hint="Ngày tổ chức"
-                                Style="{StaticResource MaterialDesignFloatingHintDatePicker}"/>
+                                Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
+                                SelectedDate="{Binding DateOccurs, StringFormat='dd MM yyyy'}">
+                                <!-- not works :(((
+                                <DatePicker.Resources>
+                                    <Style TargetType="DatePickerTextBox">
+                                        <Setter Property="Control.Template">
+                                            <Setter.Value>
+                                                <ControlTemplate>
+                                                    <TextBox x:Name="PART_TextBox"
+                                                             Text="{Binding Path=SelectedDate, StringFormat='dd MM yyyy', 
+                                                             RelativeSource={RelativeSource AncestorType={x:Type DatePicker}}}" />
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </DatePicker.Resources>
+                                -->
+                            </DatePicker>
                         </StackPanel>
                     </Grid>
                     <Grid Grid.Row="2" Grid.Column="1">
@@ -175,32 +294,61 @@
                                 materialDesign:HintAssist.Hint="Số người dự tính" 
                                 IsEnabled="True"
                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" Foreground="{StaticResource SecondaryAccentBrush}" VerticalAlignment="Center"
-                                Text="{Binding NgayMoSo, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                                Text="{Binding Population, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                         </StackPanel>
                     </Grid>
                     <Grid Grid.Row="3" Grid.Column="0">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <materialDesign:TimePicker
-                                Width="200"
-                                Style="{StaticResource MaterialDesignFloatingHintTimePicker}"
-                                materialDesign:HintAssist.Hint="Từ" />             
+                            <ComboBox Width="200" materialDesign:HintAssist.Hint="Từ" VerticalAlignment="Center" Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                  ItemsSource="{Binding ListTimeRange}" KeyboardNavigation.TabIndex="1" SelectedItem="{Binding SelectedStartTimeRange, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }" >
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding PeriodName}"></TextBlock>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectionChanged">
+                                        <i:InvokeCommandAction Command="{Binding YenCute}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </ComboBox>
                         </StackPanel>
                     </Grid>
                     <Grid Grid.Row="3" Grid.Column="1">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <materialDesign:TimePicker
-                                Width="200"
-                                Style="{StaticResource MaterialDesignFloatingHintTimePicker}"
-                                materialDesign:HintAssist.Hint="Đến" />
+                            <ComboBox Width="200" materialDesign:HintAssist.Hint="Đến" VerticalAlignment="Center" Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                  ItemsSource="{Binding ListTimeRange}" KeyboardNavigation.TabIndex="1" SelectedItem="{Binding SelectedEndTimeRange, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }" >
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding PeriodName}"></TextBlock>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectionChanged">
+                                        <i:InvokeCommandAction Command="{Binding YenCute}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </ComboBox>
                         </StackPanel>
                     </Grid>
                     <Grid Grid.Row="4" Grid.Column="0">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                             <ComboBox Width="200" materialDesign:HintAssist.Hint="Địa điểm tổ chức" VerticalAlignment="Center" Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                                  ItemsSource="{Binding TenLoaiTietKiem}" KeyboardNavigation.TabIndex="1" Text ="{Binding CbxTenLoaiTietKiem}" SelectedItem="{Binding SelectedTenLoaiTietKiem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }" >
+                                  ItemsSource="{Binding ListRoom}" KeyboardNavigation.TabIndex="1" SelectedItem="{Binding SelectedRoom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }" >
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding RoomID}"></TextBlock>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="SelectionChanged">
-                                        <i:InvokeCommandAction Command="{Binding LTK_SelectionChangedCommand}"/>
+                                        <i:InvokeCommandAction Command="{Binding YenCute}"/>
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                             </ComboBox>
@@ -214,20 +362,20 @@
                                 materialDesign:HintAssist.Hint="Ghi chú" 
                                 IsEnabled="True"
                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" Foreground="{StaticResource SecondaryAccentBrush}" VerticalAlignment="Center"
-                                Text="{Binding NgayMoSo, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                                Text="{Binding Description, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                         </StackPanel>
                     </Grid>
                     <Grid Grid.Row="7" Grid.Column="0">
                         <Button Style="{StaticResource MaterialDesignRaisedButton}" 
-                            Margin="5,0,5,0" Content="Thêm" HorizontalAlignment="Center"
+                            Margin="5,0,5,0" Content="Xác nhận" HorizontalAlignment="Center"
                             Width="150" Height="35"
-                            Command="{Binding AddLTKCommand}"/>
+                            Command="{Binding ConfirmCmd, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                     </Grid>
                     <Grid Grid.Row="7" Grid.Column="1">
                         <Button Style="{StaticResource MaterialDesignRaisedButton}" 
                             Margin="5,0,5,0" Content="Hủy" HorizontalAlignment="Center"
                             Width="150" Height="35"
-                            Command="{Binding AddLTKCommand}"/>
+                            Command="{Binding CancelCmd}"/>
                     </Grid>
                 </Grid>
             </materialDesign:Card>

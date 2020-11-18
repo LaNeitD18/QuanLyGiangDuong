@@ -25,6 +25,7 @@ namespace QuanLyGiangDuong.Model
         public string RoomID { get; set; }
         public int Capacity { get; set; }
         public string Description_ { get; set; }
+        public string Status_ { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<USINGCLASS> USINGCLASSes { get; set; }

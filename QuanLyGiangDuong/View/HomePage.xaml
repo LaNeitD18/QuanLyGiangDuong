@@ -6,6 +6,7 @@
       xmlns:local="clr-namespace:QuanLyGiangDuong.View"
       mc:Ignorable="d" 
       
+      xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       xmlns:materialDesignColors="clr-namespace:MaterialDesignColors;assembly=MaterialDesignColors"
       
@@ -83,12 +84,24 @@
                 </StackPanel>
             </materialDesign:Card>
         </Grid>
-        <Grid Grid.Column="5" Grid.Row="5" Grid.RowSpan="5" Grid.ColumnSpan="5">
-            <materialDesign:Card 
-                  Background="{DynamicResource PrimaryHueDarkBrush}"
-                  Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
-                  Padding="5">
-                <TextBlock FontWeight="SemiBold" TextAlignment="Center" FontSize="20" Text="{Binding TextBlock}"></TextBlock>
+        <Grid Grid.Column="0" Grid.ColumnSpan="31" Grid.Row="3" Grid.RowSpan="14">
+            <materialDesign:Card>
+                <syncfusion:SfDataGrid ColumnSizer="Star">
+                    <syncfusion:SfDataGrid.Columns>
+                        <syncfusion:GridCheckBoxColumn DisplayBinding="{x:Null}" FilteredFrom="None" HeaderText="Phòng" ValueBinding="{x:Null}" TextAlignment="Center"/>
+                        <syncfusion:GridCheckBoxColumn DisplayBinding="{x:Null}" FilteredFrom="None" HeaderText="Tiết 1" ValueBinding="{x:Null}" TextAlignment="Center"/>
+                        <syncfusion:GridCheckBoxColumn DisplayBinding="{x:Null}" FilteredFrom="None" HeaderText="Tiết 2" ValueBinding="{x:Null}" TextAlignment="Center"/>
+                        <syncfusion:GridCheckBoxColumn DisplayBinding="{x:Null}" FilteredFrom="None" HeaderText="Tiết 3" ValueBinding="{x:Null}" TextAlignment="Center"/>
+                        <syncfusion:GridCheckBoxColumn DisplayBinding="{x:Null}" FilteredFrom="None" HeaderText="Tiết 4" ValueBinding="{x:Null}" TextAlignment="Center"/>
+                        <syncfusion:GridCheckBoxColumn DisplayBinding="{x:Null}" FilteredFrom="None" HeaderText="Tiết 5" ValueBinding="{x:Null}" TextAlignment="Center"/>
+                        <syncfusion:GridCheckBoxColumn DisplayBinding="{x:Null}" FilteredFrom="None" HeaderText="Tiết 6" ValueBinding="{x:Null}" TextAlignment="Center"/>
+                        <syncfusion:GridCheckBoxColumn DisplayBinding="{x:Null}" FilteredFrom="None" HeaderText="Tiết 7" ValueBinding="{x:Null}" TextAlignment="Center"/>
+                        <syncfusion:GridCheckBoxColumn DisplayBinding="{x:Null}" FilteredFrom="None" HeaderText="Tiết 8" ValueBinding="{x:Null}" TextAlignment="Center"/>
+                        <syncfusion:GridCheckBoxColumn DisplayBinding="{x:Null}" FilteredFrom="None" HeaderText="Tiết 9" ValueBinding="{x:Null}" TextAlignment="Center"/>
+                        <syncfusion:GridCheckBoxColumn DisplayBinding="{x:Null}" FilteredFrom="None" HeaderText="Tiết 10" ValueBinding="{x:Null}" TextAlignment="Center"/>
+                    </syncfusion:SfDataGrid.Columns>
+
+                </syncfusion:SfDataGrid>
             </materialDesign:Card>
         </Grid>
     </Grid>
