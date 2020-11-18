@@ -7,7 +7,9 @@
       xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="RoomPage">
+      Title="RoomPage"
+      
+      DataContext="{StaticResource RoomVM}">
 
     <Grid>
         <StackPanel>

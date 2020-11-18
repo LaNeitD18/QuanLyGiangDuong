@@ -11,7 +11,9 @@
       xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
       
       d:DesignHeight="640" d:DesignWidth="1200"
-      Title="TimeTableInputPage">
+      Title="TimeTableInputPage"
+      
+      DataContext="{StaticResource TimeTableInputVM}">
 
     <Grid x:Name="timeTableInputPage" Background="WhiteSmoke">
         <Grid.ColumnDefinitions>
