@@ -17,11 +17,13 @@ namespace QuanLyGiangDuong.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public CLASS()
         {
+            this.EXAMs = new HashSet<EXAM>();
             this.USINGCLASSes = new HashSet<USINGCLASS>();
         }
     
         public string ClassID { get; set; }
         public string SubjectID { get; set; }
+        public string TrainingTypeID { get; set; }
         public string ClassName { get; set; }
         public int Semester { get; set; }
         public int Year_ { get; set; }
@@ -33,6 +35,9 @@ namespace QuanLyGiangDuong.Model
     
         public virtual LECTURER LECTURER { get; set; }
         public virtual SUBJECT_ SUBJECT_ { get; set; }
+        public virtual TRAININGTYPE TRAININGTYPE { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<EXAM> EXAMs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<USINGCLASS> USINGCLASSes { get; set; }
     }

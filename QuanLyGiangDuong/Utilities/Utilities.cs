@@ -53,7 +53,7 @@ namespace QuanLyGiangDuong.Utilities
                     new PERIOD_TIMERANGE() 
                     { 
                         PeriodID = NullPeriodTimeRangeId, 
-                        StartTime = DateTime.Now, EndTime = DateTime.Now,
+                        StartTime = DateTime.Now.TimeOfDay, EndTime = DateTime.Now.TimeOfDay,
                         PeriodName = "NULL"
                     }
                 );

@@ -27,11 +27,14 @@ namespace QuanLyGiangDuong.Model
     
         public virtual DbSet<CLASS> CLASSes { get; set; }
         public virtual DbSet<EVENT_> EVENT_ { get; set; }
+        public virtual DbSet<EXAM> EXAMs { get; set; }
+        public virtual DbSet<FACAULTY> FACAULTies { get; set; }
         public virtual DbSet<LECTURER> LECTURERs { get; set; }
         public virtual DbSet<PERIOD_TIMERANGE> PERIOD_TIMERANGE { get; set; }
         public virtual DbSet<ROOM> ROOMs { get; set; }
         public virtual DbSet<ROOMIGNORE> ROOMIGNOREs { get; set; }
         public virtual DbSet<SUBJECT_> SUBJECT_ { get; set; }
+        public virtual DbSet<TRAININGTYPE> TRAININGTYPEs { get; set; }
         public virtual DbSet<USINGCLASS> USINGCLASSes { get; set; }
         public virtual DbSet<USINGEVENT> USINGEVENTs { get; set; }
         public virtual DbSet<USINGEXAM> USINGEXAMs { get; set; }

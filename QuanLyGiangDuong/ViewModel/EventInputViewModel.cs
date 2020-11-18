@@ -546,7 +546,7 @@ namespace QuanLyGiangDuong.ViewModel
                 result.Add("Vui lòng chọn thời điểm kết thúc sự kiện");
 
             if(SelectedStartTimeRange != null && SelectedEndTimeRange != null)
-                if(TimeSpan.Compare(SelectedStartTimeRange.StartTime.TimeOfDay, SelectedEndTimeRange.EndTime.TimeOfDay) >= 0)
+                if(TimeSpan.Compare(SelectedStartTimeRange.StartTime, SelectedEndTimeRange.EndTime) >= 0)
                     result.Add("Vui lòng chọn thời điểm bắt đầu ở trước thời điểm kết thúc");
 
             if(SelectedRoom == null)

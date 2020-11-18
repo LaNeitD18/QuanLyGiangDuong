@@ -11,6 +11,7 @@
           </Key>
           <Property Name="ClassID" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="SubjectID" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="TrainingTypeID" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="ClassName" Type="nvarchar(max)" Nullable="false" />
           <Property Name="Semester" Type="int" Nullable="false" />
           <Property Name="Year_" Type="int" Nullable="false" />
@@ -30,6 +31,23 @@
           <Property Name="Population_" Type="int" Nullable="false" />
           <Property Name="Description_" Type="nvarchar(max)" />
         </EntityType>
+        <EntityType Name="EXAM">
+          <Key>
+            <PropertyRef Name="ExamID" />
+          </Key>
+          <Property Name="ExamID" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="LecturerID" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="ClassID" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Population_" Type="int" Nullable="false" />
+          <Property Name="Description_" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="FACAULTY">
+          <Key>
+            <PropertyRef Name="FacaultyID" />
+          </Key>
+          <Property Name="FacaultyID" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="FacaultyName" Type="nvarchar" MaxLength="50" />
+        </EntityType>
         <EntityType Name="LECTURER">
           <Key>
             <PropertyRef Name="LecturerID" />
@@ -44,8 +62,8 @@
           </Key>
           <Property Name="PeriodID" Type="int" Nullable="false" />
           <Property Name="PeriodName" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="StartTime" Type="smalldatetime" Nullable="false" />
-          <Property Name="EndTime" Type="smalldatetime" Nullable="false" />
+          <Property Name="StartTime" Type="time" Precision="7" Nullable="false" />
+          <Property Name="EndTime" Type="time" Precision="7" Nullable="false" />
         </EntityType>
         <EntityType Name="ROOM">
           <Key>
@@ -62,7 +80,7 @@
           </Key>
           <Property Name="RoomIgnoreID" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="UsingClassID" Type="varchar" MaxLength="20" Nullable="false" />
-          <Property Name="IgnoreDate" Type="smalldatetime" Nullable="false" />
+          <Property Name="IgnoreDate" Type="date" Nullable="false" />
         </EntityType>
         <EntityType Name="SUBJECT_">
           <Key>
@@ -70,6 +88,14 @@
           </Key>
           <Property Name="SubjectID" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="SubjectName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="FacaultyID" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TRAININGTYPE">
+          <Key>
+            <PropertyRef Name="TrainingTypeID" />
+          </Key>
+          <Property Name="TrainingTypeID" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="TrainingTypeName" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="USINGCLASS">
           <Key>
@@ -104,14 +130,14 @@
           </Key>
           <Property Name="UsingExamID" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="RoomID" Type="varchar" MaxLength="20" Nullable="false" />
-          <Property Name="SubjectID" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="ExamID" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="Date_" Type="smalldatetime" Nullable="false" />
           <Property Name="StartPeriod" Type="int" Nullable="false" />
           <Property Name="EndPeriod" Type="int" Nullable="false" />
           <Property Name="Status_" Type="int" Nullable="false" />
           <Property Name="Description_" Type="nvarchar" MaxLength="50" />
         </EntityType>
-        <Association Name="FK__CLASS__LecturerI__2D27B809">
+        <Association Name="FK__CLASS__LecturerI__52593CB8">
           <End Role="LECTURER" Type="Self.LECTURER" Multiplicity="1" />
           <End Role="CLASS" Type="Self.CLASS" Multiplicity="*" />
           <ReferentialConstraint>
@@ -123,7 +149,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__CLASS__SubjectID__2C3393D0">
+        <Association Name="FK__CLASS__SubjectID__5070F446">
           <End Role="SUBJECT_" Type="Self.SUBJECT_" Multiplicity="1" />
           <End Role="CLASS" Type="Self.CLASS" Multiplicity="*" />
           <ReferentialConstraint>
@@ -135,7 +161,19 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__EVENT___Lecturer__300424B4">
+        <Association Name="FK__CLASS__TrainingT__5165187F">
+          <End Role="TRAININGTYPE" Type="Self.TRAININGTYPE" Multiplicity="1" />
+          <End Role="CLASS" Type="Self.CLASS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TRAININGTYPE">
+              <PropertyRef Name="TrainingTypeID" />
+            </Principal>
+            <Dependent Role="CLASS">
+              <PropertyRef Name="TrainingTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__EVENT___Lecturer__2F10007B">
           <End Role="LECTURER" Type="Self.LECTURER" Multiplicity="1" />
           <End Role="EVENT_" Type="Self.EVENT_" Multiplicity="*" />
           <ReferentialConstraint>
@@ -147,7 +185,31 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ROOMIGNOR__Using__440B1D61">
+        <Association Name="FK__EXAM__ClassID__571DF1D5">
+          <End Role="CLASS" Type="Self.CLASS" Multiplicity="1" />
+          <End Role="EXAM" Type="Self.EXAM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CLASS">
+              <PropertyRef Name="ClassID" />
+            </Principal>
+            <Dependent Role="EXAM">
+              <PropertyRef Name="ClassID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__EXAM__LecturerID__5629CD9C">
+          <End Role="LECTURER" Type="Self.LECTURER" Multiplicity="1" />
+          <End Role="EXAM" Type="Self.EXAM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LECTURER">
+              <PropertyRef Name="LecturerID" />
+            </Principal>
+            <Dependent Role="EXAM">
+              <PropertyRef Name="LecturerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ROOMIGNOR__Using__619B8048">
           <End Role="USINGCLASS" Type="Self.USINGCLASS" Multiplicity="1" />
           <End Role="ROOMIGNORE" Type="Self.ROOMIGNORE" Multiplicity="*" />
           <ReferentialConstraint>
@@ -159,7 +221,19 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__USINGCLAS__Class__33D4B598">
+        <Association Name="FK__SUBJECT___Facaul__4D94879B">
+          <End Role="FACAULTY" Type="Self.FACAULTY" Multiplicity="1" />
+          <End Role="SUBJECT_" Type="Self.SUBJECT_" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FACAULTY">
+              <PropertyRef Name="FacaultyID" />
+            </Principal>
+            <Dependent Role="SUBJECT_">
+              <PropertyRef Name="FacaultyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__USINGCLAS__Class__5AEE82B9">
           <End Role="CLASS" Type="Self.CLASS" Multiplicity="1" />
           <End Role="USINGCLASS" Type="Self.USINGCLASS" Multiplicity="*" />
           <ReferentialConstraint>
@@ -171,7 +245,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__USINGCLAS__EndPe__35BCFE0A">
+        <Association Name="FK__USINGCLAS__EndPe__5CD6CB2B">
           <End Role="PERIOD_TIMERANGE" Type="Self.PERIOD_TIMERANGE" Multiplicity="1" />
           <End Role="USINGCLASS" Type="Self.USINGCLASS" Multiplicity="*" />
           <ReferentialConstraint>
@@ -183,7 +257,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__USINGCLAS__RoomI__32E0915F">
+        <Association Name="FK__USINGCLAS__RoomI__59FA5E80">
           <End Role="ROOM" Type="Self.ROOM" Multiplicity="1" />
           <End Role="USINGCLASS" Type="Self.USINGCLASS" Multiplicity="*" />
           <ReferentialConstraint>
@@ -195,7 +269,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__USINGCLAS__Start__34C8D9D1">
+        <Association Name="FK__USINGCLAS__Start__5BE2A6F2">
           <End Role="PERIOD_TIMERANGE" Type="Self.PERIOD_TIMERANGE" Multiplicity="1" />
           <End Role="USINGCLASS" Type="Self.USINGCLASS" Multiplicity="*" />
           <ReferentialConstraint>
@@ -207,7 +281,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__USINGEVEN__EndPe__3B75D760">
+        <Association Name="FK__USINGEVEN__EndPe__6A30C649">
           <End Role="PERIOD_TIMERANGE" Type="Self.PERIOD_TIMERANGE" Multiplicity="1" />
           <End Role="USINGEVENT" Type="Self.USINGEVENT" Multiplicity="*" />
           <ReferentialConstraint>
@@ -219,7 +293,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__USINGEVEN__Event__398D8EEE">
+        <Association Name="FK__USINGEVEN__Event__68487DD7">
           <End Role="EVENT_" Type="Self.EVENT_" Multiplicity="1" />
           <End Role="USINGEVENT" Type="Self.USINGEVENT" Multiplicity="*" />
           <ReferentialConstraint>
@@ -231,7 +305,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__USINGEVEN__RoomI__38996AB5">
+        <Association Name="FK__USINGEVEN__RoomI__6754599E">
           <End Role="ROOM" Type="Self.ROOM" Multiplicity="1" />
           <End Role="USINGEVENT" Type="Self.USINGEVENT" Multiplicity="*" />
           <ReferentialConstraint>
@@ -243,7 +317,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__USINGEVEN__Start__3A81B327">
+        <Association Name="FK__USINGEVEN__Start__693CA210">
           <End Role="PERIOD_TIMERANGE" Type="Self.PERIOD_TIMERANGE" Multiplicity="1" />
           <End Role="USINGEVENT" Type="Self.USINGEVENT" Multiplicity="*" />
           <ReferentialConstraint>
@@ -255,7 +329,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__USINGEXAM__EndPe__412EB0B6">
+        <Association Name="FK__USINGEXAM__EndPe__6FE99F9F">
           <End Role="PERIOD_TIMERANGE" Type="Self.PERIOD_TIMERANGE" Multiplicity="1" />
           <End Role="USINGEXAM" Type="Self.USINGEXAM" Multiplicity="*" />
           <ReferentialConstraint>
@@ -267,7 +341,19 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__USINGEXAM__RoomI__3E52440B">
+        <Association Name="FK__USINGEXAM__ExamI__6E01572D">
+          <End Role="EXAM" Type="Self.EXAM" Multiplicity="1" />
+          <End Role="USINGEXAM" Type="Self.USINGEXAM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EXAM">
+              <PropertyRef Name="ExamID" />
+            </Principal>
+            <Dependent Role="USINGEXAM">
+              <PropertyRef Name="ExamID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__USINGEXAM__RoomI__6D0D32F4">
           <End Role="ROOM" Type="Self.ROOM" Multiplicity="1" />
           <End Role="USINGEXAM" Type="Self.USINGEXAM" Multiplicity="*" />
           <ReferentialConstraint>
@@ -279,7 +365,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__USINGEXAM__Start__403A8C7D">
+        <Association Name="FK__USINGEXAM__Start__6EF57B66">
           <End Role="PERIOD_TIMERANGE" Type="Self.PERIOD_TIMERANGE" Multiplicity="1" />
           <End Role="USINGEXAM" Type="Self.USINGEXAM" Multiplicity="*" />
           <ReferentialConstraint>
@@ -291,91 +377,98 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__USINGEXAM__Subje__3F466844">
-          <End Role="SUBJECT_" Type="Self.SUBJECT_" Multiplicity="1" />
-          <End Role="USINGEXAM" Type="Self.USINGEXAM" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SUBJECT_">
-              <PropertyRef Name="SubjectID" />
-            </Principal>
-            <Dependent Role="USINGEXAM">
-              <PropertyRef Name="SubjectID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="QLGDModelStoreContainer">
           <EntitySet Name="CLASS" EntityType="Self.CLASS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EVENT_" EntityType="Self.EVENT_" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EXAM" EntityType="Self.EXAM" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FACAULTY" EntityType="Self.FACAULTY" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LECTURER" EntityType="Self.LECTURER" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PERIOD_TIMERANGE" EntityType="Self.PERIOD_TIMERANGE" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ROOM" EntityType="Self.ROOM" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ROOMIGNORE" EntityType="Self.ROOMIGNORE" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SUBJECT_" EntityType="Self.SUBJECT_" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TRAININGTYPE" EntityType="Self.TRAININGTYPE" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="USINGCLASS" EntityType="Self.USINGCLASS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="USINGEVENT" EntityType="Self.USINGEVENT" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="USINGEXAM" EntityType="Self.USINGEXAM" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__CLASS__LecturerI__2D27B809" Association="Self.FK__CLASS__LecturerI__2D27B809">
+          <AssociationSet Name="FK__CLASS__LecturerI__52593CB8" Association="Self.FK__CLASS__LecturerI__52593CB8">
             <End Role="LECTURER" EntitySet="LECTURER" />
             <End Role="CLASS" EntitySet="CLASS" />
           </AssociationSet>
-          <AssociationSet Name="FK__CLASS__SubjectID__2C3393D0" Association="Self.FK__CLASS__SubjectID__2C3393D0">
+          <AssociationSet Name="FK__CLASS__SubjectID__5070F446" Association="Self.FK__CLASS__SubjectID__5070F446">
             <End Role="SUBJECT_" EntitySet="SUBJECT_" />
             <End Role="CLASS" EntitySet="CLASS" />
           </AssociationSet>
-          <AssociationSet Name="FK__EVENT___Lecturer__300424B4" Association="Self.FK__EVENT___Lecturer__300424B4">
+          <AssociationSet Name="FK__CLASS__TrainingT__5165187F" Association="Self.FK__CLASS__TrainingT__5165187F">
+            <End Role="TRAININGTYPE" EntitySet="TRAININGTYPE" />
+            <End Role="CLASS" EntitySet="CLASS" />
+          </AssociationSet>
+          <AssociationSet Name="FK__EVENT___Lecturer__2F10007B" Association="Self.FK__EVENT___Lecturer__2F10007B">
             <End Role="LECTURER" EntitySet="LECTURER" />
             <End Role="EVENT_" EntitySet="EVENT_" />
           </AssociationSet>
-          <AssociationSet Name="FK__ROOMIGNOR__Using__440B1D61" Association="Self.FK__ROOMIGNOR__Using__440B1D61">
+          <AssociationSet Name="FK__EXAM__ClassID__571DF1D5" Association="Self.FK__EXAM__ClassID__571DF1D5">
+            <End Role="CLASS" EntitySet="CLASS" />
+            <End Role="EXAM" EntitySet="EXAM" />
+          </AssociationSet>
+          <AssociationSet Name="FK__EXAM__LecturerID__5629CD9C" Association="Self.FK__EXAM__LecturerID__5629CD9C">
+            <End Role="LECTURER" EntitySet="LECTURER" />
+            <End Role="EXAM" EntitySet="EXAM" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ROOMIGNOR__Using__619B8048" Association="Self.FK__ROOMIGNOR__Using__619B8048">
             <End Role="USINGCLASS" EntitySet="USINGCLASS" />
             <End Role="ROOMIGNORE" EntitySet="ROOMIGNORE" />
           </AssociationSet>
-          <AssociationSet Name="FK__USINGCLAS__Class__33D4B598" Association="Self.FK__USINGCLAS__Class__33D4B598">
+          <AssociationSet Name="FK__SUBJECT___Facaul__4D94879B" Association="Self.FK__SUBJECT___Facaul__4D94879B">
+            <End Role="FACAULTY" EntitySet="FACAULTY" />
+            <End Role="SUBJECT_" EntitySet="SUBJECT_" />
+          </AssociationSet>
+          <AssociationSet Name="FK__USINGCLAS__Class__5AEE82B9" Association="Self.FK__USINGCLAS__Class__5AEE82B9">
             <End Role="CLASS" EntitySet="CLASS" />
             <End Role="USINGCLASS" EntitySet="USINGCLASS" />
           </AssociationSet>
-          <AssociationSet Name="FK__USINGCLAS__EndPe__35BCFE0A" Association="Self.FK__USINGCLAS__EndPe__35BCFE0A">
+          <AssociationSet Name="FK__USINGCLAS__EndPe__5CD6CB2B" Association="Self.FK__USINGCLAS__EndPe__5CD6CB2B">
             <End Role="PERIOD_TIMERANGE" EntitySet="PERIOD_TIMERANGE" />
             <End Role="USINGCLASS" EntitySet="USINGCLASS" />
           </AssociationSet>
-          <AssociationSet Name="FK__USINGCLAS__RoomI__32E0915F" Association="Self.FK__USINGCLAS__RoomI__32E0915F">
+          <AssociationSet Name="FK__USINGCLAS__RoomI__59FA5E80" Association="Self.FK__USINGCLAS__RoomI__59FA5E80">
             <End Role="ROOM" EntitySet="ROOM" />
             <End Role="USINGCLASS" EntitySet="USINGCLASS" />
           </AssociationSet>
-          <AssociationSet Name="FK__USINGCLAS__Start__34C8D9D1" Association="Self.FK__USINGCLAS__Start__34C8D9D1">
+          <AssociationSet Name="FK__USINGCLAS__Start__5BE2A6F2" Association="Self.FK__USINGCLAS__Start__5BE2A6F2">
             <End Role="PERIOD_TIMERANGE" EntitySet="PERIOD_TIMERANGE" />
             <End Role="USINGCLASS" EntitySet="USINGCLASS" />
           </AssociationSet>
-          <AssociationSet Name="FK__USINGEVEN__EndPe__3B75D760" Association="Self.FK__USINGEVEN__EndPe__3B75D760">
+          <AssociationSet Name="FK__USINGEVEN__EndPe__6A30C649" Association="Self.FK__USINGEVEN__EndPe__6A30C649">
             <End Role="PERIOD_TIMERANGE" EntitySet="PERIOD_TIMERANGE" />
             <End Role="USINGEVENT" EntitySet="USINGEVENT" />
           </AssociationSet>
-          <AssociationSet Name="FK__USINGEVEN__Event__398D8EEE" Association="Self.FK__USINGEVEN__Event__398D8EEE">
+          <AssociationSet Name="FK__USINGEVEN__Event__68487DD7" Association="Self.FK__USINGEVEN__Event__68487DD7">
             <End Role="EVENT_" EntitySet="EVENT_" />
             <End Role="USINGEVENT" EntitySet="USINGEVENT" />
           </AssociationSet>
-          <AssociationSet Name="FK__USINGEVEN__RoomI__38996AB5" Association="Self.FK__USINGEVEN__RoomI__38996AB5">
+          <AssociationSet Name="FK__USINGEVEN__RoomI__6754599E" Association="Self.FK__USINGEVEN__RoomI__6754599E">
             <End Role="ROOM" EntitySet="ROOM" />
             <End Role="USINGEVENT" EntitySet="USINGEVENT" />
           </AssociationSet>
-          <AssociationSet Name="FK__USINGEVEN__Start__3A81B327" Association="Self.FK__USINGEVEN__Start__3A81B327">
+          <AssociationSet Name="FK__USINGEVEN__Start__693CA210" Association="Self.FK__USINGEVEN__Start__693CA210">
             <End Role="PERIOD_TIMERANGE" EntitySet="PERIOD_TIMERANGE" />
             <End Role="USINGEVENT" EntitySet="USINGEVENT" />
           </AssociationSet>
-          <AssociationSet Name="FK__USINGEXAM__EndPe__412EB0B6" Association="Self.FK__USINGEXAM__EndPe__412EB0B6">
+          <AssociationSet Name="FK__USINGEXAM__EndPe__6FE99F9F" Association="Self.FK__USINGEXAM__EndPe__6FE99F9F">
             <End Role="PERIOD_TIMERANGE" EntitySet="PERIOD_TIMERANGE" />
             <End Role="USINGEXAM" EntitySet="USINGEXAM" />
           </AssociationSet>
-          <AssociationSet Name="FK__USINGEXAM__RoomI__3E52440B" Association="Self.FK__USINGEXAM__RoomI__3E52440B">
+          <AssociationSet Name="FK__USINGEXAM__ExamI__6E01572D" Association="Self.FK__USINGEXAM__ExamI__6E01572D">
+            <End Role="EXAM" EntitySet="EXAM" />
+            <End Role="USINGEXAM" EntitySet="USINGEXAM" />
+          </AssociationSet>
+          <AssociationSet Name="FK__USINGEXAM__RoomI__6D0D32F4" Association="Self.FK__USINGEXAM__RoomI__6D0D32F4">
             <End Role="ROOM" EntitySet="ROOM" />
             <End Role="USINGEXAM" EntitySet="USINGEXAM" />
           </AssociationSet>
-          <AssociationSet Name="FK__USINGEXAM__Start__403A8C7D" Association="Self.FK__USINGEXAM__Start__403A8C7D">
+          <AssociationSet Name="FK__USINGEXAM__Start__6EF57B66" Association="Self.FK__USINGEXAM__Start__6EF57B66">
             <End Role="PERIOD_TIMERANGE" EntitySet="PERIOD_TIMERANGE" />
-            <End Role="USINGEXAM" EntitySet="USINGEXAM" />
-          </AssociationSet>
-          <AssociationSet Name="FK__USINGEXAM__Subje__3F466844" Association="Self.FK__USINGEXAM__Subje__3F466844">
-            <End Role="SUBJECT_" EntitySet="SUBJECT_" />
             <End Role="USINGEXAM" EntitySet="USINGEXAM" />
           </AssociationSet>
         </EntityContainer>
@@ -386,77 +479,96 @@
         <EntityContainer Name="QLGDEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="CLASSes" EntityType="QLGDModel.CLASS" />
           <EntitySet Name="EVENT_" EntityType="QLGDModel.EVENT_" />
+          <EntitySet Name="EXAMs" EntityType="QLGDModel.EXAM" />
+          <EntitySet Name="FACAULTies" EntityType="QLGDModel.FACAULTY" />
           <EntitySet Name="LECTURERs" EntityType="QLGDModel.LECTURER" />
           <EntitySet Name="PERIOD_TIMERANGE" EntityType="QLGDModel.PERIOD_TIMERANGE" />
           <EntitySet Name="ROOMs" EntityType="QLGDModel.ROOM" />
           <EntitySet Name="ROOMIGNOREs" EntityType="QLGDModel.ROOMIGNORE" />
           <EntitySet Name="SUBJECT_" EntityType="QLGDModel.SUBJECT_" />
+          <EntitySet Name="TRAININGTYPEs" EntityType="QLGDModel.TRAININGTYPE" />
           <EntitySet Name="USINGCLASSes" EntityType="QLGDModel.USINGCLASS" />
           <EntitySet Name="USINGEVENTs" EntityType="QLGDModel.USINGEVENT" />
           <EntitySet Name="USINGEXAMs" EntityType="QLGDModel.USINGEXAM" />
-          <AssociationSet Name="FK__CLASS__LecturerI__2D27B809" Association="QLGDModel.FK__CLASS__LecturerI__2D27B809">
+          <AssociationSet Name="FK__CLASS__LecturerI__52593CB8" Association="QLGDModel.FK__CLASS__LecturerI__52593CB8">
             <End Role="LECTURER" EntitySet="LECTURERs" />
             <End Role="CLASS" EntitySet="CLASSes" />
           </AssociationSet>
-          <AssociationSet Name="FK__CLASS__SubjectID__2C3393D0" Association="QLGDModel.FK__CLASS__SubjectID__2C3393D0">
+          <AssociationSet Name="FK__CLASS__SubjectID__5070F446" Association="QLGDModel.FK__CLASS__SubjectID__5070F446">
             <End Role="SUBJECT_" EntitySet="SUBJECT_" />
             <End Role="CLASS" EntitySet="CLASSes" />
           </AssociationSet>
-          <AssociationSet Name="FK__USINGCLAS__Class__33D4B598" Association="QLGDModel.FK__USINGCLAS__Class__33D4B598">
+          <AssociationSet Name="FK__CLASS__TrainingT__5165187F" Association="QLGDModel.FK__CLASS__TrainingT__5165187F">
+            <End Role="TRAININGTYPE" EntitySet="TRAININGTYPEs" />
+            <End Role="CLASS" EntitySet="CLASSes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__EXAM__ClassID__571DF1D5" Association="QLGDModel.FK__EXAM__ClassID__571DF1D5">
+            <End Role="CLASS" EntitySet="CLASSes" />
+            <End Role="EXAM" EntitySet="EXAMs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__USINGCLAS__Class__5AEE82B9" Association="QLGDModel.FK__USINGCLAS__Class__5AEE82B9">
             <End Role="CLASS" EntitySet="CLASSes" />
             <End Role="USINGCLASS" EntitySet="USINGCLASSes" />
           </AssociationSet>
-          <AssociationSet Name="FK__EVENT___Lecturer__300424B4" Association="QLGDModel.FK__EVENT___Lecturer__300424B4">
+          <AssociationSet Name="FK__EVENT___Lecturer__2F10007B" Association="QLGDModel.FK__EVENT___Lecturer__2F10007B">
             <End Role="LECTURER" EntitySet="LECTURERs" />
             <End Role="EVENT_" EntitySet="EVENT_" />
           </AssociationSet>
-          <AssociationSet Name="FK__USINGEVEN__Event__398D8EEE" Association="QLGDModel.FK__USINGEVEN__Event__398D8EEE">
+          <AssociationSet Name="FK__USINGEVEN__Event__68487DD7" Association="QLGDModel.FK__USINGEVEN__Event__68487DD7">
             <End Role="EVENT_" EntitySet="EVENT_" />
             <End Role="USINGEVENT" EntitySet="USINGEVENTs" />
           </AssociationSet>
-          <AssociationSet Name="FK__USINGCLAS__EndPe__35BCFE0A" Association="QLGDModel.FK__USINGCLAS__EndPe__35BCFE0A">
+          <AssociationSet Name="FK__EXAM__LecturerID__5629CD9C" Association="QLGDModel.FK__EXAM__LecturerID__5629CD9C">
+            <End Role="LECTURER" EntitySet="LECTURERs" />
+            <End Role="EXAM" EntitySet="EXAMs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__USINGEXAM__ExamI__6E01572D" Association="QLGDModel.FK__USINGEXAM__ExamI__6E01572D">
+            <End Role="EXAM" EntitySet="EXAMs" />
+            <End Role="USINGEXAM" EntitySet="USINGEXAMs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SUBJECT___Facaul__4D94879B" Association="QLGDModel.FK__SUBJECT___Facaul__4D94879B">
+            <End Role="FACAULTY" EntitySet="FACAULTies" />
+            <End Role="SUBJECT_" EntitySet="SUBJECT_" />
+          </AssociationSet>
+          <AssociationSet Name="FK__USINGCLAS__EndPe__5CD6CB2B" Association="QLGDModel.FK__USINGCLAS__EndPe__5CD6CB2B">
             <End Role="PERIOD_TIMERANGE" EntitySet="PERIOD_TIMERANGE" />
             <End Role="USINGCLASS" EntitySet="USINGCLASSes" />
           </AssociationSet>
-          <AssociationSet Name="FK__USINGCLAS__Start__34C8D9D1" Association="QLGDModel.FK__USINGCLAS__Start__34C8D9D1">
+          <AssociationSet Name="FK__USINGCLAS__Start__5BE2A6F2" Association="QLGDModel.FK__USINGCLAS__Start__5BE2A6F2">
             <End Role="PERIOD_TIMERANGE" EntitySet="PERIOD_TIMERANGE" />
             <End Role="USINGCLASS" EntitySet="USINGCLASSes" />
           </AssociationSet>
-          <AssociationSet Name="FK__USINGEVEN__EndPe__3B75D760" Association="QLGDModel.FK__USINGEVEN__EndPe__3B75D760">
+          <AssociationSet Name="FK__USINGEVEN__EndPe__6A30C649" Association="QLGDModel.FK__USINGEVEN__EndPe__6A30C649">
             <End Role="PERIOD_TIMERANGE" EntitySet="PERIOD_TIMERANGE" />
             <End Role="USINGEVENT" EntitySet="USINGEVENTs" />
           </AssociationSet>
-          <AssociationSet Name="FK__USINGEVEN__Start__3A81B327" Association="QLGDModel.FK__USINGEVEN__Start__3A81B327">
+          <AssociationSet Name="FK__USINGEVEN__Start__693CA210" Association="QLGDModel.FK__USINGEVEN__Start__693CA210">
             <End Role="PERIOD_TIMERANGE" EntitySet="PERIOD_TIMERANGE" />
             <End Role="USINGEVENT" EntitySet="USINGEVENTs" />
           </AssociationSet>
-          <AssociationSet Name="FK__USINGEXAM__EndPe__412EB0B6" Association="QLGDModel.FK__USINGEXAM__EndPe__412EB0B6">
+          <AssociationSet Name="FK__USINGEXAM__EndPe__6FE99F9F" Association="QLGDModel.FK__USINGEXAM__EndPe__6FE99F9F">
             <End Role="PERIOD_TIMERANGE" EntitySet="PERIOD_TIMERANGE" />
             <End Role="USINGEXAM" EntitySet="USINGEXAMs" />
           </AssociationSet>
-          <AssociationSet Name="FK__USINGEXAM__Start__403A8C7D" Association="QLGDModel.FK__USINGEXAM__Start__403A8C7D">
+          <AssociationSet Name="FK__USINGEXAM__Start__6EF57B66" Association="QLGDModel.FK__USINGEXAM__Start__6EF57B66">
             <End Role="PERIOD_TIMERANGE" EntitySet="PERIOD_TIMERANGE" />
             <End Role="USINGEXAM" EntitySet="USINGEXAMs" />
           </AssociationSet>
-          <AssociationSet Name="FK__USINGCLAS__RoomI__32E0915F" Association="QLGDModel.FK__USINGCLAS__RoomI__32E0915F">
+          <AssociationSet Name="FK__USINGCLAS__RoomI__59FA5E80" Association="QLGDModel.FK__USINGCLAS__RoomI__59FA5E80">
             <End Role="ROOM" EntitySet="ROOMs" />
             <End Role="USINGCLASS" EntitySet="USINGCLASSes" />
           </AssociationSet>
-          <AssociationSet Name="FK__USINGEVEN__RoomI__38996AB5" Association="QLGDModel.FK__USINGEVEN__RoomI__38996AB5">
+          <AssociationSet Name="FK__USINGEVEN__RoomI__6754599E" Association="QLGDModel.FK__USINGEVEN__RoomI__6754599E">
             <End Role="ROOM" EntitySet="ROOMs" />
             <End Role="USINGEVENT" EntitySet="USINGEVENTs" />
           </AssociationSet>
-          <AssociationSet Name="FK__USINGEXAM__RoomI__3E52440B" Association="QLGDModel.FK__USINGEXAM__RoomI__3E52440B">
+          <AssociationSet Name="FK__USINGEXAM__RoomI__6D0D32F4" Association="QLGDModel.FK__USINGEXAM__RoomI__6D0D32F4">
             <End Role="ROOM" EntitySet="ROOMs" />
             <End Role="USINGEXAM" EntitySet="USINGEXAMs" />
           </AssociationSet>
-          <AssociationSet Name="FK__ROOMIGNOR__Using__440B1D61" Association="QLGDModel.FK__ROOMIGNOR__Using__440B1D61">
+          <AssociationSet Name="FK__ROOMIGNOR__Using__619B8048" Association="QLGDModel.FK__ROOMIGNOR__Using__619B8048">
             <End Role="USINGCLASS" EntitySet="USINGCLASSes" />
             <End Role="ROOMIGNORE" EntitySet="ROOMIGNOREs" />
-          </AssociationSet>
-          <AssociationSet Name="FK__USINGEXAM__Subje__3F466844" Association="QLGDModel.FK__USINGEXAM__Subje__3F466844">
-            <End Role="SUBJECT_" EntitySet="SUBJECT_" />
-            <End Role="USINGEXAM" EntitySet="USINGEXAMs" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="CLASS">
@@ -465,6 +577,7 @@
           </Key>
           <Property Name="ClassID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="SubjectID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="TrainingTypeID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="ClassName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Semester" Type="Int32" Nullable="false" />
           <Property Name="Year_" Type="Int32" Nullable="false" />
@@ -473,9 +586,11 @@
           <Property Name="Population_" Type="Int32" Nullable="false" />
           <Property Name="LecturerID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="Description_" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="LECTURER" Relationship="QLGDModel.FK__CLASS__LecturerI__2D27B809" FromRole="CLASS" ToRole="LECTURER" />
-          <NavigationProperty Name="SUBJECT_" Relationship="QLGDModel.FK__CLASS__SubjectID__2C3393D0" FromRole="CLASS" ToRole="SUBJECT_" />
-          <NavigationProperty Name="USINGCLASSes" Relationship="QLGDModel.FK__USINGCLAS__Class__33D4B598" FromRole="CLASS" ToRole="USINGCLASS" />
+          <NavigationProperty Name="LECTURER" Relationship="QLGDModel.FK__CLASS__LecturerI__52593CB8" FromRole="CLASS" ToRole="LECTURER" />
+          <NavigationProperty Name="SUBJECT_" Relationship="QLGDModel.FK__CLASS__SubjectID__5070F446" FromRole="CLASS" ToRole="SUBJECT_" />
+          <NavigationProperty Name="TRAININGTYPE" Relationship="QLGDModel.FK__CLASS__TrainingT__5165187F" FromRole="CLASS" ToRole="TRAININGTYPE" />
+          <NavigationProperty Name="EXAMs" Relationship="QLGDModel.FK__EXAM__ClassID__571DF1D5" FromRole="CLASS" ToRole="EXAM" />
+          <NavigationProperty Name="USINGCLASSes" Relationship="QLGDModel.FK__USINGCLAS__Class__5AEE82B9" FromRole="CLASS" ToRole="USINGCLASS" />
         </EntityType>
         <EntityType Name="EVENT_">
           <Key>
@@ -486,8 +601,29 @@
           <Property Name="EventName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Population_" Type="Int32" Nullable="false" />
           <Property Name="Description_" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="LECTURER" Relationship="QLGDModel.FK__EVENT___Lecturer__300424B4" FromRole="EVENT_" ToRole="LECTURER" />
-          <NavigationProperty Name="USINGEVENTs" Relationship="QLGDModel.FK__USINGEVEN__Event__398D8EEE" FromRole="EVENT_" ToRole="USINGEVENT" />
+          <NavigationProperty Name="LECTURER" Relationship="QLGDModel.FK__EVENT___Lecturer__2F10007B" FromRole="EVENT_" ToRole="LECTURER" />
+          <NavigationProperty Name="USINGEVENTs" Relationship="QLGDModel.FK__USINGEVEN__Event__68487DD7" FromRole="EVENT_" ToRole="USINGEVENT" />
+        </EntityType>
+        <EntityType Name="EXAM">
+          <Key>
+            <PropertyRef Name="ExamID" />
+          </Key>
+          <Property Name="ExamID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="LecturerID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="ClassID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Population_" Type="Int32" Nullable="false" />
+          <Property Name="Description_" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="CLASS" Relationship="QLGDModel.FK__EXAM__ClassID__571DF1D5" FromRole="EXAM" ToRole="CLASS" />
+          <NavigationProperty Name="LECTURER" Relationship="QLGDModel.FK__EXAM__LecturerID__5629CD9C" FromRole="EXAM" ToRole="LECTURER" />
+          <NavigationProperty Name="USINGEXAMs" Relationship="QLGDModel.FK__USINGEXAM__ExamI__6E01572D" FromRole="EXAM" ToRole="USINGEXAM" />
+        </EntityType>
+        <EntityType Name="FACAULTY">
+          <Key>
+            <PropertyRef Name="FacaultyID" />
+          </Key>
+          <Property Name="FacaultyID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="FacaultyName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="SUBJECT_" Relationship="QLGDModel.FK__SUBJECT___Facaul__4D94879B" FromRole="FACAULTY" ToRole="SUBJECT_" />
         </EntityType>
         <EntityType Name="LECTURER">
           <Key>
@@ -496,8 +632,9 @@
           <Property Name="LecturerID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="LecturerName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="LecturerType" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="CLASSes" Relationship="QLGDModel.FK__CLASS__LecturerI__2D27B809" FromRole="LECTURER" ToRole="CLASS" />
-          <NavigationProperty Name="EVENT_" Relationship="QLGDModel.FK__EVENT___Lecturer__300424B4" FromRole="LECTURER" ToRole="EVENT_" />
+          <NavigationProperty Name="CLASSes" Relationship="QLGDModel.FK__CLASS__LecturerI__52593CB8" FromRole="LECTURER" ToRole="CLASS" />
+          <NavigationProperty Name="EVENT_" Relationship="QLGDModel.FK__EVENT___Lecturer__2F10007B" FromRole="LECTURER" ToRole="EVENT_" />
+          <NavigationProperty Name="EXAMs" Relationship="QLGDModel.FK__EXAM__LecturerID__5629CD9C" FromRole="LECTURER" ToRole="EXAM" />
         </EntityType>
         <EntityType Name="PERIOD_TIMERANGE">
           <Key>
@@ -505,14 +642,14 @@
           </Key>
           <Property Name="PeriodID" Type="Int32" Nullable="false" />
           <Property Name="PeriodName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="StartTime" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="EndTime" Type="DateTime" Nullable="false" Precision="0" />
-          <NavigationProperty Name="USINGCLASSes" Relationship="QLGDModel.FK__USINGCLAS__EndPe__35BCFE0A" FromRole="PERIOD_TIMERANGE" ToRole="USINGCLASS" />
-          <NavigationProperty Name="USINGCLASSes1" Relationship="QLGDModel.FK__USINGCLAS__Start__34C8D9D1" FromRole="PERIOD_TIMERANGE" ToRole="USINGCLASS" />
-          <NavigationProperty Name="USINGEVENTs" Relationship="QLGDModel.FK__USINGEVEN__EndPe__3B75D760" FromRole="PERIOD_TIMERANGE" ToRole="USINGEVENT" />
-          <NavigationProperty Name="USINGEVENTs1" Relationship="QLGDModel.FK__USINGEVEN__Start__3A81B327" FromRole="PERIOD_TIMERANGE" ToRole="USINGEVENT" />
-          <NavigationProperty Name="USINGEXAMs" Relationship="QLGDModel.FK__USINGEXAM__EndPe__412EB0B6" FromRole="PERIOD_TIMERANGE" ToRole="USINGEXAM" />
-          <NavigationProperty Name="USINGEXAMs1" Relationship="QLGDModel.FK__USINGEXAM__Start__403A8C7D" FromRole="PERIOD_TIMERANGE" ToRole="USINGEXAM" />
+          <Property Name="StartTime" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="EndTime" Type="Time" Nullable="false" Precision="7" />
+          <NavigationProperty Name="USINGCLASSes" Relationship="QLGDModel.FK__USINGCLAS__EndPe__5CD6CB2B" FromRole="PERIOD_TIMERANGE" ToRole="USINGCLASS" />
+          <NavigationProperty Name="USINGCLASSes1" Relationship="QLGDModel.FK__USINGCLAS__Start__5BE2A6F2" FromRole="PERIOD_TIMERANGE" ToRole="USINGCLASS" />
+          <NavigationProperty Name="USINGEVENTs" Relationship="QLGDModel.FK__USINGEVEN__EndPe__6A30C649" FromRole="PERIOD_TIMERANGE" ToRole="USINGEVENT" />
+          <NavigationProperty Name="USINGEVENTs1" Relationship="QLGDModel.FK__USINGEVEN__Start__693CA210" FromRole="PERIOD_TIMERANGE" ToRole="USINGEVENT" />
+          <NavigationProperty Name="USINGEXAMs" Relationship="QLGDModel.FK__USINGEXAM__EndPe__6FE99F9F" FromRole="PERIOD_TIMERANGE" ToRole="USINGEXAM" />
+          <NavigationProperty Name="USINGEXAMs1" Relationship="QLGDModel.FK__USINGEXAM__Start__6EF57B66" FromRole="PERIOD_TIMERANGE" ToRole="USINGEXAM" />
         </EntityType>
         <EntityType Name="ROOM">
           <Key>
@@ -522,9 +659,9 @@
           <Property Name="Capacity" Type="Int32" Nullable="false" />
           <Property Name="Description_" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Status_" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="USINGCLASSes" Relationship="QLGDModel.FK__USINGCLAS__RoomI__32E0915F" FromRole="ROOM" ToRole="USINGCLASS" />
-          <NavigationProperty Name="USINGEVENTs" Relationship="QLGDModel.FK__USINGEVEN__RoomI__38996AB5" FromRole="ROOM" ToRole="USINGEVENT" />
-          <NavigationProperty Name="USINGEXAMs" Relationship="QLGDModel.FK__USINGEXAM__RoomI__3E52440B" FromRole="ROOM" ToRole="USINGEXAM" />
+          <NavigationProperty Name="USINGCLASSes" Relationship="QLGDModel.FK__USINGCLAS__RoomI__59FA5E80" FromRole="ROOM" ToRole="USINGCLASS" />
+          <NavigationProperty Name="USINGEVENTs" Relationship="QLGDModel.FK__USINGEVEN__RoomI__6754599E" FromRole="ROOM" ToRole="USINGEVENT" />
+          <NavigationProperty Name="USINGEXAMs" Relationship="QLGDModel.FK__USINGEXAM__RoomI__6D0D32F4" FromRole="ROOM" ToRole="USINGEXAM" />
         </EntityType>
         <EntityType Name="ROOMIGNORE">
           <Key>
@@ -533,7 +670,7 @@
           <Property Name="RoomIgnoreID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="UsingClassID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="IgnoreDate" Type="DateTime" Nullable="false" Precision="0" />
-          <NavigationProperty Name="USINGCLASS" Relationship="QLGDModel.FK__ROOMIGNOR__Using__440B1D61" FromRole="ROOMIGNORE" ToRole="USINGCLASS" />
+          <NavigationProperty Name="USINGCLASS" Relationship="QLGDModel.FK__ROOMIGNOR__Using__619B8048" FromRole="ROOMIGNORE" ToRole="USINGCLASS" />
         </EntityType>
         <EntityType Name="SUBJECT_">
           <Key>
@@ -541,8 +678,17 @@
           </Key>
           <Property Name="SubjectID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="SubjectName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="CLASSes" Relationship="QLGDModel.FK__CLASS__SubjectID__2C3393D0" FromRole="SUBJECT_" ToRole="CLASS" />
-          <NavigationProperty Name="USINGEXAMs" Relationship="QLGDModel.FK__USINGEXAM__Subje__3F466844" FromRole="SUBJECT_" ToRole="USINGEXAM" />
+          <Property Name="FacaultyID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CLASSes" Relationship="QLGDModel.FK__CLASS__SubjectID__5070F446" FromRole="SUBJECT_" ToRole="CLASS" />
+          <NavigationProperty Name="FACAULTY" Relationship="QLGDModel.FK__SUBJECT___Facaul__4D94879B" FromRole="SUBJECT_" ToRole="FACAULTY" />
+        </EntityType>
+        <EntityType Name="TRAININGTYPE">
+          <Key>
+            <PropertyRef Name="TrainingTypeID" />
+          </Key>
+          <Property Name="TrainingTypeID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="TrainingTypeName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="CLASSes" Relationship="QLGDModel.FK__CLASS__TrainingT__5165187F" FromRole="TRAININGTYPE" ToRole="CLASS" />
         </EntityType>
         <EntityType Name="USINGCLASS">
           <Key>
@@ -557,11 +703,11 @@
           <Property Name="Day_" Type="Int32" Nullable="false" />
           <Property Name="Status_" Type="Int32" Nullable="false" />
           <Property Name="Description_" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="CLASS" Relationship="QLGDModel.FK__USINGCLAS__Class__33D4B598" FromRole="USINGCLASS" ToRole="CLASS" />
-          <NavigationProperty Name="PERIOD_TIMERANGE" Relationship="QLGDModel.FK__USINGCLAS__EndPe__35BCFE0A" FromRole="USINGCLASS" ToRole="PERIOD_TIMERANGE" />
-          <NavigationProperty Name="PERIOD_TIMERANGE1" Relationship="QLGDModel.FK__USINGCLAS__Start__34C8D9D1" FromRole="USINGCLASS" ToRole="PERIOD_TIMERANGE" />
-          <NavigationProperty Name="ROOM" Relationship="QLGDModel.FK__USINGCLAS__RoomI__32E0915F" FromRole="USINGCLASS" ToRole="ROOM" />
-          <NavigationProperty Name="ROOMIGNOREs" Relationship="QLGDModel.FK__ROOMIGNOR__Using__440B1D61" FromRole="USINGCLASS" ToRole="ROOMIGNORE" />
+          <NavigationProperty Name="CLASS" Relationship="QLGDModel.FK__USINGCLAS__Class__5AEE82B9" FromRole="USINGCLASS" ToRole="CLASS" />
+          <NavigationProperty Name="PERIOD_TIMERANGE" Relationship="QLGDModel.FK__USINGCLAS__EndPe__5CD6CB2B" FromRole="USINGCLASS" ToRole="PERIOD_TIMERANGE" />
+          <NavigationProperty Name="PERIOD_TIMERANGE1" Relationship="QLGDModel.FK__USINGCLAS__Start__5BE2A6F2" FromRole="USINGCLASS" ToRole="PERIOD_TIMERANGE" />
+          <NavigationProperty Name="ROOM" Relationship="QLGDModel.FK__USINGCLAS__RoomI__59FA5E80" FromRole="USINGCLASS" ToRole="ROOM" />
+          <NavigationProperty Name="ROOMIGNOREs" Relationship="QLGDModel.FK__ROOMIGNOR__Using__619B8048" FromRole="USINGCLASS" ToRole="ROOMIGNORE" />
         </EntityType>
         <EntityType Name="USINGEVENT">
           <Key>
@@ -575,10 +721,10 @@
           <Property Name="EndPeriod" Type="Int32" Nullable="false" />
           <Property Name="Status_" Type="Int32" Nullable="false" />
           <Property Name="Description_" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="EVENT_" Relationship="QLGDModel.FK__USINGEVEN__Event__398D8EEE" FromRole="USINGEVENT" ToRole="EVENT_" />
-          <NavigationProperty Name="PERIOD_TIMERANGE" Relationship="QLGDModel.FK__USINGEVEN__EndPe__3B75D760" FromRole="USINGEVENT" ToRole="PERIOD_TIMERANGE" />
-          <NavigationProperty Name="PERIOD_TIMERANGE1" Relationship="QLGDModel.FK__USINGEVEN__Start__3A81B327" FromRole="USINGEVENT" ToRole="PERIOD_TIMERANGE" />
-          <NavigationProperty Name="ROOM" Relationship="QLGDModel.FK__USINGEVEN__RoomI__38996AB5" FromRole="USINGEVENT" ToRole="ROOM" />
+          <NavigationProperty Name="EVENT_" Relationship="QLGDModel.FK__USINGEVEN__Event__68487DD7" FromRole="USINGEVENT" ToRole="EVENT_" />
+          <NavigationProperty Name="PERIOD_TIMERANGE" Relationship="QLGDModel.FK__USINGEVEN__EndPe__6A30C649" FromRole="USINGEVENT" ToRole="PERIOD_TIMERANGE" />
+          <NavigationProperty Name="PERIOD_TIMERANGE1" Relationship="QLGDModel.FK__USINGEVEN__Start__693CA210" FromRole="USINGEVENT" ToRole="PERIOD_TIMERANGE" />
+          <NavigationProperty Name="ROOM" Relationship="QLGDModel.FK__USINGEVEN__RoomI__6754599E" FromRole="USINGEVENT" ToRole="ROOM" />
         </EntityType>
         <EntityType Name="USINGEXAM">
           <Key>
@@ -586,18 +732,18 @@
           </Key>
           <Property Name="UsingExamID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="RoomID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="SubjectID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="ExamID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="Date_" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="StartPeriod" Type="Int32" Nullable="false" />
           <Property Name="EndPeriod" Type="Int32" Nullable="false" />
           <Property Name="Status_" Type="Int32" Nullable="false" />
           <Property Name="Description_" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="PERIOD_TIMERANGE" Relationship="QLGDModel.FK__USINGEXAM__EndPe__412EB0B6" FromRole="USINGEXAM" ToRole="PERIOD_TIMERANGE" />
-          <NavigationProperty Name="PERIOD_TIMERANGE1" Relationship="QLGDModel.FK__USINGEXAM__Start__403A8C7D" FromRole="USINGEXAM" ToRole="PERIOD_TIMERANGE" />
-          <NavigationProperty Name="ROOM" Relationship="QLGDModel.FK__USINGEXAM__RoomI__3E52440B" FromRole="USINGEXAM" ToRole="ROOM" />
-          <NavigationProperty Name="SUBJECT_" Relationship="QLGDModel.FK__USINGEXAM__Subje__3F466844" FromRole="USINGEXAM" ToRole="SUBJECT_" />
+          <NavigationProperty Name="EXAM" Relationship="QLGDModel.FK__USINGEXAM__ExamI__6E01572D" FromRole="USINGEXAM" ToRole="EXAM" />
+          <NavigationProperty Name="PERIOD_TIMERANGE" Relationship="QLGDModel.FK__USINGEXAM__EndPe__6FE99F9F" FromRole="USINGEXAM" ToRole="PERIOD_TIMERANGE" />
+          <NavigationProperty Name="PERIOD_TIMERANGE1" Relationship="QLGDModel.FK__USINGEXAM__Start__6EF57B66" FromRole="USINGEXAM" ToRole="PERIOD_TIMERANGE" />
+          <NavigationProperty Name="ROOM" Relationship="QLGDModel.FK__USINGEXAM__RoomI__6D0D32F4" FromRole="USINGEXAM" ToRole="ROOM" />
         </EntityType>
-        <Association Name="FK__CLASS__LecturerI__2D27B809">
+        <Association Name="FK__CLASS__LecturerI__52593CB8">
           <End Type="QLGDModel.LECTURER" Role="LECTURER" Multiplicity="1" />
           <End Type="QLGDModel.CLASS" Role="CLASS" Multiplicity="*" />
           <ReferentialConstraint>
@@ -609,7 +755,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__CLASS__SubjectID__2C3393D0">
+        <Association Name="FK__CLASS__SubjectID__5070F446">
           <End Type="QLGDModel.SUBJECT_" Role="SUBJECT_" Multiplicity="1" />
           <End Type="QLGDModel.CLASS" Role="CLASS" Multiplicity="*" />
           <ReferentialConstraint>
@@ -621,7 +767,31 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__USINGCLAS__Class__33D4B598">
+        <Association Name="FK__CLASS__TrainingT__5165187F">
+          <End Type="QLGDModel.TRAININGTYPE" Role="TRAININGTYPE" Multiplicity="1" />
+          <End Type="QLGDModel.CLASS" Role="CLASS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TRAININGTYPE">
+              <PropertyRef Name="TrainingTypeID" />
+            </Principal>
+            <Dependent Role="CLASS">
+              <PropertyRef Name="TrainingTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__EXAM__ClassID__571DF1D5">
+          <End Type="QLGDModel.CLASS" Role="CLASS" Multiplicity="1" />
+          <End Type="QLGDModel.EXAM" Role="EXAM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CLASS">
+              <PropertyRef Name="ClassID" />
+            </Principal>
+            <Dependent Role="EXAM">
+              <PropertyRef Name="ClassID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__USINGCLAS__Class__5AEE82B9">
           <End Type="QLGDModel.CLASS" Role="CLASS" Multiplicity="1" />
           <End Type="QLGDModel.USINGCLASS" Role="USINGCLASS" Multiplicity="*" />
           <ReferentialConstraint>
@@ -633,7 +803,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__EVENT___Lecturer__300424B4">
+        <Association Name="FK__EVENT___Lecturer__2F10007B">
           <End Type="QLGDModel.LECTURER" Role="LECTURER" Multiplicity="1" />
           <End Type="QLGDModel.EVENT_" Role="EVENT_" Multiplicity="*" />
           <ReferentialConstraint>
@@ -645,7 +815,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__USINGEVEN__Event__398D8EEE">
+        <Association Name="FK__USINGEVEN__Event__68487DD7">
           <End Type="QLGDModel.EVENT_" Role="EVENT_" Multiplicity="1" />
           <End Type="QLGDModel.USINGEVENT" Role="USINGEVENT" Multiplicity="*" />
           <ReferentialConstraint>
@@ -657,7 +827,43 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__USINGCLAS__EndPe__35BCFE0A">
+        <Association Name="FK__EXAM__LecturerID__5629CD9C">
+          <End Type="QLGDModel.LECTURER" Role="LECTURER" Multiplicity="1" />
+          <End Type="QLGDModel.EXAM" Role="EXAM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LECTURER">
+              <PropertyRef Name="LecturerID" />
+            </Principal>
+            <Dependent Role="EXAM">
+              <PropertyRef Name="LecturerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__USINGEXAM__ExamI__6E01572D">
+          <End Type="QLGDModel.EXAM" Role="EXAM" Multiplicity="1" />
+          <End Type="QLGDModel.USINGEXAM" Role="USINGEXAM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EXAM">
+              <PropertyRef Name="ExamID" />
+            </Principal>
+            <Dependent Role="USINGEXAM">
+              <PropertyRef Name="ExamID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__SUBJECT___Facaul__4D94879B">
+          <End Type="QLGDModel.FACAULTY" Role="FACAULTY" Multiplicity="1" />
+          <End Type="QLGDModel.SUBJECT_" Role="SUBJECT_" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FACAULTY">
+              <PropertyRef Name="FacaultyID" />
+            </Principal>
+            <Dependent Role="SUBJECT_">
+              <PropertyRef Name="FacaultyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__USINGCLAS__EndPe__5CD6CB2B">
           <End Type="QLGDModel.PERIOD_TIMERANGE" Role="PERIOD_TIMERANGE" Multiplicity="1" />
           <End Type="QLGDModel.USINGCLASS" Role="USINGCLASS" Multiplicity="*" />
           <ReferentialConstraint>
@@ -669,7 +875,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__USINGCLAS__Start__34C8D9D1">
+        <Association Name="FK__USINGCLAS__Start__5BE2A6F2">
           <End Type="QLGDModel.PERIOD_TIMERANGE" Role="PERIOD_TIMERANGE" Multiplicity="1" />
           <End Type="QLGDModel.USINGCLASS" Role="USINGCLASS" Multiplicity="*" />
           <ReferentialConstraint>
@@ -681,7 +887,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__USINGEVEN__EndPe__3B75D760">
+        <Association Name="FK__USINGEVEN__EndPe__6A30C649">
           <End Type="QLGDModel.PERIOD_TIMERANGE" Role="PERIOD_TIMERANGE" Multiplicity="1" />
           <End Type="QLGDModel.USINGEVENT" Role="USINGEVENT" Multiplicity="*" />
           <ReferentialConstraint>
@@ -693,7 +899,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__USINGEVEN__Start__3A81B327">
+        <Association Name="FK__USINGEVEN__Start__693CA210">
           <End Type="QLGDModel.PERIOD_TIMERANGE" Role="PERIOD_TIMERANGE" Multiplicity="1" />
           <End Type="QLGDModel.USINGEVENT" Role="USINGEVENT" Multiplicity="*" />
           <ReferentialConstraint>
@@ -705,7 +911,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__USINGEXAM__EndPe__412EB0B6">
+        <Association Name="FK__USINGEXAM__EndPe__6FE99F9F">
           <End Type="QLGDModel.PERIOD_TIMERANGE" Role="PERIOD_TIMERANGE" Multiplicity="1" />
           <End Type="QLGDModel.USINGEXAM" Role="USINGEXAM" Multiplicity="*" />
           <ReferentialConstraint>
@@ -717,7 +923,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__USINGEXAM__Start__403A8C7D">
+        <Association Name="FK__USINGEXAM__Start__6EF57B66">
           <End Type="QLGDModel.PERIOD_TIMERANGE" Role="PERIOD_TIMERANGE" Multiplicity="1" />
           <End Type="QLGDModel.USINGEXAM" Role="USINGEXAM" Multiplicity="*" />
           <ReferentialConstraint>
@@ -729,7 +935,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__USINGCLAS__RoomI__32E0915F">
+        <Association Name="FK__USINGCLAS__RoomI__59FA5E80">
           <End Type="QLGDModel.ROOM" Role="ROOM" Multiplicity="1" />
           <End Type="QLGDModel.USINGCLASS" Role="USINGCLASS" Multiplicity="*" />
           <ReferentialConstraint>
@@ -741,7 +947,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__USINGEVEN__RoomI__38996AB5">
+        <Association Name="FK__USINGEVEN__RoomI__6754599E">
           <End Type="QLGDModel.ROOM" Role="ROOM" Multiplicity="1" />
           <End Type="QLGDModel.USINGEVENT" Role="USINGEVENT" Multiplicity="*" />
           <ReferentialConstraint>
@@ -753,7 +959,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__USINGEXAM__RoomI__3E52440B">
+        <Association Name="FK__USINGEXAM__RoomI__6D0D32F4">
           <End Type="QLGDModel.ROOM" Role="ROOM" Multiplicity="1" />
           <End Type="QLGDModel.USINGEXAM" Role="USINGEXAM" Multiplicity="*" />
           <ReferentialConstraint>
@@ -765,7 +971,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ROOMIGNOR__Using__440B1D61">
+        <Association Name="FK__ROOMIGNOR__Using__619B8048">
           <End Type="QLGDModel.USINGCLASS" Role="USINGCLASS" Multiplicity="1" />
           <End Type="QLGDModel.ROOMIGNORE" Role="ROOMIGNORE" Multiplicity="*" />
           <ReferentialConstraint>
@@ -777,19 +983,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__USINGEXAM__Subje__3F466844">
-          <End Type="QLGDModel.SUBJECT_" Role="SUBJECT_" Multiplicity="1" />
-          <End Type="QLGDModel.USINGEXAM" Role="USINGEXAM" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SUBJECT_">
-              <PropertyRef Name="SubjectID" />
-            </Principal>
-            <Dependent Role="USINGEXAM">
-              <PropertyRef Name="SubjectID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -806,6 +1000,7 @@
                 <ScalarProperty Name="Year_" ColumnName="Year_" />
                 <ScalarProperty Name="Semester" ColumnName="Semester" />
                 <ScalarProperty Name="ClassName" ColumnName="ClassName" />
+                <ScalarProperty Name="TrainingTypeID" ColumnName="TrainingTypeID" />
                 <ScalarProperty Name="SubjectID" ColumnName="SubjectID" />
                 <ScalarProperty Name="ClassID" ColumnName="ClassID" />
               </MappingFragment>
@@ -819,6 +1014,25 @@
                 <ScalarProperty Name="EventName" ColumnName="EventName" />
                 <ScalarProperty Name="LecturerID" ColumnName="LecturerID" />
                 <ScalarProperty Name="EventID" ColumnName="EventID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EXAMs">
+            <EntityTypeMapping TypeName="QLGDModel.EXAM">
+              <MappingFragment StoreEntitySet="EXAM">
+                <ScalarProperty Name="Description_" ColumnName="Description_" />
+                <ScalarProperty Name="Population_" ColumnName="Population_" />
+                <ScalarProperty Name="ClassID" ColumnName="ClassID" />
+                <ScalarProperty Name="LecturerID" ColumnName="LecturerID" />
+                <ScalarProperty Name="ExamID" ColumnName="ExamID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FACAULTies">
+            <EntityTypeMapping TypeName="QLGDModel.FACAULTY">
+              <MappingFragment StoreEntitySet="FACAULTY">
+                <ScalarProperty Name="FacaultyName" ColumnName="FacaultyName" />
+                <ScalarProperty Name="FacaultyID" ColumnName="FacaultyID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -863,8 +1077,17 @@
           <EntitySetMapping Name="SUBJECT_">
             <EntityTypeMapping TypeName="QLGDModel.SUBJECT_">
               <MappingFragment StoreEntitySet="SUBJECT_">
+                <ScalarProperty Name="FacaultyID" ColumnName="FacaultyID" />
                 <ScalarProperty Name="SubjectName" ColumnName="SubjectName" />
                 <ScalarProperty Name="SubjectID" ColumnName="SubjectID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TRAININGTYPEs">
+            <EntityTypeMapping TypeName="QLGDModel.TRAININGTYPE">
+              <MappingFragment StoreEntitySet="TRAININGTYPE">
+                <ScalarProperty Name="TrainingTypeName" ColumnName="TrainingTypeName" />
+                <ScalarProperty Name="TrainingTypeID" ColumnName="TrainingTypeID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -905,7 +1128,7 @@
                 <ScalarProperty Name="EndPeriod" ColumnName="EndPeriod" />
                 <ScalarProperty Name="StartPeriod" ColumnName="StartPeriod" />
                 <ScalarProperty Name="Date_" ColumnName="Date_" />
-                <ScalarProperty Name="SubjectID" ColumnName="SubjectID" />
+                <ScalarProperty Name="ExamID" ColumnName="ExamID" />
                 <ScalarProperty Name="RoomID" ColumnName="RoomID" />
                 <ScalarProperty Name="UsingExamID" ColumnName="UsingExamID" />
               </MappingFragment>

@@ -8,5 +8,6 @@ namespace QuanLyGiangDuong.ViewModel
 {
     class RoomViewModel
     {
+
     }
 }

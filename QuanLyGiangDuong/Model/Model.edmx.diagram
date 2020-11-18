@@ -5,32 +5,39 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="81e7eba50b0148cabeab4c13d482da14" Name="Diagram1" ZoomLevel="82">
-        <EntityTypeShape EntityType="QLGDModel.CLASS" Width="1.5" PointX="3.75" PointY="14.125" />
+        <EntityTypeShape EntityType="QLGDModel.CLASS" Width="1.5" PointX="1.5" PointY="18.875" />
         <EntityTypeShape EntityType="QLGDModel.EVENT_" Width="1.5" PointX="0.75" PointY="0.75" />
-        <EntityTypeShape EntityType="QLGDModel.LECTURER" Width="1.5" PointX="1.5" PointY="15" />
+        <EntityTypeShape EntityType="QLGDModel.EXAM" Width="1.5" PointX="0.75" PointY="13.625" />
+        <EntityTypeShape EntityType="QLGDModel.FACAULTY" Width="1.5" PointX="1.5" PointY="30.375" />
+        <EntityTypeShape EntityType="QLGDModel.LECTURER" Width="1.5" PointX="1.5" PointY="24.25" />
         <EntityTypeShape EntityType="QLGDModel.PERIOD_TIMERANGE" Width="1.5" PointX="0.75" PointY="7.5" />
-        <EntityTypeShape EntityType="QLGDModel.ROOM" Width="1.5" PointX="0.75" PointY="4" />
+        <EntityTypeShape EntityType="QLGDModel.ROOM" Width="1.5" PointX="0.75" PointY="4.25" />
         <EntityTypeShape EntityType="QLGDModel.ROOMIGNORE" Width="1.5" PointX="8.25" PointY="8" />
-        <EntityTypeShape EntityType="QLGDModel.SUBJECT_" Width="1.5" PointX="0.75" PointY="11.125" />
+        <EntityTypeShape EntityType="QLGDModel.SUBJECT_" Width="1.5" PointX="1.5" PointY="27.125" />
+        <EntityTypeShape EntityType="QLGDModel.TRAININGTYPE" Width="1.5" PointX="1.5" PointY="32.875" />
         <EntityTypeShape EntityType="QLGDModel.USINGCLASS" Width="1.5" PointX="6" PointY="7.125" />
         <EntityTypeShape EntityType="QLGDModel.USINGEVENT" Width="1.5" PointX="3" PointY="7.25" />
         <EntityTypeShape EntityType="QLGDModel.USINGEXAM" Width="1.5" PointX="3" PointY="2.25" />
-        <AssociationConnector Association="QLGDModel.FK__CLASS__LecturerI__2D27B809" />
-        <AssociationConnector Association="QLGDModel.FK__CLASS__SubjectID__2C3393D0" />
-        <AssociationConnector Association="QLGDModel.FK__USINGCLAS__Class__33D4B598" />
-        <AssociationConnector Association="QLGDModel.FK__EVENT___Lecturer__300424B4" />
-        <AssociationConnector Association="QLGDModel.FK__USINGEVEN__Event__398D8EEE" />
-        <AssociationConnector Association="QLGDModel.FK__USINGCLAS__EndPe__35BCFE0A" />
-        <AssociationConnector Association="QLGDModel.FK__USINGCLAS__Start__34C8D9D1" />
-        <AssociationConnector Association="QLGDModel.FK__USINGEVEN__EndPe__3B75D760" />
-        <AssociationConnector Association="QLGDModel.FK__USINGEVEN__Start__3A81B327" />
-        <AssociationConnector Association="QLGDModel.FK__USINGEXAM__EndPe__412EB0B6" />
-        <AssociationConnector Association="QLGDModel.FK__USINGEXAM__Start__403A8C7D" />
-        <AssociationConnector Association="QLGDModel.FK__USINGCLAS__RoomI__32E0915F" />
-        <AssociationConnector Association="QLGDModel.FK__USINGEVEN__RoomI__38996AB5" />
-        <AssociationConnector Association="QLGDModel.FK__USINGEXAM__RoomI__3E52440B" />
-        <AssociationConnector Association="QLGDModel.FK__ROOMIGNOR__Using__440B1D61" />
-        <AssociationConnector Association="QLGDModel.FK__USINGEXAM__Subje__3F466844" />
+        <AssociationConnector Association="QLGDModel.FK__CLASS__LecturerI__52593CB8" />
+        <AssociationConnector Association="QLGDModel.FK__CLASS__SubjectID__5070F446" />
+        <AssociationConnector Association="QLGDModel.FK__CLASS__TrainingT__5165187F" />
+        <AssociationConnector Association="QLGDModel.FK__EXAM__ClassID__571DF1D5" />
+        <AssociationConnector Association="QLGDModel.FK__USINGCLAS__Class__5AEE82B9" />
+        <AssociationConnector Association="QLGDModel.FK__EVENT___Lecturer__2F10007B" />
+        <AssociationConnector Association="QLGDModel.FK__USINGEVEN__Event__68487DD7" />
+        <AssociationConnector Association="QLGDModel.FK__EXAM__LecturerID__5629CD9C" />
+        <AssociationConnector Association="QLGDModel.FK__USINGEXAM__ExamI__6E01572D" />
+        <AssociationConnector Association="QLGDModel.FK__SUBJECT___Facaul__4D94879B" />
+        <AssociationConnector Association="QLGDModel.FK__USINGCLAS__EndPe__5CD6CB2B" />
+        <AssociationConnector Association="QLGDModel.FK__USINGCLAS__Start__5BE2A6F2" />
+        <AssociationConnector Association="QLGDModel.FK__USINGEVEN__EndPe__6A30C649" />
+        <AssociationConnector Association="QLGDModel.FK__USINGEVEN__Start__693CA210" />
+        <AssociationConnector Association="QLGDModel.FK__USINGEXAM__EndPe__6FE99F9F" />
+        <AssociationConnector Association="QLGDModel.FK__USINGEXAM__Start__6EF57B66" />
+        <AssociationConnector Association="QLGDModel.FK__USINGCLAS__RoomI__59FA5E80" />
+        <AssociationConnector Association="QLGDModel.FK__USINGEVEN__RoomI__6754599E" />
+        <AssociationConnector Association="QLGDModel.FK__USINGEXAM__RoomI__6D0D32F4" />
+        <AssociationConnector Association="QLGDModel.FK__ROOMIGNOR__Using__619B8048" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
