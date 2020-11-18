@@ -42,11 +42,11 @@ namespace QuanLyGiangDuong.ViewModel
             set { _tiet = value; }
         }
 
-        public void Add(string ClassID, string ClassName, int StartPeriod, int EndPeriod)
+        public void Add(string UsingClassID, string ClassName, int StartPeriod, int EndPeriod)
         {
             for(int i=StartPeriod; i<EndPeriod+1; i++)
             {
-                tiet[i-1] = new Tuple<string, string>(ClassID, ClassName);
+                tiet[i-1] = new Tuple<string, string>(UsingClassID, ClassName);
             }
         }
     }
@@ -84,6 +84,35 @@ namespace QuanLyGiangDuong.ViewModel
             }
 
             set { _tb = value; OnPropertyChange("tb"); }
+        }
+
+        private table _selectedTB;
+
+        public table selectedTB
+        {
+            get 
+            {
+                return _selectedTB;
+            }
+
+            set
+            {
+                _selectedTB = value;
+            }
+        }
+
+        private string _selectedUsingClassID;
+        public string selectedUsingClassID
+        {
+            get
+            {
+                return _selectedUsingClassID;
+            }
+
+            set
+            {
+                _selectedUsingClassID = value;
+            }
         }
 
         private string _selectedDate;
