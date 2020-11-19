@@ -165,6 +165,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="LoginWindow.xaml.cs">
+      <DependentUpon>LoginWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Model\CLASS.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
@@ -206,6 +209,7 @@
     <Compile Include="Model\ROOMIGNORE.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\RoomExt.cs" />
     <Compile Include="Model\SUBJECT_.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
@@ -225,6 +229,7 @@
     <Compile Include="ViewModel\BaseViewModel.cs" />
     <Compile Include="ViewModel\EventInputViewModel.cs" />
     <Compile Include="ViewModel\HomePage_ViewModel.cs" />
+    <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\RoomManagementViewModel.cs" />
     <Compile Include="Model\UsingEventModel.cs" />
@@ -255,6 +260,10 @@
     <Compile Include="View\TimeTablePage.xaml.cs">
       <DependentUpon>TimeTablePage.xaml</DependentUpon>
     </Compile>
+    <Page Include="LoginWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

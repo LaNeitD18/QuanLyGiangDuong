@@ -17,14 +17,13 @@ namespace QuanLyGiangDuong.Model
             EventID = usingEvent.EventID;
             Date_ = usingEvent.Date_;
             StartPeriod = usingEvent.StartPeriod;
-            EndPeriod = usingEvent.EndPeriod;
+            Duration = usingEvent.Duration;
             Status_ = usingEvent.Status_;
             Description_ = usingEvent.Description_;
 
             EVENT_ = usingEvent.EVENT_;
             ROOM = usingEvent.ROOM;
             PERIOD_TIMERANGE = usingEvent.PERIOD_TIMERANGE;
-            PERIOD_TIMERANGE1 = usingEvent.PERIOD_TIMERANGE1;
         }
 
         public string StatusString

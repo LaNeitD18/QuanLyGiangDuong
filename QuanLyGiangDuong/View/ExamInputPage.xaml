@@ -12,7 +12,9 @@
       
       
       d:DesignHeight="640" d:DesignWidth="1200"
-      Title="TimeTableInputPage">
+      Title="TimeTableInputPage"
+      
+      >
 
     <Grid x:Name="timeTableInputPage" Background="WhiteSmoke">
         <Grid.ColumnDefinitions>

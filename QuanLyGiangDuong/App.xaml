@@ -7,7 +7,13 @@
     <Application.Resources>
         <ResourceDictionary>
             <viewmodel:MainViewModel x:Key="MainVM"></viewmodel:MainViewModel>
+            <viewmodel:HomePage_ViewModel x:Key="HomeVM"></viewmodel:HomePage_ViewModel>
+            <viewmodel:TimeTableViewModel x:Key="TimeTableVM"></viewmodel:TimeTableViewModel>
+            <viewmodel:RoomViewModel x:Key="RoomVM"></viewmodel:RoomViewModel>
+            <viewmodel:TimeTableInputViewModel x:Key="TimeTableInputVM"></viewmodel:TimeTableInputViewModel>
+            <viewmodel:EventInputViewModel x:Key="EventInputVM"></viewmodel:EventInputViewModel>
             <viewmodel:RoomManagementViewModel x:Key="RoomManagementVM"></viewmodel:RoomManagementViewModel>
+            <viewmodel:LoginViewModel x:Key="LoginVM"></viewmodel:LoginViewModel>
             <!-- primary -->
             <SolidColorBrush x:Key="PrimaryHueLightBrush" Color="#80fbdd"/>
             <SolidColorBrush x:Key="PrimaryHueLightForegroundBrush" Color="#FFFFFF"/>

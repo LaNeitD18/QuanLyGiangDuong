@@ -7,6 +7,9 @@
       xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" 
       xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
       mc:Ignorable="d" 
+      
+      DataContext="{StaticResource TimeTableVM}"
+      
       d:DesignHeight="450" d:DesignWidth="800"
       Title="TimeTablePage">
     <Page.Resources>

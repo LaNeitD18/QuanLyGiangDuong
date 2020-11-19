@@ -12,28 +12,18 @@ namespace QuanLyGiangDuong.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class USINGCLASS
+    public partial class TRAINING_PROGRAM
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public USINGCLASS()
+        public TRAINING_PROGRAM()
         {
-            this.ROOMIGNOREs = new HashSet<ROOMIGNORE>();
+            this.CLASSes = new HashSet<CLASS>();
         }
     
-        public string UsingClassID { get; set; }
-        public string RoomID { get; set; }
-        public string ClassID { get; set; }
-        public int StartPeriod { get; set; }
-        public System.TimeSpan Duration { get; set; }
-        public int RepeatCycle { get; set; }
-        public int Day_ { get; set; }
-        public int Status_ { get; set; }
-        public string Description_ { get; set; }
+        public string TrainingProgramID { get; set; }
+        public string TrainingProgramName { get; set; }
     
-        public virtual CLASS CLASS { get; set; }
-        public virtual PERIOD_TIMERANGE PERIOD_TIMERANGE { get; set; }
-        public virtual ROOM ROOM { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ROOMIGNORE> ROOMIGNOREs { get; set; }
+        public virtual ICollection<CLASS> CLASSes { get; set; }
     }
 }

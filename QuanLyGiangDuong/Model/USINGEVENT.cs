@@ -19,13 +19,12 @@ namespace QuanLyGiangDuong.Model
         public string EventID { get; set; }
         public System.DateTime Date_ { get; set; }
         public int StartPeriod { get; set; }
-        public int EndPeriod { get; set; }
+        public System.TimeSpan Duration { get; set; }
         public int Status_ { get; set; }
         public string Description_ { get; set; }
     
         public virtual EVENT_ EVENT_ { get; set; }
         public virtual PERIOD_TIMERANGE PERIOD_TIMERANGE { get; set; }
-        public virtual PERIOD_TIMERANGE PERIOD_TIMERANGE1 { get; set; }
         public virtual ROOM ROOM { get; set; }
     }
 }
