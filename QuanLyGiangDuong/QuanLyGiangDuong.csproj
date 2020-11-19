@@ -178,6 +178,7 @@
     <Compile Include="Model\FACAULTY.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\IUsing.cs" />
     <Compile Include="Model\LECTURER.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
@@ -214,6 +215,7 @@
     <Compile Include="Model\USINGCLASS.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\UsingClassModel.cs" />
     <Compile Include="Model\USINGEVENT.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
