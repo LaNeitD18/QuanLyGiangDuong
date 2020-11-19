@@ -12,18 +12,21 @@ namespace QuanLyGiangDuong.Utilities
     static class Utils
     {
         static private Random _random = new Random();
-        static public readonly string NullRoomId = "[NULL]";
-        static public readonly int NullPeriodTimeRangeId = -1;
+        static public readonly string NullStringId = "[NULL]";
+        static public readonly int NullIntId = -1;
 
+        #region Id generator
         static public string GenerateStringId(DbSet dbset)
         {
             // try generate random id 10 times first 
-            for (int i = 0; i <= 10; i++)
-            {
-                string attempt = _random.Next().ToString();
-                if (dbset.Find(attempt.ToString()) == null)
-                    return attempt.ToString();
-            }
+            //for (int i = 0; i <= 10; i++)
+            //{
+            //    string attempt = _random.Next().ToString();
+            //    if (dbset.Find(attempt.ToString()) == null)
+            //        return attempt.ToString();
+            //}
+
+            // I no longer want to randomize the Ids, sorry ;)
 
             // bruteforce to find real love
             for (int i = 0; i <= int.MaxValue; i++)
@@ -32,33 +35,78 @@ namespace QuanLyGiangDuong.Utilities
 
             throw new Exception("out of IDs");
         }
+        #endregion
 
-        
-        static public void InitDatabase()
+        #region StartTime - EndTime - Duration
+        /// <summary>
+        /// calculate the duration from startPeriod to endPeriod in Minute
+        /// </summary>
+        /// <param name="startPeriodId"></param>
+        /// <param name="endPeriodId"></param>
+        /// <returns></returns>
+        static public int CalcDuration(int startPeriodId, int endPeriodId)
         {
-            // Null values
-            if(DataProvider.Ins.DB.ROOMs.Find(NullRoomId) == null)
-                DataProvider.Ins.DB.ROOMs.Add
-                (
-                    new ROOM() 
-                    { 
-                        RoomID = NullRoomId, 
-                        Status_ = "",
-                        Capacity = 0 
-                    }
-                );
+            PERIOD_TIMERANGE startPeriod = DataProvider.Ins.DB.PERIOD_TIMERANGE.Find(startPeriodId);
 
-            if(DataProvider.Ins.DB.PERIOD_TIMERANGE.Find(NullPeriodTimeRangeId) == null)
-                DataProvider.Ins.DB.PERIOD_TIMERANGE.Add(
-                    new PERIOD_TIMERANGE() 
-                    { 
-                        PeriodID = NullPeriodTimeRangeId, 
-                        StartTime = DateTime.Now.TimeOfDay, EndTime = DateTime.Now.TimeOfDay,
-                        PeriodName = "NULL"
-                    }
-                );
+            int startMinute = (int)Math.Round(startPeriod.StartTime.TotalMinutes);
+            int endMinute   = (int)Math.Round(CalcEndTime(endPeriodId).TotalMinutes);
 
-            DataProvider.Ins.DB.SaveChanges();
+            return endMinute - startMinute;
         }
+
+        static public TimeSpan CalcEndTime(int periodId)
+        {
+            PERIOD_TIMERANGE period = DataProvider.Ins.DB.PERIOD_TIMERANGE.Find(periodId);
+            return CalcEndTime(period);
+        }
+
+        static public TimeSpan CalcEndTime(PERIOD_TIMERANGE period)
+        {
+            return period.StartTime + period.Duration;
+        }
+
+        /// <summary>
+        /// Calculate the end period from startPeriodId and duration (minutes)
+        /// </summary>
+        /// <param name="startPeriod"></param>
+        /// <param name="duration"></param>
+        /// <returns>end period Id. returns -1 if there is no valid end period</returns>
+        static public int CalcEndPeriod(int startPeriodId, int duration)
+        {
+            PERIOD_TIMERANGE startPeriod = DataProvider.Ins.DB.PERIOD_TIMERANGE.Find(startPeriodId);
+            int startMinute = (int)Math.Round(startPeriod.StartTime.TotalMinutes);
+            int endMinute   = startMinute + duration;
+
+            int bestEndMinute = int.MaxValue;
+            int bestPeriodId = -1;
+
+            foreach(var period in DataProvider.Ins.DB.PERIOD_TIMERANGE)
+            {
+                int endPeriodMinute = (int)Math.Round(CalcEndTime(period).TotalMinutes);
+                
+                // firstly, the period must end after the end of the duration
+                if(endPeriodMinute >= endMinute)
+                {
+                    if(endPeriodMinute < bestEndMinute)
+                    {
+                        bestEndMinute = endPeriodMinute;
+                        bestPeriodId = period.PeriodID;
+                    }
+                }
+            }
+
+            return bestPeriodId;
+        }
+
+        /// <summary>
+        /// Calculate the end period from startPeriodId and duration
+        /// </summary>
+        /// <returns>end period Id. returns -1 if there is no valid end period</returns>
+        static public int CalcEndPeriod(int startPeriod, TimeSpan duration)
+        {
+            int durationInMinute = (int)Math.Round(duration.TotalMinutes);
+            return CalcEndPeriod(startPeriod, durationInMinute);
+        }
+        #endregion
     }
 }

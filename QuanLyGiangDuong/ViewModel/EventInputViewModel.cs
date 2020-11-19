@@ -184,6 +184,17 @@ namespace QuanLyGiangDuong.ViewModel
             }
         }
 
+        private int _duration = 50;
+        public int Duration
+        {
+            get => _duration;
+            set
+            {
+                _duration = value;
+                OnPropertyChanged();
+            }
+        }
+
         private string _description = null;
         public string Description
         {
@@ -314,17 +325,6 @@ namespace QuanLyGiangDuong.ViewModel
                 OnPropertyChanged();
             }
         }
-
-        private PERIOD_TIMERANGE _selectedEndTimeRange = null;
-        public PERIOD_TIMERANGE SelectedEndTimeRange
-        {
-            get => _selectedEndTimeRange;
-            set
-            {
-                _selectedEndTimeRange = value;
-                OnPropertyChanged();
-            }
-        }
         #endregion
 
 
@@ -432,8 +432,9 @@ namespace QuanLyGiangDuong.ViewModel
         #region cancel button
         private void HandleCancelButton()
         {
-            MessageBox.Show("cancel");
-            Reset();
+            var dlgRes = MessageBox.Show("Huỷ", "Bạn có chắc muốn huỷ sự kiện này không?", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
+            if(dlgRes == MessageBoxResult.Yes)
+                Reset();
         }
         private ICommand _cancelCmd = null;
         public ICommand CancelCmd
@@ -542,12 +543,11 @@ namespace QuanLyGiangDuong.ViewModel
             if(SelectedStartTimeRange == null)
                 result.Add("Vui lòng chọn thời điểm bắt đầu sự kiện");
 
-            if(SelectedEndTimeRange == null)
-                result.Add("Vui lòng chọn thời điểm kết thúc sự kiện");
+            if (Population <= 0)
+                result.Add("Vui lòng nhập số người dự tính hợp lệ (số nguyên dương)");
 
-            if(SelectedStartTimeRange != null && SelectedEndTimeRange != null)
-                if(TimeSpan.Compare(SelectedStartTimeRange.StartTime, SelectedEndTimeRange.EndTime) >= 0)
-                    result.Add("Vui lòng chọn thời điểm bắt đầu ở trước thời điểm kết thúc");
+            if(Duration <= 0)
+                result.Add("Vui lòng nhập thời lượng hợp lệ (số nguyên dương)");
 
             if(SelectedRoom == null)
                 result.Add("Vui lòng chọn mã phòng tổ chức sự kiện");
@@ -609,7 +609,7 @@ namespace QuanLyGiangDuong.ViewModel
             ue.EventID = SelectedEvent.EventID;
             ue.Date_ = DateOccurs;
             ue.StartPeriod = (int)SelectedStartTimeRange.PeriodID;
-            ue.EndPeriod = (int)SelectedEndTimeRange.PeriodID;
+            ue.Duration = TimeSpan.FromMinutes(Duration);
             ue.Status_ = (int)Enums.UsingStatus.Pending;
             ue.Description_ = Description;
 
@@ -641,7 +641,7 @@ namespace QuanLyGiangDuong.ViewModel
             LecturerId = DefaultLecturerId;
             DateOccurs = DateTime.Today;
             SelectedStartTimeRange = null;
-            SelectedEndTimeRange = null;
+            Duration = 45;
             Population = 50;
             SelectedRoom = null;
             Description = "";
@@ -664,7 +664,7 @@ namespace QuanLyGiangDuong.ViewModel
             toPrint += "Date = " + DateOccurs.Date.ToString() + "\n";
             toPrint += "Population = " + Population.ToString() + "\n";
             toPrint += "From = " + SelectedStartTimeRange.PeriodName.ToString() + "\n";
-            toPrint += "To = " + SelectedEndTimeRange.PeriodName.ToString() + "\n";
+            toPrint += "Duration = " + Duration.ToString() + "\n";
             toPrint += "Room ID = " + SelectedRoom?.RoomID + "\n";
             toPrint += "Desc = " + Description + "\n";
 
@@ -704,8 +704,8 @@ namespace QuanLyGiangDuong.ViewModel
             LecturerId = usingEvent.EVENT_.LecturerID;
             DateOccurs = usingEvent.Date_;
             Population = usingEvent.EVENT_.Population_;
-            SelectedStartTimeRange = usingEvent.PERIOD_TIMERANGE1;  // auto generated code, idk
-            SelectedEndTimeRange = usingEvent.PERIOD_TIMERANGE;     // auto generated code, idk
+            SelectedStartTimeRange = usingEvent.PERIOD_TIMERANGE;  
+            Duration = (int)Math.Round(usingEvent.Duration.TotalMinutes);
             SelectedRoom = usingEvent.ROOM;
             Description = usingEvent.Description_;
         }

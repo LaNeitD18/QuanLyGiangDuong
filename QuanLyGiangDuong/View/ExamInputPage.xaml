@@ -162,7 +162,7 @@
                     <Grid Grid.Row="2" Grid.Column="0">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                             <ComboBox FontSize="18" Width="200" materialDesign:HintAssist.Hint="Hệ" VerticalAlignment="Center" Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                                  ItemsSource="{Binding ListTrainingType}" KeyboardNavigation.TabIndex="1" SelectedItem="{Binding SelectedTrainingType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }" >
+                                  ItemsSource="{Binding ListTrainingProgram}" KeyboardNavigation.TabIndex="1" SelectedItem="{Binding SelectedTrainingType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }" >
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="SelectionChanged">
                                         <i:InvokeCommandAction Command="{Binding TrainingType_SelectionChangedCommand}"/>
@@ -171,7 +171,7 @@
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel>
-                                            <TextBlock Text="{Binding TrainingTypeName}"></TextBlock>
+                                            <TextBlock Text="{Binding TrainingProgramName}"></TextBlock>
                                         </StackPanel>
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>

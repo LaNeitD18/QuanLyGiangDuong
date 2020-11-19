@@ -112,9 +112,6 @@ namespace QuanLyGiangDuong.ViewModel
 
             });
 
-            // CuteTN: Initialize database for the first use of local DB Server, because there are some fake-Null-entries
-            Utils.InitDatabase();
-
             IsVisibleCanvas = Visibility.Hidden;
             FrameColumn = 1;
 

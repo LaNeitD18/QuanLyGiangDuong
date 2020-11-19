@@ -12,18 +12,18 @@ namespace QuanLyGiangDuong.ViewModel
     class ExamInputViewModel : BaseViewModel
     {
         #region Variables
-        private ObservableCollection<TRAININGTYPE> _ListTrainingType;
-        public ObservableCollection<TRAININGTYPE> ListTrainingType
+        private ObservableCollection<TRAINING_PROGRAM> _ListTrainingProgram;
+        public ObservableCollection<TRAINING_PROGRAM> ListTrainingProgram
         {
-            get { return _ListTrainingType; }
-            set { _ListTrainingType = value; OnPropertyChanged(); }
+            get { return _ListTrainingProgram; }
+            set { _ListTrainingProgram = value; OnPropertyChanged(); }
         }
 
-        private TRAININGTYPE _SelectedTrainingType;
-        public TRAININGTYPE SelectedTrainingType
+        private TRAINING_PROGRAM _SelectedTrainingProgram;
+        public TRAINING_PROGRAM SelectedTrainingProgram
         {
-            get { return _SelectedTrainingType; }
-            set { _SelectedTrainingType = value; OnPropertyChanged(); }
+            get { return _SelectedTrainingProgram; }
+            set { _SelectedTrainingProgram = value; OnPropertyChanged(); }
         }
 
         private ObservableCollection<FACAULTY> _ListFacaulty;
@@ -107,9 +107,8 @@ namespace QuanLyGiangDuong.ViewModel
         #region Function
         private void LoadData()
         {
-            var listTrainingType = DataProvider.Ins.DB.TRAININGTYPEs;
-            ListTrainingType = new ObservableCollection<TRAININGTYPE>(listTrainingType);
-            MessageBox.Show(ListTrainingType[0].TrainingTypeName);
+            var listTrainingProgram = DataProvider.Ins.DB.TRAINING_PROGRAM;
+            ListTrainingProgram = new ObservableCollection<TRAINING_PROGRAM>(listTrainingProgram);
 
             var listFacaulty = DataProvider.Ins.DB.FACAULTies;
             ListFacaulty = new ObservableCollection<FACAULTY>(listFacaulty);
