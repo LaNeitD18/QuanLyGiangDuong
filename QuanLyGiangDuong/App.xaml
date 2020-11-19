@@ -12,6 +12,7 @@
             <viewmodel:RoomViewModel x:Key="RoomVM"></viewmodel:RoomViewModel>
             <viewmodel:TimeTableInputViewModel x:Key="TimeTableInputVM"></viewmodel:TimeTableInputViewModel>
             <viewmodel:EventInputViewModel x:Key="EventInputVM"></viewmodel:EventInputViewModel>
+            <viewmodel:ExamInputViewModel x:Key="ExamInputVM"></viewmodel:ExamInputViewModel>
             <viewmodel:RoomManagementViewModel x:Key="RoomManagementVM"></viewmodel:RoomManagementViewModel>
             <viewmodel:LoginViewModel x:Key="LoginVM"></viewmodel:LoginViewModel>
             <!-- primary -->

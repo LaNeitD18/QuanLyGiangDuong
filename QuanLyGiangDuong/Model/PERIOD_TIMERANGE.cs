@@ -18,29 +18,20 @@ namespace QuanLyGiangDuong.Model
         public PERIOD_TIMERANGE()
         {
             this.USINGCLASSes = new HashSet<USINGCLASS>();
-            this.USINGCLASSes1 = new HashSet<USINGCLASS>();
             this.USINGEVENTs = new HashSet<USINGEVENT>();
-            this.USINGEVENTs1 = new HashSet<USINGEVENT>();
             this.USINGEXAMs = new HashSet<USINGEXAM>();
-            this.USINGEXAMs1 = new HashSet<USINGEXAM>();
         }
     
         public int PeriodID { get; set; }
         public string PeriodName { get; set; }
-        public System.DateTime StartTime { get; set; }
-        public System.DateTime EndTime { get; set; }
+        public System.TimeSpan StartTime { get; set; }
+        public System.TimeSpan Duration { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<USINGCLASS> USINGCLASSes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<USINGCLASS> USINGCLASSes1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<USINGEVENT> USINGEVENTs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<USINGEVENT> USINGEVENTs1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<USINGEXAM> USINGEXAMs { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<USINGEXAM> USINGEXAMs1 { get; set; }
     }
 }

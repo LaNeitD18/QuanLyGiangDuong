@@ -148,6 +148,12 @@
     <Compile Include="Model\EVENT_.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\EXAM.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\FACAULTY.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\LECTURER.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
@@ -178,6 +184,9 @@
     <Compile Include="Model\SUBJECT_.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\TRAINING_PROGRAM.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\USINGCLASS.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
@@ -189,6 +198,7 @@
     </Compile>
     <Compile Include="ViewModel\BaseViewModel.cs" />
     <Compile Include="ViewModel\EventInputViewModel.cs" />
+    <Compile Include="ViewModel\ExamInputViewModel.cs" />
     <Compile Include="ViewModel\HomePage_ViewModel.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />

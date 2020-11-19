@@ -144,7 +144,6 @@ namespace QuanLyGiangDuong.ViewModel
 
             ExamInput_Page_SelectedCommand = new RelayCommand((p) => {
                 FrameContent = new ExamInputPage();
-                FrameContent.DataContext = new EventInputViewModel();
             });
 
             RoomManagement_Page_SelectedCommand = new RelayCommand((p) => {
