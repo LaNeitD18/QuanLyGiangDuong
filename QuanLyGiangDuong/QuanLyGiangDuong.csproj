@@ -213,7 +213,7 @@
     <Compile Include="Model\SUBJECT_.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\TRAININGTYPE.cs">
+    <Compile Include="Model\TRAINING_PROGRAM.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\USINGCLASS.cs">

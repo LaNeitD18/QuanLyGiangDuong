@@ -42,12 +42,12 @@ namespace QuanLyGiangDuong.ViewModel
             set { _tiet = value; }
         }
 
-        public void Add(string UsingClassID, string ClassName, int StartPeriod, int EndPeriod)
+        public void Add(string UsingClassID, string ClassName, int StartPeriod, TimeSpan Duration)
         {
-            for(int i=StartPeriod; i<EndPeriod+1; i++)
-            {
-                tiet[i-1] = new Tuple<string, string>(UsingClassID, ClassName);
-            }
+            //for(int i=StartPeriod; i<EndPeriod+1; i++)
+            //{
+            //    tiet[i-1] = new Tuple<string, string>(UsingClassID, ClassName);
+            //}
         }
     }
 
@@ -295,19 +295,19 @@ namespace QuanLyGiangDuong.ViewModel
                         where targetDate >= c.StartDate && targetDate <= c.EndDate &&
                               (int)targetDate.DayOfWeek == u.Day_ &&
                               (DbFunctions.DiffDays(targetDate, c.StartDate) / 7) % u.RepeatCycle == 0
-                        select new { u.UsingClassID, u.RoomID, c.ClassName, u.StartPeriod, u.EndPeriod }).ToList();
+                        select new { u.UsingClassID, u.RoomID, c.ClassName, u.StartPeriod, u.Duration }).ToList();
 
             foreach(var item in data)
             {
                 if(IsExistRoom(item.RoomID))
                 {
                     var room = GetRoom(item.RoomID);
-                    room.Add(item.UsingClassID, item.ClassName, item.StartPeriod, item.EndPeriod);
+                    room.Add(item.UsingClassID, item.ClassName, item.StartPeriod, item.Duration);
                 }
                 else
                 {
                     var room = new table();
-                    room.Add(item.UsingClassID, item.ClassName, item.StartPeriod, item.EndPeriod);
+                    room.Add(item.UsingClassID, item.ClassName, item.StartPeriod, item.Duration);
                     room.roomID = item.RoomID;
                     tb.Add(room);
                 }

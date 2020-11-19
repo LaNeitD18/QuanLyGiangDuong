@@ -14,7 +14,7 @@ namespace QuanLyGiangDuong.Model
             RoomID = uSINGCLASS.RoomID;
             ClassID = uSINGCLASS.ClassID;
             StartPeriod = uSINGCLASS.StartPeriod;
-            EndPeriod = uSINGCLASS.EndPeriod;
+            Duration = uSINGCLASS.Duration;
             RepeatCycle = uSINGCLASS.RepeatCycle;
             Day_ = uSINGCLASS.Day_;
             Status_ = uSINGCLASS.Status_;
@@ -22,7 +22,6 @@ namespace QuanLyGiangDuong.Model
             CLASS = uSINGCLASS.CLASS;
 
             PERIOD_TIMERANGE = uSINGCLASS.PERIOD_TIMERANGE;
-            PERIOD_TIMERANGE1 = uSINGCLASS.PERIOD_TIMERANGE1;
             ROOM = uSINGCLASS.ROOM;
             ROOMIGNOREs = uSINGCLASS.ROOMIGNOREs;
         }
