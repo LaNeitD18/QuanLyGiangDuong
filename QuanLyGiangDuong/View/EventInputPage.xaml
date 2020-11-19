@@ -297,6 +297,7 @@
                                 IsEnabled="True"
                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" Foreground="{StaticResource SecondaryAccentBrush}" VerticalAlignment="Center"
                                 Text="{Binding Population, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+
                         </StackPanel>
                     </Grid>
                     <Grid Grid.Row="3" Grid.Column="0">
@@ -320,21 +321,13 @@
                     </Grid>
                     <Grid Grid.Row="3" Grid.Column="1">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <ComboBox Width="200" materialDesign:HintAssist.Hint="Đến" VerticalAlignment="Center" Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                                  ItemsSource="{Binding ListTimeRange}" KeyboardNavigation.TabIndex="1" SelectedItem="{Binding SelectedEndTimeRange, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }" >
-                                <ComboBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <StackPanel>
-                                            <TextBlock Text="{Binding PeriodName}"></TextBlock>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </ComboBox.ItemTemplate>
-                                <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="SelectionChanged">
-                                        <i:InvokeCommandAction Command="{Binding YenCute}"/>
-                                    </i:EventTrigger>
-                                </i:Interaction.Triggers>
-                            </ComboBox>
+                            <TextBox 
+                                Width="200" 
+                                FontSize="18" 
+                                materialDesign:HintAssist.Hint="Thời lượng (phút)" 
+                                IsEnabled="True"
+                                Style="{StaticResource MaterialDesignFloatingHintTextBox}" Foreground="{StaticResource SecondaryAccentBrush}" VerticalAlignment="Center"
+                                Text="{Binding Duration, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,16.93,0,16.87" />
                         </StackPanel>
                     </Grid>
                     <Grid Grid.Row="4" Grid.Column="0">
@@ -344,7 +337,7 @@
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel>
-                                            <TextBlock Text="{Binding RoomID}"></TextBlock>
+                                            <TextBlock Text="{Binding RoomName}"></TextBlock>
                                         </StackPanel>
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>

@@ -24,7 +24,7 @@ namespace QuanLyGiangDuong.Model
         public string RoomID { get; set; }
         public string ClassID { get; set; }
         public int StartPeriod { get; set; }
-        public int EndPeriod { get; set; }
+        public System.TimeSpan Duration { get; set; }
         public int RepeatCycle { get; set; }
         public int Day_ { get; set; }
         public int Status_ { get; set; }
@@ -32,7 +32,6 @@ namespace QuanLyGiangDuong.Model
     
         public virtual CLASS CLASS { get; set; }
         public virtual PERIOD_TIMERANGE PERIOD_TIMERANGE { get; set; }
-        public virtual PERIOD_TIMERANGE PERIOD_TIMERANGE1 { get; set; }
         public virtual ROOM ROOM { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ROOMIGNORE> ROOMIGNOREs { get; set; }

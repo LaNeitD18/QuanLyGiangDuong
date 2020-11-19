@@ -16,16 +16,15 @@ namespace QuanLyGiangDuong.Model
     {
         public string UsingExamID { get; set; }
         public string RoomID { get; set; }
-        public string SubjectID { get; set; }
+        public string ExamID { get; set; }
         public System.DateTime Date_ { get; set; }
         public int StartPeriod { get; set; }
-        public int EndPeriod { get; set; }
+        public System.TimeSpan Duration { get; set; }
         public int Status_ { get; set; }
         public string Description_ { get; set; }
     
+        public virtual EXAM EXAM { get; set; }
         public virtual PERIOD_TIMERANGE PERIOD_TIMERANGE { get; set; }
-        public virtual PERIOD_TIMERANGE PERIOD_TIMERANGE1 { get; set; }
         public virtual ROOM ROOM { get; set; }
-        public virtual SUBJECT_ SUBJECT_ { get; set; }
     }
 }

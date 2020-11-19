@@ -19,6 +19,7 @@ namespace QuanLyGiangDuong.Model
         {
             this.CLASSes = new HashSet<CLASS>();
             this.EVENT_ = new HashSet<EVENT_>();
+            this.EXAMs = new HashSet<EXAM>();
         }
     
         public string LecturerID { get; set; }
@@ -29,5 +30,7 @@ namespace QuanLyGiangDuong.Model
         public virtual ICollection<CLASS> CLASSes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<EVENT_> EVENT_ { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<EXAM> EXAMs { get; set; }
     }
 }

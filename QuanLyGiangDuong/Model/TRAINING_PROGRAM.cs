@@ -12,20 +12,18 @@ namespace QuanLyGiangDuong.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class SUBJECT_
+    public partial class TRAINING_PROGRAM
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public SUBJECT_()
+        public TRAINING_PROGRAM()
         {
             this.CLASSes = new HashSet<CLASS>();
         }
     
-        public string SubjectID { get; set; }
-        public string SubjectName { get; set; }
-        public string FacaultyID { get; set; }
+        public string TrainingProgramID { get; set; }
+        public string TrainingProgramName { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CLASS> CLASSes { get; set; }
-        public virtual FACAULTY FACAULTY { get; set; }
     }
 }
