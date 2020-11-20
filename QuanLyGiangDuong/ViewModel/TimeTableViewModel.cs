@@ -44,10 +44,19 @@ namespace QuanLyGiangDuong.ViewModel
 
         public void Add(string UsingClassID, string ClassName, int StartPeriod, TimeSpan Duration)
         {
-            //for(int i=StartPeriod; i<EndPeriod+1; i++)
-            //{
-            //    tiet[i-1] = new Tuple<string, string>(UsingClassID, ClassName);
-            //}
+            var startTime = DataProvider.Ins.DB.PERIOD_TIMERANGE.Find(StartPeriod);
+
+            var endtime = startTime.StartTime + Duration;
+
+            var x = (from t in DataProvider.Ins.DB.PERIOD_TIMERANGE
+                     where t.StartTime >= startTime.StartTime &&
+                           t.StartTime < endtime
+                     select t).ToList();
+
+            for(int i=0; i<x.Count; i++)
+            {
+                tiet[x[i].PeriodID] = new Tuple<string, string>(UsingClassID, ClassName);
+            }
         }
     }
 
@@ -290,12 +299,15 @@ namespace QuanLyGiangDuong.ViewModel
 
             tb.Clear();
 
+            // Select all needed info from USINGCLASS that fit selected Date
             var data = (from u in DataProvider.Ins.DB.USINGCLASSes
                         join c in DataProvider.Ins.DB.CLASSes on u.ClassID equals c.ClassID
                         where targetDate >= c.StartDate && targetDate <= c.EndDate &&
-                              (int)targetDate.DayOfWeek == u.Day_ &&
-                              (DbFunctions.DiffDays(targetDate, c.StartDate) / 7) % u.RepeatCycle == 0
+                              (int)targetDate.DayOfWeek == u.Day_ && // satisfied the day of week
+                              (DbFunctions.DiffDays(targetDate, c.StartDate) / 7) % u.RepeatCycle == 0 // satisfied the repeat cycle
                         select new { u.UsingClassID, u.RoomID, c.ClassName, u.StartPeriod, u.Duration }).ToList();
+
+            data.Sort((a, b) => { return string.Compare(a.RoomID, b.RoomID); });
 
             foreach(var item in data)
             {
@@ -312,6 +324,8 @@ namespace QuanLyGiangDuong.ViewModel
                     tb.Add(room);
                 }
             }
+
+            
         }
     }
 }

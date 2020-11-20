@@ -12,7 +12,7 @@
           <Property Name="ClassID" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="SubjectID" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="TrainingProgramID" Type="varchar" MaxLength="20" Nullable="false" />
-          <Property Name="ClassName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="ClassName" Type="nvarchar(max)" />
           <Property Name="Semester" Type="int" Nullable="false" />
           <Property Name="Year_" Type="int" Nullable="false" />
           <Property Name="StartDate" Type="date" Nullable="false" />
@@ -518,7 +518,7 @@
           <Property Name="ClassID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="SubjectID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="TrainingProgramID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="ClassName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ClassName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Semester" Type="Int32" Nullable="false" />
           <Property Name="Year_" Type="Int32" Nullable="false" />
           <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="0" />
