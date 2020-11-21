@@ -5,11 +5,10 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:QuanLyGiangDuong.View"
       xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
-      mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      mc:Ignorable="d" d:DesignWidth="800"
       Title="RoomPage"
       
-      DataContext="{StaticResource RoomVM}">
+      DataContext="{StaticResource RoomVM}" Height="572.175">
 
     <Grid>
         <StackPanel>
@@ -18,7 +17,7 @@
                 <ComboBox Width="150" Margin="10,0,10,0" ItemsSource="{Binding dayList}" SelectedItem="{Binding selectedDay}"/>
                 <ComboBox Width="150" Margin="0,0,10,0" ItemsSource="{Binding monthList}" SelectedItem="{Binding selectedMonth}" DisplayMemberPath="monthStr"/>
                 <ComboBox Width="150" Margin="0,0,10,0" ItemsSource="{Binding yearList}" SelectedItem="{Binding selectedYear}"/>
-                <Button Content="Xem TKB" FontSize="15" Width="70"/>
+                <Button Content="Xem TKB" FontSize="15" Width="70" Command="{Binding GetRoomScheduleCommand}"/>
             </StackPanel>
             <Grid Margin="0,10,0,10">
                 <Grid.ColumnDefinitions>
@@ -27,7 +26,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Button Content="Previous week" FontSize="16" FontWeight="Bold" Grid.Column="0" Margin="10,0,0,0"/>
-                <Label Content="14/09/2020 - 20/9/2020" 
+                <Label Content="{Binding weekTitle}" 
                    FontSize="16" 
                    FontWeight="Black" 
                    Foreground="#FF074AFB" 
@@ -41,7 +40,7 @@
             <syncfusion:SfDataGrid 
                 x:Name="dataGrid" 
                 SelectionUnit="Cell" 
-                Height="329" 
+                Height="446" 
                 ColumnSizer="Star" 
                 HeaderRowHeight="70" 
                 ItemsSource="{Binding listRoomTableRow}" QueryCoveredRange="dataGrid_QueryCoveredRange"
@@ -180,7 +179,7 @@
                             </DataTemplate>
                         </syncfusion:GridTemplateColumn.CellTemplate>
                     </syncfusion:GridTemplateColumn>
-                    
+
                 </syncfusion:SfDataGrid.Columns>
 
             </syncfusion:SfDataGrid>
