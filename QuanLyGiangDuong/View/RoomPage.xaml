@@ -38,80 +38,149 @@
                 <Button Content="Next week" FontSize="16" FontWeight="Bold" Grid.Column="2" Margin="0,0,10,0"/>
             </Grid>
 
-            <syncfusion:SfDataGrid Height="329" ColumnSizer="Star" HeaderRowHeight="70">
+            <syncfusion:SfDataGrid 
+                x:Name="dataGrid" 
+                SelectionUnit="Cell" 
+                Height="329" 
+                ColumnSizer="Star" 
+                HeaderRowHeight="70" 
+                ItemsSource="{Binding listRoomTableRow}" QueryCoveredRange="dataGrid_QueryCoveredRange"
+                >
                 <syncfusion:SfDataGrid.Columns>
-                    <syncfusion:GridTextColumn DisplayBinding="{x:Null}" FilteredFrom="None" HeaderText="Phòng" ValueBinding="{x:Null}" TextAlignment="Center"/>
-                    <syncfusion:GridTextColumn DisplayBinding="{x:Null}" FilteredFrom="None" HeaderText="Tiết" ValueBinding="{x:Null}" TextAlignment="Center"/>
-                    <syncfusion:GridTextColumn>
-                        <syncfusion:GridTextColumn.HeaderTemplate>
+                    <syncfusion:GridTemplateColumn 
+                        DisplayBinding="{x:Null}" 
+                        FilteredFrom="None" 
+                        HeaderText="Phòng" 
+                        ValueBinding="{x:Null}" 
+                        TextAlignment="Center"
+                        MappingName="room"
+                        >
+                        <syncfusion:GridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Label Content="{Binding room.RoomName}"/>
+                            </DataTemplate>
+                        </syncfusion:GridTemplateColumn.CellTemplate>
+                    </syncfusion:GridTemplateColumn>
+                    <syncfusion:GridTemplateColumn 
+                        DisplayBinding="{x:Null}" 
+                        FilteredFrom="None" 
+                        HeaderText="Tiết" 
+                        ValueBinding="{x:Null}" 
+                        TextAlignment="Center"
+                        MappingName="period"
+                        >
+                        <syncfusion:GridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Label Content="{Binding period.PeriodName}"/>
+                            </DataTemplate>
+                        </syncfusion:GridTemplateColumn.CellTemplate>
+                    </syncfusion:GridTemplateColumn>
+                    <syncfusion:GridTemplateColumn MappingName="usings[1]">
+                        <syncfusion:GridTemplateColumn.HeaderTemplate>
                             <DataTemplate>
                                 <StackPanel>
                                     <Label Content="Thứ 2" HorizontalAlignment="Center"/>
                                     <Label Content="14/09/2020"/>
                                 </StackPanel>
                             </DataTemplate>
-                        </syncfusion:GridTextColumn.HeaderTemplate>
-                    </syncfusion:GridTextColumn>
-                    <syncfusion:GridTextColumn>
-                        <syncfusion:GridTextColumn.HeaderTemplate>
+                        </syncfusion:GridTemplateColumn.HeaderTemplate>
+                        <syncfusion:GridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Label Content="{Binding usings[1].DisplayName}"/>
+                            </DataTemplate>
+                        </syncfusion:GridTemplateColumn.CellTemplate>
+                    </syncfusion:GridTemplateColumn>
+                    <syncfusion:GridTemplateColumn MappingName="usings[2]">
+                        <syncfusion:GridTemplateColumn.HeaderTemplate>
                             <DataTemplate>
                                 <StackPanel>
                                     <Label Content="Thứ 3" HorizontalAlignment="Center"/>
-                                    <Label Content="15/09/2020"/>
+                                    <Label Content="14/09/2020"/>
                                 </StackPanel>
                             </DataTemplate>
-                        </syncfusion:GridTextColumn.HeaderTemplate>
-                    </syncfusion:GridTextColumn>
-                    <syncfusion:GridTextColumn>
-                        <syncfusion:GridTextColumn.HeaderTemplate>
+                        </syncfusion:GridTemplateColumn.HeaderTemplate>
+                        <syncfusion:GridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Label Content="{Binding usings[2].DisplayName}"/>
+                            </DataTemplate>
+                        </syncfusion:GridTemplateColumn.CellTemplate>
+                    </syncfusion:GridTemplateColumn>
+                    <syncfusion:GridTemplateColumn MappingName="usings[3]">
+                        <syncfusion:GridTemplateColumn.HeaderTemplate>
                             <DataTemplate>
                                 <StackPanel>
                                     <Label Content="Thứ 4" HorizontalAlignment="Center"/>
-                                    <Label Content="16/09/2020"/>
+                                    <Label Content="14/09/2020"/>
                                 </StackPanel>
                             </DataTemplate>
-                        </syncfusion:GridTextColumn.HeaderTemplate>
-                    </syncfusion:GridTextColumn>
-                    <syncfusion:GridTextColumn>
-                        <syncfusion:GridTextColumn.HeaderTemplate>
+                        </syncfusion:GridTemplateColumn.HeaderTemplate>
+                        <syncfusion:GridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Label Content="{Binding usings[3].DisplayName}"/>
+                            </DataTemplate>
+                        </syncfusion:GridTemplateColumn.CellTemplate>
+                    </syncfusion:GridTemplateColumn>
+                    <syncfusion:GridTemplateColumn MappingName="usings[4]">
+                        <syncfusion:GridTemplateColumn.HeaderTemplate>
                             <DataTemplate>
                                 <StackPanel>
                                     <Label Content="Thứ 5" HorizontalAlignment="Center"/>
-                                    <Label Content="17/09/2020"/>
+                                    <Label Content="14/09/2020"/>
                                 </StackPanel>
                             </DataTemplate>
-                        </syncfusion:GridTextColumn.HeaderTemplate>
-                    </syncfusion:GridTextColumn>
-                    <syncfusion:GridTextColumn>
-                        <syncfusion:GridTextColumn.HeaderTemplate>
+                        </syncfusion:GridTemplateColumn.HeaderTemplate>
+                        <syncfusion:GridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Label Content="{Binding usings[4].DisplayName}"/>
+                            </DataTemplate>
+                        </syncfusion:GridTemplateColumn.CellTemplate>
+                    </syncfusion:GridTemplateColumn>
+                    <syncfusion:GridTemplateColumn MappingName="usings[5]">
+                        <syncfusion:GridTemplateColumn.HeaderTemplate>
                             <DataTemplate>
                                 <StackPanel>
                                     <Label Content="Thứ 6" HorizontalAlignment="Center"/>
-                                    <Label Content="18/09/2020"/>
+                                    <Label Content="14/09/2020"/>
                                 </StackPanel>
                             </DataTemplate>
-                        </syncfusion:GridTextColumn.HeaderTemplate>
-                    </syncfusion:GridTextColumn>
-                    <syncfusion:GridTextColumn>
-                        <syncfusion:GridTextColumn.HeaderTemplate>
+                        </syncfusion:GridTemplateColumn.HeaderTemplate>
+                        <syncfusion:GridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Label Content="{Binding usings[5].DisplayName}"/>
+                            </DataTemplate>
+                        </syncfusion:GridTemplateColumn.CellTemplate>
+                    </syncfusion:GridTemplateColumn>
+                    <syncfusion:GridTemplateColumn MappingName="usings[6]">
+                        <syncfusion:GridTemplateColumn.HeaderTemplate>
                             <DataTemplate>
                                 <StackPanel>
                                     <Label Content="Thứ 7" HorizontalAlignment="Center"/>
-                                    <Label Content="19/09/2020"/>
+                                    <Label Content="14/09/2020"/>
                                 </StackPanel>
                             </DataTemplate>
-                        </syncfusion:GridTextColumn.HeaderTemplate>
-                    </syncfusion:GridTextColumn>
-                    <syncfusion:GridTextColumn>
-                        <syncfusion:GridTextColumn.HeaderTemplate>
+                        </syncfusion:GridTemplateColumn.HeaderTemplate>
+                        <syncfusion:GridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Label Content="{Binding usings[6].DisplayName}"/>
+                            </DataTemplate>
+                        </syncfusion:GridTemplateColumn.CellTemplate>
+                    </syncfusion:GridTemplateColumn>
+                    <syncfusion:GridTemplateColumn MappingName="usings[0]">
+                        <syncfusion:GridTemplateColumn.HeaderTemplate>
                             <DataTemplate>
                                 <StackPanel>
                                     <Label Content="Chủ nhật" HorizontalAlignment="Center"/>
-                                    <Label Content="20/09/2020"/>
+                                    <Label Content="14/09/2020"/>
                                 </StackPanel>
                             </DataTemplate>
-                        </syncfusion:GridTextColumn.HeaderTemplate>
-                    </syncfusion:GridTextColumn>
+                        </syncfusion:GridTemplateColumn.HeaderTemplate>
+                        <syncfusion:GridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Label Content="{Binding usings[0].DisplayName}"/>
+                            </DataTemplate>
+                        </syncfusion:GridTemplateColumn.CellTemplate>
+                    </syncfusion:GridTemplateColumn>
+                    
                 </syncfusion:SfDataGrid.Columns>
 
             </syncfusion:SfDataGrid>

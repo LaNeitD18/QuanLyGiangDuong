@@ -329,20 +329,20 @@ namespace QuanLyGiangDuong.ViewModel
 
 
         #region datagrid using events
-        private ObservableCollection<UsingEventModel> LoadUsingEvents()
+        private ObservableCollection<USINGEVENT> LoadUsingEvents()
         {
-            ObservableCollection<UsingEventModel> result = new ObservableCollection<UsingEventModel>();
+            ObservableCollection<USINGEVENT> result = new ObservableCollection<USINGEVENT>();
             
             foreach(var ue in DataProvider.Ins.DB.USINGEVENTs)
             {
-                result.Add(new UsingEventModel(ue));
+                result.Add(ue);
             }
 
             return result;
         }
 
-        private ObservableCollection<UsingEventModel> _listUsingEvent = null;
-        public ObservableCollection<UsingEventModel> ListUsingEvent
+        private ObservableCollection<USINGEVENT> _listUsingEvent = null;
+        public ObservableCollection<USINGEVENT> ListUsingEvent
         {
             get
             {
@@ -357,8 +357,8 @@ namespace QuanLyGiangDuong.ViewModel
             }
         }
 
-        private ObservableCollection<UsingEventModel> _selectedUsingEvents = new ObservableCollection<UsingEventModel>();
-        public ObservableCollection<UsingEventModel> SelectedUsingEvents
+        private ObservableCollection<USINGEVENT> _selectedUsingEvents = new ObservableCollection<USINGEVENT>();
+        public ObservableCollection<USINGEVENT> SelectedUsingEvents
         {
             get => _selectedUsingEvents;
             set
@@ -716,7 +716,7 @@ namespace QuanLyGiangDuong.ViewModel
 
             foreach(var item in datagrid.SelectedItems)
             {
-                UsingEventModel ue = (UsingEventModel)item;
+                USINGEVENT ue = (USINGEVENT)item;
                 if( ue != null && !SelectedUsingEvents.Contains(ue) )
                     SelectedUsingEvents.Add(ue);
             }

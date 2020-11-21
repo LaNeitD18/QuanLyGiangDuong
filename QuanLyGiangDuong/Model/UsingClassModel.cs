@@ -6,25 +6,25 @@ using System.Text;
 
 namespace QuanLyGiangDuong.Model
 {
-    class UsingClassModel : USINGCLASS, IUsing
+    public partial class USINGCLASS : IUsing
     {
-        public UsingClassModel(USINGCLASS uSINGCLASS)
-        {
-            UsingClassID = uSINGCLASS.UsingClassID;
-            RoomID = uSINGCLASS.RoomID;
-            ClassID = uSINGCLASS.ClassID;
-            StartPeriod = uSINGCLASS.StartPeriod;
-            Duration = uSINGCLASS.Duration;
-            RepeatCycle = uSINGCLASS.RepeatCycle;
-            Day_ = uSINGCLASS.Day_;
-            Status_ = uSINGCLASS.Status_;
-            Description_ = uSINGCLASS.Description_;
-            CLASS = uSINGCLASS.CLASS;
+        //public UsingClassModel(USINGCLASS uSINGCLASS)
+        //{
+        //    UsingClassID = uSINGCLASS.UsingClassID;
+        //    RoomID = uSINGCLASS.RoomID;
+        //    ClassID = uSINGCLASS.ClassID;
+        //    StartPeriod = uSINGCLASS.StartPeriod;
+        //    Duration = uSINGCLASS.Duration;
+        //    RepeatCycle = uSINGCLASS.RepeatCycle;
+        //    Day_ = uSINGCLASS.Day_;
+        //    Status_ = uSINGCLASS.Status_;
+        //    Description_ = uSINGCLASS.Description_;
+        //    CLASS = uSINGCLASS.CLASS;
 
-            PERIOD_TIMERANGE = uSINGCLASS.PERIOD_TIMERANGE;
-            ROOM = uSINGCLASS.ROOM;
-            ROOMIGNOREs = uSINGCLASS.ROOMIGNOREs;
-        }
+        //    PERIOD_TIMERANGE = uSINGCLASS.PERIOD_TIMERANGE;
+        //    ROOM = uSINGCLASS.ROOM;
+        //    ROOMIGNOREs = uSINGCLASS.ROOMIGNOREs;
+        //}
 
         private string _displayName;
         public string DisplayName

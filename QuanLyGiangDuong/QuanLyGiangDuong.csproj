@@ -226,6 +226,7 @@
     <Compile Include="Model\USINGEXAM.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\UsingExamModel.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
     <Compile Include="ViewModel\EventInputViewModel.cs" />
     <Compile Include="ViewModel\HomePage_ViewModel.cs" />

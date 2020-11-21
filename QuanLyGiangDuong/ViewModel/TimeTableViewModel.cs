@@ -44,14 +44,7 @@ namespace QuanLyGiangDuong.ViewModel
 
         public void Add(string UsingClassID, string ClassName, int StartPeriod, TimeSpan Duration)
         {
-            var startTime = DataProvider.Ins.DB.PERIOD_TIMERANGE.Find(StartPeriod);
-
-            var endtime = startTime.StartTime + Duration;
-
-            var x = (from t in DataProvider.Ins.DB.PERIOD_TIMERANGE
-                     where t.StartTime >= startTime.StartTime &&
-                           t.StartTime < endtime
-                     select t).ToList();
+            var x = Utilities.Utils.GetListPeriodTimeRange(StartPeriod, Duration);
 
             for(int i=0; i<x.Count; i++)
             {

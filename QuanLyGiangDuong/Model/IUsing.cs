@@ -6,7 +6,7 @@ using System.Text;
 
 namespace QuanLyGiangDuong.Model
 {
-    interface IUsing
+    public interface IUsing
     {
         string GetDisplayString();
     }

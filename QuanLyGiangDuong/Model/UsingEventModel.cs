@@ -8,23 +8,23 @@ using System.Windows;
 
 namespace QuanLyGiangDuong.Model
 {
-    class UsingEventModel: USINGEVENT, IUsing
+    public partial class USINGEVENT : IUsing
     {
-        public UsingEventModel(USINGEVENT usingEvent)
-        {
-            UsingEventID = usingEvent.UsingEventID;
-            RoomID = usingEvent.RoomID;
-            EventID = usingEvent.EventID;
-            Date_ = usingEvent.Date_;
-            StartPeriod = usingEvent.StartPeriod;
-            Duration = usingEvent.Duration;
-            Status_ = usingEvent.Status_;
-            Description_ = usingEvent.Description_;
+        //public UsingEventModel(USINGEVENT usingEvent)
+        //{
+        //    UsingEventID = usingEvent.UsingEventID;
+        //    RoomID = usingEvent.RoomID;
+        //    EventID = usingEvent.EventID;
+        //    Date_ = usingEvent.Date_;
+        //    StartPeriod = usingEvent.StartPeriod;
+        //    Duration = usingEvent.Duration;
+        //    Status_ = usingEvent.Status_;
+        //    Description_ = usingEvent.Description_;
 
-            EVENT_ = usingEvent.EVENT_;
-            ROOM = usingEvent.ROOM;
-            PERIOD_TIMERANGE = usingEvent.PERIOD_TIMERANGE;
-        }
+        //    EVENT_ = usingEvent.EVENT_;
+        //    ROOM = usingEvent.ROOM;
+        //    PERIOD_TIMERANGE = usingEvent.PERIOD_TIMERANGE;
+        //}
 
         public string StatusString
         {
@@ -36,15 +36,6 @@ namespace QuanLyGiangDuong.Model
         {
             get => Date_.ToString("dd/MM/yyyy");
             set { /* cant set this field */ }
-        }
-
-        public USINGEVENT USINGEVENT
-        {
-            get
-            {
-                USINGEVENT res = (USINGEVENT)this.MemberwiseClone();
-                return (USINGEVENT)this.MemberwiseClone();
-            }                
         }
 
         public string GetDisplayString()
