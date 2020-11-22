@@ -79,7 +79,8 @@
             Grid.Column="0" Grid.ColumnSpan="15"
             Grid.Row="1" Grid.RowSpan="12"
             Margin="0,10,0,0">
-            <DataGrid x:Name="listRoomDatagrid"
+            <DataGrid 
+                x:Name="listRoomDatagrid"
                 HorizontalAlignment="Stretch" 
                 VerticalAlignment="Top" 
                 ItemsSource="{Binding ListRoom}"
@@ -96,8 +97,9 @@
                 </DataGrid.Columns>
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
-                        <i:InvokeCommandAction Command="{Binding SelectionChangedCommand}"
-                                                   CommandParameter="{Binding ElementName=listRoomDatagrid}"/>
+                        <i:InvokeCommandAction 
+                            Command="{Binding SelectionChangedCommand}"
+                            CommandParameter="{Binding ElementName=listRoomDatagrid}"/>
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </DataGrid>

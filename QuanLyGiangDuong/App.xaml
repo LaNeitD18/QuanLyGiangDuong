@@ -22,9 +22,11 @@
             <SolidColorBrush x:Key="PrimaryHueMidForegroundBrush" Color="#FFFFFF"/>
             <SolidColorBrush x:Key="PrimaryHueDarkBrush" Color="#00967c"/>
             <SolidColorBrush x:Key="PrimaryHueDarkForegroundBrush" Color="#FFFFFF"/>
+            <SolidColorBrush x:Key="PrimaryBrown" Color="#986b41"/>
             <!-- accent -->
             <SolidColorBrush x:Key="SecondaryAccentBrush" Color="#236084"/>
             <SolidColorBrush x:Key="SecondaryAccentForegroundBrush" Color="#FFFFFF"/>
+            <SolidColorBrush x:Key="AccentBrown" Color="#b68e65"/>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />

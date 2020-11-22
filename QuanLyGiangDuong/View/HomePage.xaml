@@ -70,7 +70,7 @@
         </Grid.RowDefinitions>
         <Grid Grid.Column="0" Grid.ColumnSpan="10" Grid.Row="0" Grid.RowSpan="3">
             <materialDesign:Card 
-                Background="{StaticResource PrimaryHueMidBrush}" 
+                Background="{DynamicResource AccentBrown}" 
                 Foreground="White"
                 materialDesign:ShadowAssist.ShadowDepth="Depth3"
                 materialDesign:ShadowAssist.ShadowEdges="All" 
