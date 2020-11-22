@@ -71,7 +71,7 @@
             Grid.Row="0" Grid.RowSpan="1">
             <Grid Grid.Row="0">
                 <materialDesign:Card 
-                  Background="{DynamicResource PrimaryBrown}"
+                  Background="{DynamicResource DarkGrayishBlue}"
                   Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
                   Padding="5">
                     <TextBlock FontWeight="SemiBold" TextAlignment="Center" FontSize="20" Text="Danh sách yêu cầu phòng thi đang chờ"></TextBlock>
@@ -120,7 +120,7 @@
             <Grid Grid.Column="0">
                 <Button 
                     Style="{StaticResource MaterialDesignRaisedButton}"
-                    Background="{DynamicResource AccentBrown}"
+                    Background="{DynamicResource DarkGrayishBlue}"
                     Margin="5,0,5,0" Content="Thêm" HorizontalAlignment="Center"
                     Width="150" Height="35"
                     IsEnabled="{Binding IsAddingEnabled}"
@@ -129,7 +129,7 @@
             <Grid Grid.Column="1">
                 <Button 
                     Style="{StaticResource MaterialDesignRaisedButton}" 
-                    Background="{DynamicResource AccentBrown}"
+                    Background="{DynamicResource DarkGrayishBlue}"
                     Margin="5,0,5,0" Content="Sửa" HorizontalAlignment="Center"
                     Width="150" Height="35"
                     IsEnabled="{Binding IsEditingEnabled}"
@@ -138,7 +138,7 @@
             <Grid Grid.Column="2">
                 <Button 
                     Style="{StaticResource MaterialDesignRaisedButton}"
-                    Background="{DynamicResource AccentBrown}"
+                    Background="{DynamicResource DarkGrayishBlue}"
                     Margin="5,0,5,0" Content="Xóa" HorizontalAlignment="Center"
                     Width="150" Height="35"
                     IsEnabled="{Binding IsDeletingEnabled}"
@@ -147,7 +147,7 @@
             <Grid Grid.Column="3">
                 <Button 
                     Style="{StaticResource MaterialDesignRaisedButton}"
-                    Background="{DynamicResource AccentBrown}"
+                    Background="{DynamicResource DarkGrayishBlue}"
                     Margin="5,0,5,0" Content="Duyệt" HorizontalAlignment="Center"
                     Width="150" Height="35"
                     IsEnabled="{Binding IsApprovingEnabled}"
@@ -156,7 +156,7 @@
             <Grid Grid.Column="4">
                 <Button 
                     Style="{StaticResource MaterialDesignRaisedButton}"
-                    Background="{DynamicResource AccentBrown}"
+                    Background="{DynamicResource DarkGrayishBlue}"
                     Margin="5,0,5,0" Content="Từ chối" HorizontalAlignment="Center"
                     Width="150" Height="35"
                     IsEnabled="{Binding IsRejectingEnabled}"
@@ -168,7 +168,7 @@
             Grid.Row="0" Grid.RowSpan="1">
             <Grid Grid.Row="0">
                 <materialDesign:Card 
-                  Background="{DynamicResource PrimaryBrown}"
+                  Background="{DynamicResource DarkGrayishBlue}"
                   Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
                   Padding="5">
                     <TextBlock FontWeight="SemiBold" TextAlignment="Center" FontSize="20" Text="Thông tin phòng thi"></TextBlock>
@@ -330,7 +330,7 @@
                     </Grid>
                     <Grid Grid.Row="7" Grid.Column="0">
                         <Button Style="{StaticResource MaterialDesignRaisedButton}"
-                            Background="{DynamicResource AccentBrown}"
+                            Background="{DynamicResource DarkGrayishBlue}"
                             Margin="5,0,5,0" Content="Xác nhận" HorizontalAlignment="Center"
                             Width="150" Height="35"
                             Command="{Binding ConfirmCommand}"
@@ -338,7 +338,7 @@
                     </Grid>
                     <Grid Grid.Row="7" Grid.Column="1">
                         <Button Style="{StaticResource MaterialDesignRaisedButton}"
-                            Background="{DynamicResource AccentBrown}"
+                            Background="{DynamicResource DarkGrayishBlue}"
                             Margin="5,0,5,0" Content="Hủy" HorizontalAlignment="Center"
                             Width="150" Height="35"
                             Command="{Binding CancelCommand}"

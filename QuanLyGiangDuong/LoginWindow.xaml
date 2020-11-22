@@ -23,7 +23,7 @@
         DataContext="{StaticResource LoginVM}"
         
         Name="loginWindow"
-        Title="Đăng nhập Master Save System" Height="300" Width="600">
+        Title="Đăng nhập Hệ thống Quản lý giảng đường" Height="300" Width="600">
 
     <!--<i:Interaction.Triggers>
         <i:EventTrigger EventName="MouseLeftDown">
@@ -38,7 +38,7 @@
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
-            <Button Background="{StaticResource PrimaryHueDarkBrush}" Name="titleBtn" Content="Đăng nhập hệ thống Quản lý giảng đường"></Button>
+            <Button Background="{StaticResource MidNight}" Name="titleBtn" Content="Đăng nhập hệ thống Quản lý giảng đường"></Button>
 
             <!--<UC:ControlBarUC Tag="{Binding Title, ElementName=loginWindow}"></UC:ControlBarUC>-->
         </Grid>
@@ -84,7 +84,7 @@
                             </Grid.ColumnDefinitions>
                             <Button Grid.Column="0" Command="{Binding LoginCommand}" CommandParameter="{Binding ElementName=loginWindow}"
                         Style="{StaticResource MaterialDesignRaisedButton}" IsDefault="True"
-                        Width="120" Content="ĐĂNG NHẬP">
+                        Width="120" Content="ĐĂNG NHẬP" Background="{StaticResource MidNight}">
                             </Button>
                             <Button Grid.Column="1" Command="{Binding CloseWindowCommand}" CommandParameter="{Binding ElementName=loginWindow}"
                         Style="{StaticResource MaterialDesignRaisedAccentButton}"

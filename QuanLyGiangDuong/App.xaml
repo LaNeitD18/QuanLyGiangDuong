@@ -15,18 +15,20 @@
             <viewmodel:ExamInputViewModel x:Key="ExamInputVM"></viewmodel:ExamInputViewModel>
             <viewmodel:RoomManagementViewModel x:Key="RoomManagementVM"></viewmodel:RoomManagementViewModel>
             <viewmodel:LoginViewModel x:Key="LoginVM"></viewmodel:LoginViewModel>
+            <viewmodel:ReportViewModel x:Key="ReportVM"></viewmodel:ReportViewModel>
             <!-- primary -->
             <SolidColorBrush x:Key="PrimaryHueLightBrush" Color="#80fbdd"/>
             <SolidColorBrush x:Key="PrimaryHueLightForegroundBrush" Color="#FFFFFF"/>
-            <SolidColorBrush x:Key="PrimaryHueMidBrush" Color="#49c7ab"/>
+            <SolidColorBrush x:Key="PrimaryHueMidBrush" Color="#3D435A"/>
             <SolidColorBrush x:Key="PrimaryHueMidForegroundBrush" Color="#FFFFFF"/>
-            <SolidColorBrush x:Key="PrimaryHueDarkBrush" Color="#00967c"/>
+            <SolidColorBrush x:Key="PrimaryHueDarkBrush" Color="#3D435A"/>
             <SolidColorBrush x:Key="PrimaryHueDarkForegroundBrush" Color="#FFFFFF"/>
-            <SolidColorBrush x:Key="PrimaryBrown" Color="#986b41"/>
+            <SolidColorBrush x:Key="MidNight" Color="#1c2938"/>
+            <SolidColorBrush x:Key="Bunting" Color="#263246"/>
+            <SolidColorBrush x:Key="DarkGrayishBlue" Color="#3D435A"/>
             <!-- accent -->
             <SolidColorBrush x:Key="SecondaryAccentBrush" Color="#236084"/>
             <SolidColorBrush x:Key="SecondaryAccentForegroundBrush" Color="#FFFFFF"/>
-            <SolidColorBrush x:Key="AccentBrown" Color="#b68e65"/>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />

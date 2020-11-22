@@ -8,7 +8,9 @@
         xmlns:local="clr-namespace:QuanLyGiangDuong"
         xmlns:s="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="MainWindow" Height="720" Width="1080" MinHeight="360" MinWidth="640"
+        Title="MainWindow"
+        
+        WindowState="Maximized"
         
         DataContext="{StaticResource MainVM}"
         
@@ -77,38 +79,32 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Grid Background="{DynamicResource AccentBrown}">
+        <Grid 
+            Grid.ColumnSpan="4" 
+            Background="{DynamicResource MidNight}">
+            <Grid.Effect>
+                <DropShadowEffect BlurRadius="15" Direction="-90" RenderingBias="Quality" ShadowDepth="2"></DropShadowEffect>
+            </Grid.Effect>
             <Image Source="/Images/classroom.png"></Image>
         </Grid>
         <md:Card
-            md:ShadowAssist.ShadowEdges="None" Grid.Column="1"
-            Grid.ColumnSpan="31" Grid.RowSpan="1" Background="#b68e65">
+            md:ShadowAssist.ShadowEdges="None" Grid.Column="4"
+            Grid.ColumnSpan="31" Grid.RowSpan="1" Background="{StaticResource Bunting}">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
-                <TextBlock Foreground="White" VerticalAlignment="Center" Style="{DynamicResource MaterialDesignHeadline6TextBlock}" FontSize="16">
-                    <TextBlock.Text>
-                        <MultiBinding StringFormat="     {0}     ">
-                            <Binding ElementName="mainScreen" Path="Content.Title"/>
-                        </MultiBinding>
-                    </TextBlock.Text>
+                <TextBlock 
+                    Foreground="White" 
+                    Text="{Binding Title}"
+                    FontWeight="Bold"
+                    FontSize="22">
                 </TextBlock>
             </StackPanel>
         </md:Card>
         <DockPanel 
-            Grid.Column="0" Grid.Row="1" Grid.RowSpan="17"
-            Background="{DynamicResource AccentBrown}" Panel.ZIndex="2" LastChildFill="True"
+            Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="1" Grid.RowSpan="17"
+            Background="{DynamicResource Bunting}" Panel.ZIndex="2" LastChildFill="True"
             Margin="0">
-            <WrapPanel DockPanel.Dock="Top" Margin="10,10,0,10">
-                <Button Command="{Binding Menu_Click_Command}" Background="{DynamicResource AccentBrown}" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0" Margin="0">
-
-                    <md:PackIcon Kind="Menu" Foreground="White" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="30" Height="30" />
-
-                    <Button.CommandParameter>
-                        <s:Int32>0</s:Int32>
-                    </Button.CommandParameter>
-                </Button>
-            </WrapPanel>
-            <WrapPanel DockPanel.Dock="Top" Margin="10,10,0,10">
-                <Button Command="{Binding Home_Page_SelectedCommand}" Background="{DynamicResource AccentBrown}" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0" Margin="0">
+            <WrapPanel DockPanel.Dock="Top" Margin="10,30,0,10">
+                <Button Command="{Binding Home_Page_SelectedCommand}" Background="{DynamicResource Bunting}" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0" Margin="0">
 
                     <md:PackIcon Kind="Home" Foreground="White" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="30" Height="30" />
 
@@ -116,12 +112,12 @@
                         <s:Int32>0</s:Int32>
                     </Button.CommandParameter>
                 </Button>
-                <Canvas VerticalAlignment="Center"  Visibility="{Binding ElementName=canvasExtendedSideBar, Path=Visibility, Mode=OneWay}" Margin="0,0,0,27" >
+                <Canvas VerticalAlignment="Center"  Visibility="Visible" Margin="0,0,0,27" >
                     <Label  Content="   Trang chính" VerticalAlignment="Center" Foreground="White" FontSize="14" FontWeight="Bold" />
                 </Canvas>
             </WrapPanel>
-            <WrapPanel DockPanel.Dock="Top" Margin="10,10,0,10">
-                <Button Command="{Binding TimeTable_Page_SelectedCommand}" Background="{DynamicResource AccentBrown}" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0" Margin="0">
+            <WrapPanel DockPanel.Dock="Top" Margin="10,20,0,10">
+                <Button Command="{Binding TimeTable_Page_SelectedCommand}" Background="{DynamicResource Bunting}" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0" Margin="0">
 
                     <md:PackIcon Kind="Timetable" Foreground="White" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="30" Height="30" />
 
@@ -129,12 +125,12 @@
                         <s:Int32>0</s:Int32>
                     </Button.CommandParameter>
                 </Button>
-                <Canvas VerticalAlignment="Center"  Visibility="{Binding ElementName=canvasExtendedSideBar, Path=Visibility, Mode=OneWay}" Margin="0,0,0,27" >
+                <Canvas VerticalAlignment="Center"  Visibility="Visible" Margin="0,0,0,27" >
                     <Label  Content="   Lịch dạng TKB" VerticalAlignment="Center" Foreground="White" FontSize="14" FontWeight="Bold" />
                 </Canvas>
             </WrapPanel>
-            <WrapPanel DockPanel.Dock="Top" Margin="10,10,0,10">
-                <Button Command="{Binding Room_Page_SelectedCommand}" Background="{DynamicResource AccentBrown}" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0" Margin="0">
+            <WrapPanel DockPanel.Dock="Top" Margin="10,20,0,10">
+                <Button Command="{Binding Room_Page_SelectedCommand}" Background="{DynamicResource Bunting}" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0" Margin="0">
 
                     <md:PackIcon Kind="Timetable" Foreground="White" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="30" Height="30" />
 
@@ -142,12 +138,12 @@
                         <s:Int32>0</s:Int32>
                     </Button.CommandParameter>
                 </Button>
-                <Canvas VerticalAlignment="Center"  Visibility="{Binding ElementName=canvasExtendedSideBar, Path=Visibility, Mode=OneWay}" Margin="0,0,0,27" >
+                <Canvas VerticalAlignment="Center"  Visibility="Visible" Margin="0,0,0,27" >
                     <Label  Content="   Lịch dạng phòng" VerticalAlignment="Center" Foreground="White" FontSize="14" FontWeight="Bold" />
                 </Canvas>
             </WrapPanel>
-            <WrapPanel DockPanel.Dock="Top" Margin="10,10,0,10">
-                <Button Command="{Binding TimeTableInput_Page_SelectedCommand}" Background="{DynamicResource AccentBrown}" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0" Margin="0">
+            <WrapPanel DockPanel.Dock="Top" Margin="10,20,0,10">
+                <Button Command="{Binding TimeTableInput_Page_SelectedCommand}" Background="{DynamicResource Bunting}" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0" Margin="0">
 
                     <md:PackIcon Kind="CalendarPlus" Foreground="White" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="30" Height="30" />
 
@@ -155,12 +151,12 @@
                         <s:Int32>0</s:Int32>
                     </Button.CommandParameter>
                 </Button>
-                <Canvas VerticalAlignment="Center"  Visibility="{Binding ElementName=canvasExtendedSideBar, Path=Visibility, Mode=OneWay}" Margin="0,0,0,27" >
+                <Canvas VerticalAlignment="Center"  Visibility="Visible" Margin="0,0,0,27" >
                     <Label  Content="   Nhập phòng học" VerticalAlignment="Center" Foreground="White" FontSize="14" FontWeight="Bold" />
                 </Canvas>
             </WrapPanel>
-            <WrapPanel DockPanel.Dock="Top" Margin="10,10,0,10">
-                <Button Command="{Binding EventInput_Page_SelectedCommand}" Background="{DynamicResource AccentBrown}" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0" Margin="0">
+            <WrapPanel DockPanel.Dock="Top" Margin="10,20,0,10">
+                <Button Command="{Binding EventInput_Page_SelectedCommand}" Background="{DynamicResource Bunting}" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0" Margin="0">
 
                     <md:PackIcon Kind="CalendarPlus" Foreground="White" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="30" Height="30" />
 
@@ -168,13 +164,13 @@
                         <s:Int32>0</s:Int32>
                     </Button.CommandParameter>
                 </Button>
-                <Canvas VerticalAlignment="Center"  Visibility="{Binding ElementName=canvasExtendedSideBar, Path=Visibility, Mode=OneWay}" Margin="0,0,0,27" >
+                <Canvas VerticalAlignment="Center"  Visibility="Visible" Margin="0,0,0,27" >
                     <Label  Content="   Nhập sự kiện" VerticalAlignment="Center" Foreground="White" FontSize="14" FontWeight="Bold" />
                 </Canvas>
             </WrapPanel>
 
-            <WrapPanel DockPanel.Dock="Top" Margin="10,10,0,10">
-                <Button Command="{Binding ExamInput_Page_SelectedCommand}" Background="{DynamicResource AccentBrown}" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0" Margin="0">
+            <WrapPanel DockPanel.Dock="Top" Margin="10,20,0,10">
+                <Button Command="{Binding ExamInput_Page_SelectedCommand}" Background="{DynamicResource Bunting}" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0" Margin="0">
 
                     <md:PackIcon Kind="CalendarPlus" Foreground="White" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="30" Height="30" />
 
@@ -182,12 +178,12 @@
                         <s:Int32>0</s:Int32>
                     </Button.CommandParameter>
                 </Button>
-                <Canvas VerticalAlignment="Center"  Visibility="{Binding ElementName=canvasExtendedSideBar, Path=Visibility, Mode=OneWay}" Margin="0,0,0,27" >
+                <Canvas VerticalAlignment="Center"  Visibility="Visible" Margin="0,0,0,27" >
                     <Label  Content="   Nhập phòng thi" VerticalAlignment="Center" Foreground="White" FontSize="14" FontWeight="Bold" />
                 </Canvas>
             </WrapPanel>
-            <WrapPanel DockPanel.Dock="Top" Margin="10,10,0,10">
-                <Button Command="{Binding RoomManagement_Page_SelectedCommand}" Background="{DynamicResource AccentBrown}" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0" Margin="0">
+            <WrapPanel DockPanel.Dock="Top" Margin="10,20,0,10">
+                <Button Command="{Binding RoomManagement_Page_SelectedCommand}" Background="{DynamicResource Bunting}" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0" Margin="0">
 
                     <md:PackIcon Kind="HomeModern" Foreground="White" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="30" Height="30" />
 
@@ -195,8 +191,21 @@
                         <s:Int32>0</s:Int32>
                     </Button.CommandParameter>
                 </Button>
-                <Canvas VerticalAlignment="Center"  Visibility="{Binding ElementName=canvasExtendedSideBar, Path=Visibility, Mode=OneWay}" Margin="0,0,0,27" >
-                    <Label  Content="   Nhập Phòng" VerticalAlignment="Center" Foreground="White" FontSize="14" FontWeight="Bold" />
+                <Canvas VerticalAlignment="Center"  Visibility="Visible" Margin="0,0,0,27" >
+                    <Label  Content="   Quản lý phòng" VerticalAlignment="Center" Foreground="White" FontSize="14" FontWeight="Bold" />
+                </Canvas>
+            </WrapPanel>
+            <WrapPanel DockPanel.Dock="Top" Margin="10,20,0,10">
+                <Button Command="{Binding Report_Page_SelectedCommand}" Background="{DynamicResource Bunting}" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0" Margin="0">
+
+                    <md:PackIcon Kind="BarChart" Foreground="White" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="30" Height="30" />
+
+                    <Button.CommandParameter>
+                        <s:Int32>0</s:Int32>
+                    </Button.CommandParameter>
+                </Button>
+                <Canvas VerticalAlignment="Center"  Visibility="Visible" Margin="0,0,0,27" >
+                    <Label  Content="   Xem báo cáo" VerticalAlignment="Center" Foreground="White" FontSize="14" FontWeight="Bold" />
                 </Canvas>
             </WrapPanel>
         </DockPanel>
@@ -214,8 +223,11 @@
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </Canvas>
-        <Grid Grid.Column="{Binding FrameColumn}" Grid.Row="1" Grid.ColumnSpan="31" Grid.RowSpan="17">
-            <Frame x:Name="main" Margin="10,10,10.4,10" NavigationUIVisibility="Hidden"
+        <Grid 
+            Grid.Column="4" Grid.Row="1" 
+            Grid.ColumnSpan="31" Grid.RowSpan="17"
+            Margin="5,5,0,0">
+            <Frame x:Name="main" NavigationUIVisibility="Hidden"
                        Content="{Binding FrameContent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
             </Frame>
         </Grid>
