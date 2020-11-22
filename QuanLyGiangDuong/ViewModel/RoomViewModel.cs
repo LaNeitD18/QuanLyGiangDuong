@@ -231,6 +231,7 @@ namespace QuanLyGiangDuong.ViewModel
             }
         }
 
+        #region Get Schedule Button
         private ICommand _getRoomScheduleCommand;
         public ICommand GetRoomScheduleCommand
         {
@@ -256,7 +257,11 @@ namespace QuanLyGiangDuong.ViewModel
 
             GetUsingClass();
             GetUsingEvent();
+            GetUsingExam();
         }
+        #endregion
+
+        #region Get Using Functions
 
         public void GetUsingClass()
         {
@@ -265,7 +270,7 @@ namespace QuanLyGiangDuong.ViewModel
                               join rm in DataProvider.Ins.DB.ROOMs on uc.RoomID equals rm.RoomID
                               where DbFunctions.AddDays(_startDate, (uc.Day_ + 6) % 7) > cl.StartDate &&   // Satisfy the start and end date of class
                                     DbFunctions.AddDays(_startDate, (uc.Day_ + 6) % 7) < cl.EndDate &&      // Satisfy the start and end date of class
-                                    (DbFunctions.DiffDays(DbFunctions.AddDays(_startDate, (uc.Day_ + 6) % 7), cl.StartDate) / 7) % uc.RepeatCycle == 0 // satisfied the repeat cycle
+                                    (DbFunctions.DiffDays(DbFunctions.AddDays(_startDate, (uc.Day_ + 6) % 7), cl.StartDate) / 7) % uc.RepeatCycle == 0// satisfied the repeat cycle
                               select new { uc, cl, rm }
                         ).ToList();
 
@@ -365,6 +370,122 @@ namespace QuanLyGiangDuong.ViewModel
                 }
             }
         }
+        public void GetUsingExam()
+        {
+            var usingExam = (from ue in DataProvider.Ins.DB.USINGEXAMs
+                              join rm in DataProvider.Ins.DB.ROOMs on ue.RoomID equals rm.RoomID
+                              where ue.Date_ > startDate &&   // Satisfy the start and end date of choosen week
+                                    ue.Date_ < endDate     // Satisfy the start and end date of choosen week
+                              select new { ue, rm }
+                        ).ToList();
+
+            foreach (var ins in usingExam)
+            {
+                if (!IsExistRoom(ins.rm))
+                {
+                    var listPeriod = (from period in DataProvider.Ins.DB.PERIOD_TIMERANGE
+                                      where period.PeriodID != -1
+                                      select period).ToList();
+                    foreach (var period in listPeriod)
+                    {
+                        RoomTableRow roomTableRow = new RoomTableRow();
+                        roomTableRow.room = ins.rm;
+                        roomTableRow.period = period;
+
+                        listRoomTableRow.Add(roomTableRow);
+                    }
+                }
+
+                // for each using, we split it into multiple period row
+                var listPeriodTimeRange = Utilities.Utils.GetListPeriodTimeRange(ins.ue.StartPeriod, ins.ue.Duration);
+
+                foreach (var periodTimeRange in listPeriodTimeRange)
+                {
+                    if (IsExistRoomRow(ins.rm, periodTimeRange))
+                    {
+                        var roomTableRow = listRoomTableRow.First((x) => {
+                            return x.room.RoomID == ins.rm.RoomID &&
+                                   x.period.PeriodID == periodTimeRange.PeriodID;
+                        });
+
+                        roomTableRow.usings[(int)ins.ue.Date_.DayOfWeek] = ins.ue;
+                    }
+                    else
+                    {
+                        RoomTableRow roomTableRow = new RoomTableRow();
+                        roomTableRow.room = ins.rm;
+                        roomTableRow.period = periodTimeRange;
+                        roomTableRow.usings[(int)ins.ue.Date_.DayOfWeek] = ins.ue;
+
+                        listRoomTableRow.Add(roomTableRow);
+                    }
+                }
+            }
+        }
+
+        #endregion
+
+        #region Next Week Button
+
+        private ICommand _moveToNextWeekCommand;
+        public ICommand moveToNextWeekCommand
+        {
+            get
+            {
+                if (_moveToNextWeekCommand == null)
+                {
+                    _moveToNextWeekCommand = new RelayCommand(
+                        param => this.MoveToNextWeek()
+                    );
+                }
+                return _moveToNextWeekCommand;
+            }
+        }
+
+        public void MoveToNextWeek()
+        {
+            startDate = startDate.AddDays(7);
+            endDate = endDate.AddDays(7);
+
+            listRoomTableRow.Clear();
+
+            GetUsingClass();
+            GetUsingEvent();
+            GetUsingExam();
+        }
+
+        #endregion
+
+        #region Previous Week Button
+
+        private ICommand _moveToPrevWeekCommand;
+        public ICommand moveToPrevWeekCommand
+        {
+            get
+            {
+                if (_moveToPrevWeekCommand == null)
+                {
+                    _moveToPrevWeekCommand = new RelayCommand(
+                        param => this.MoveToPrevWeek()
+                    );
+                }
+                return _moveToPrevWeekCommand;
+            }
+        }
+
+        public void MoveToPrevWeek()
+        {
+            startDate = startDate.AddDays(-7);
+            endDate = endDate.AddDays(-7);
+
+            listRoomTableRow.Clear();
+
+            GetUsingClass();
+            GetUsingEvent();
+            GetUsingExam();
+        }
+
+        #endregion
 
         bool IsExistRoomRow(ROOM rm, PERIOD_TIMERANGE period)
         {
@@ -393,9 +514,13 @@ namespace QuanLyGiangDuong.ViewModel
         public RoomViewModel()
         {
             // Init startDate and endDate
-            _startDate = DateTime.Now.AddDays(-((int)DateTime.Now.DayOfWeek - 1)); // get the start of the week
-            _endDate = _startDate.AddDays(6); // get the end of the week
+            startDate = DateTime.Now;
+            startDate = startDate.AddDays(-((int)startDate.DayOfWeek + 6) % 7); // get the start of the week
+            endDate = startDate.AddDays(6); // get the end of the week
 
+            GetUsingClass();
+            GetUsingEvent();
+            GetUsingExam();
         }
     }
 }

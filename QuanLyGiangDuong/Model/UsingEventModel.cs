@@ -40,7 +40,9 @@ namespace QuanLyGiangDuong.Model
 
         public string GetDisplayString()
         {
-            return DataProvider.Ins.DB.EVENT_.Find(EventID).EventName;    
+            return "Sự kiện" + Environment.NewLine + 
+                "-------------------" + Environment.NewLine +
+                DataProvider.Ins.DB.EVENT_.Find(EventID).EventName;    
         }
 
         private string _displayName;

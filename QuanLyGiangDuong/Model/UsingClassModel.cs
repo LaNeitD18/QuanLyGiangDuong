@@ -43,7 +43,14 @@ namespace QuanLyGiangDuong.Model
 
         public string GetDisplayString()
         {
-            return DataProvider.Ins.DB.CLASSes.Find(ClassID).ClassName;
+            var value = (from cl in DataProvider.Ins.DB.CLASSes
+                         join lec in DataProvider.Ins.DB.LECTURERs on cl.LecturerID equals lec.LecturerID
+                         where cl.ClassID == ClassID
+                         select new { cl, lec }).ToList()[0];
+
+            return value.cl.ClassName + Environment.NewLine + value.lec.LecturerName + 
+                Environment.NewLine + "______________" +
+                Environment.NewLine + "Sỉ số: " + value.cl.Population_;
         }
     }
 }

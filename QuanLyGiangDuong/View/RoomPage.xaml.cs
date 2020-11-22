@@ -3,6 +3,7 @@ using Syncfusion.UI.Xaml.Grid;
 using Syncfusion.UI.Xaml.Grid.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using QuanLyGiangDuong.Model;
 
 namespace QuanLyGiangDuong.View
 {
@@ -160,6 +162,70 @@ namespace QuanLyGiangDuong.View
                 return range;
             }
             return null;
+        }
+    }
+
+    public class UsingToColorBackgroundConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            var data = value;
+
+            if (data == null)
+            {
+                return new SolidColorBrush(Color.FromArgb(255, 200, 200, 200));
+            }
+            else if (data is USINGCLASS)
+            {
+                return new SolidColorBrush(Color.FromArgb(255, 120, 226, 154));
+            }
+            else if(data is USINGEVENT)
+            {
+                return new SolidColorBrush(Color.FromArgb(255, 235, 232, 147));
+            }
+            else if(data is USINGEXAM)
+            {
+                return new SolidColorBrush(Color.FromArgb(255, 237, 189, 177));
+            }
+
+            return new SolidColorBrush(Color.FromArgb(255, 200, 200, 200));
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class UsingToColorBorderBrush : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            var data = value;
+
+            if (data == null)
+            {
+                return new SolidColorBrush(Color.FromArgb(200, 130, 130, 130));
+            }
+            else if (data is USINGCLASS)
+            {
+                return new SolidColorBrush(Color.FromArgb(255, 44, 206, 46));
+            }
+            else if (data is USINGEVENT)
+            {
+                return new SolidColorBrush(Color.FromArgb(255, 215, 210, 40));
+            }
+            else if (data is USINGEXAM)
+            {
+                return new SolidColorBrush(Color.FromArgb(255, 217, 74, 74));
+            }
+
+            return new SolidColorBrush(Color.FromArgb(200, 130, 130, 130));
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
         }
     }
 }
