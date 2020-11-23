@@ -67,14 +67,56 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid 
-            Grid.Row="3" Grid.Column="1" 
+            Grid.Row="1" Grid.Column="16"
+            Grid.RowSpan="1" Grid.ColumnSpan="4">
+            <ComboBox
+                FontSize="18" 
+                materialDesign:HintAssist.Hint="Chọn tháng" 
+                VerticalAlignment="Center" 
+                Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                ItemsSource="{Binding ListMonth}" 
+                KeyboardNavigation.TabIndex="1" 
+                SelectedItem="{Binding SelectedMonth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }"
+                IsEnabled="True">
+            </ComboBox>
+        </Grid>
+        <Grid 
+            Grid.Row="1" Grid.Column="21"
+            Grid.ColumnSpan="4">
+            <ComboBox
+                FontSize="18" 
+                materialDesign:HintAssist.Hint="Chọn năm" 
+                VerticalAlignment="Center" 
+                Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                ItemsSource="{Binding ListYear}" 
+                KeyboardNavigation.TabIndex="1" 
+                SelectedItem="{Binding SelectedYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }"
+                IsEnabled="True">
+            </ComboBox>
+        </Grid>
+        <Grid 
+            Grid.Row="1" Grid.Column="26"
+            Grid.ColumnSpan="4">
+            <Button
+                Style="{StaticResource MaterialDesignRaisedButton}"
+                Background="{DynamicResource DarkGrayishBlue}"
+                Margin="5,0,5,0" Content="Xem báo cáo" 
+                HorizontalAlignment="Center"
+                Width="150" Height="35"
+                Command="{Binding CreateReportCommand}"
+                IsEnabled="True">
+            </Button>
+        </Grid>
+        <Grid 
+            Grid.Row="6" Grid.Column="1" 
             Grid.RowSpan="10" Grid.ColumnSpan="12">
-            <lvc:PieChart LegendLocation="Bottom" Series="{Binding PieSeries}">
-                
+            <lvc:PieChart 
+                LegendLocation="Bottom" 
+                Series="{Binding PieSeries}">
             </lvc:PieChart>
         </Grid>
         <Grid
-            Grid.Row="1" Grid.Column="16"
+            Grid.Row="4" Grid.Column="16"
             Grid.RowSpan="12" Grid.ColumnSpan="14">
             <lvc:CartesianChart LegendLocation="Bottom" Series="{Binding ColumnSeries}">
                 <lvc:CartesianChart.AxisY>

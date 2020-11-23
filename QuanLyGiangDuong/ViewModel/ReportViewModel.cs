@@ -16,6 +16,34 @@ namespace QuanLyGiangDuong.ViewModel
     class ReportViewModel : BaseViewModel
     {
         #region Variables
+        private ObservableCollection<int> _ListMonth;
+        public ObservableCollection<int> ListMonth
+        {
+            get { return _ListMonth; }
+            set { _ListMonth = value; OnPropertyChanged(); }
+        }
+
+        private int _SelectedMonth;
+        public int SelectedMonth
+        {
+            get { return _SelectedMonth; }
+            set { _SelectedMonth = value; OnPropertyChanged(); }
+        }
+
+        private ObservableCollection<int> _ListYear;
+        public ObservableCollection<int> ListYear
+        {
+            get { return _ListYear; }
+            set { _ListYear = value; OnPropertyChanged(); }
+        }
+
+        private int _SelectedYear;
+        public int SelectedYear
+        {
+            get { return _SelectedYear; }
+            set { _SelectedYear = value; OnPropertyChanged(); }
+        }
+
         private int _UnusedRooms;
         public int UnusedRooms
         {
@@ -60,8 +88,8 @@ namespace QuanLyGiangDuong.ViewModel
         #endregion
 
         #region Function
-        private void LoadData() {
-            // pie chart
+        // load full ko load theo thang, nam
+        private void LoadPieChartInput() {
             UnusedRooms = DataProvider.Ins.DB.ROOMs.Where(x => x.Status_ == "Không còn sử dụng").Count();
             EmptyRooms = DataProvider.Ins.DB.ROOMs.Where(x => x.Status_ == "Còn sử dụng").Count();
             UsingRooms = DataProvider.Ins.DB.ROOMs.Where(x => x.Status_ == "Đang sử dụng").Count();
@@ -80,11 +108,12 @@ namespace QuanLyGiangDuong.ViewModel
                     Values = new ChartValues<int>{ UsingRooms }
                 }
             };
+        }
 
-            // bar chart
+        private void LoadBarChartInput() {
             int classRooms = DataProvider.Ins.DB.USINGCLASSes.Count();
-            int eventRooms = DataProvider.Ins.DB.USINGEVENTs.Count();
-            int examRooms = DataProvider.Ins.DB.USINGEXAMs.Count();
+            int eventRooms = DataProvider.Ins.DB.USINGEVENTs.Where(x => x.Date_.Month == SelectedMonth && x.Date_.Year == SelectedYear).Count();
+            int examRooms = DataProvider.Ins.DB.USINGEXAMs.Where(x => x.Date_.Month == SelectedMonth && x.Date_.Year == SelectedYear).Count();
             PointLabel = chartPoint => string.Format("{0} ({1:P})", chartPoint.Y, chartPoint.Participation);
 
             ColumnSeries = new SeriesCollection {
@@ -95,15 +124,37 @@ namespace QuanLyGiangDuong.ViewModel
                 }
             };
         }
+
+        private void LoadData() {
+            // combobox select month & year
+            ListMonth = new ObservableCollection<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+            SelectedMonth = DateTime.Now.Month;
+
+            ListYear = new ObservableCollection<int>();
+            for(int i=DateTime.Now.Year; i>=2000; i--) {
+                ListYear.Add(i);
+            }
+            SelectedYear = DateTime.Now.Year;
+
+            // pie chart
+            LoadPieChartInput();
+
+            // bar chart
+            LoadBarChartInput();
+        }
         #endregion
 
         #region ICommand
-
+        public ICommand CreateReportCommand { get; set; }
         #endregion
 
         public ReportViewModel()
         {
             LoadData();
+
+            CreateReportCommand = new RelayCommand((p) => {
+                LoadBarChartInput();
+            });
         }
     }
 }
