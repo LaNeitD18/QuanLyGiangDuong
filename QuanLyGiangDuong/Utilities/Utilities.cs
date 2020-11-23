@@ -107,6 +107,26 @@ namespace QuanLyGiangDuong.Utilities
             int durationInMinute = (int)Math.Round(duration.TotalMinutes);
             return CalcEndPeriod(startPeriod, durationInMinute);
         }
+
+        /// <summary>
+        /// Get List of Period_TimeRange base on the start period and Duration of its
+        /// </summary>
+        /// <param name="StartPeriod"></param>
+        /// <param name="Duration"></param>
+        /// <returns></returns>
+        static public List<PERIOD_TIMERANGE> GetListPeriodTimeRange(int StartPeriod, TimeSpan Duration)
+        {
+            var startTime = DataProvider.Ins.DB.PERIOD_TIMERANGE.Find(StartPeriod).StartTime;
+
+            var endtime = startTime + Duration;
+
+            var listPeriodTimeRange = (from t in DataProvider.Ins.DB.PERIOD_TIMERANGE
+                     where t.StartTime >= startTime &&
+                           t.StartTime < endtime
+                     select t).ToList();
+
+            return listPeriodTimeRange;
+        }
         #endregion
     }
 }

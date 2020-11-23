@@ -4,7 +4,8 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:QuanLyGiangDuong.View"
-      xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+      xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" 
+      xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
       mc:Ignorable="d" 
       
       DataContext="{StaticResource TimeTableVM}"
@@ -41,7 +42,7 @@
                 ItemsSource="{Binding tb}" 
                 QueryCoveredRange="sfDataGrid1_QueryCoveredRange"
                 RowHeight="40"
-                HeaderRowHeight="30"
+                HeaderRowHeight="30" CellTapped="dataGrid_CellTapped"
                 >
                 <syncfusion:SfDataGrid.HeaderStyle>
                     <Style TargetType="syncfusion:GridHeaderCellControl">
