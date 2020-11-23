@@ -282,7 +282,13 @@ namespace QuanLyGiangDuong.ViewModel
         private ROOM _selectedRoom = null;
         public ROOM SelectedRoom
         {
-            get => _selectedRoom;
+            get 
+            { 
+                if(_selectedRoom == null)
+                    _selectedRoom = DataProvider.Ins.DB.ROOMs.Find(Utils.NullStringId);
+
+                return _selectedRoom;
+            }
             set
             { 
                 _selectedRoom = value;
@@ -318,7 +324,13 @@ namespace QuanLyGiangDuong.ViewModel
         private PERIOD_TIMERANGE _selectedStartTimeRange = null;
         public PERIOD_TIMERANGE SelectedStartTimeRange
         {
-            get => _selectedStartTimeRange;
+            get 
+            {
+                if(_selectedStartTimeRange == null)
+                    _selectedStartTimeRange = DataProvider.Ins.DB.PERIOD_TIMERANGE.Find(Utils.NullIntId);
+
+                return _selectedStartTimeRange;
+            }
             set
             {
                 _selectedStartTimeRange = value;
@@ -401,7 +413,7 @@ namespace QuanLyGiangDuong.ViewModel
             // if there was no error, print test, save DB and reset the form
             if(errors.Count == 0)
             { 
-                PrintEventInfoTest();
+                // PrintEventInfoTest();
                 AddEventToPendingList();
                 Reset();
             }
@@ -540,17 +552,11 @@ namespace QuanLyGiangDuong.ViewModel
             if(string.IsNullOrEmpty(EventName))
                 result.Add("Vui lòng nhập tên sự kiện");
 
-            if(SelectedStartTimeRange == null)
-                result.Add("Vui lòng chọn thời điểm bắt đầu sự kiện");
-
             if (Population <= 0)
                 result.Add("Vui lòng nhập số người dự tính hợp lệ (số nguyên dương)");
 
             if(Duration <= 0)
                 result.Add("Vui lòng nhập thời lượng hợp lệ (số nguyên dương)");
-
-            if(SelectedRoom == null)
-                result.Add("Vui lòng chọn mã phòng tổ chức sự kiện");
 
             return result;
         }
@@ -637,7 +643,6 @@ namespace QuanLyGiangDuong.ViewModel
         {
             UsingEventId = null;
             SelectedEvent = null;
-            EventName = "";
             LecturerId = DefaultLecturerId;
             DateOccurs = DateTime.Today;
             SelectedStartTimeRange = null;
@@ -649,8 +654,8 @@ namespace QuanLyGiangDuong.ViewModel
 
         private void Reset()
         {
-            ResetForm();
             RefreshData();
+            ResetForm();
             IsEdittingFormMode = false;
         }
 

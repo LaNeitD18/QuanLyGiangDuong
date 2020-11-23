@@ -82,7 +82,7 @@
         </Grid>
         <Grid
             Grid.Column="0" Grid.ColumnSpan="15"
-            Grid.Row="1" Grid.RowSpan="16"
+            Grid.Row="1" Grid.RowSpan="12"
             Margin="0,10,0,0">
             <DataGrid 
                 HorizontalAlignment="Stretch" 
@@ -95,6 +95,57 @@
                     <DataGridTextColumn Header="Tên môn học"/>
                 </DataGrid.Columns>
             </DataGrid>
+        </Grid>
+        <Grid
+            Grid.Column="0" Grid.ColumnSpan="15"
+            Grid.Row="14" Grid.RowSpan="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <Button 
+                    Style="{StaticResource MaterialDesignRaisedButton}" 
+                    Margin="5,0,5,0" Content="Thêm" HorizontalAlignment="Center"
+                    Width="150" Height="35"
+                    IsEnabled="{Binding IsAddButtonEnabled}"
+                    Command="{Binding AddCmd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </Grid>
+            <Grid Grid.Column="1">
+                <Button 
+                    Style="{StaticResource MaterialDesignRaisedButton}" 
+                    Margin="5,0,5,0" Content="Sửa" HorizontalAlignment="Center"
+                    Width="150" Height="35"
+                    IsEnabled="{Binding IsEditButtonEnabled}"
+                    Command="{Binding EditCmd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </Grid>
+            <Grid Grid.Column="2">
+                <Button 
+                    Style="{StaticResource MaterialDesignRaisedButton}" 
+                    Margin="5,0,5,0" Content="Xóa" HorizontalAlignment="Center"
+                    Width="150" Height="35"
+                    IsEnabled="{Binding IsDeleteButtonEnabled}"
+                    Command="{Binding DeleteCmd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </Grid>
+            <Grid Grid.Column="3">
+                <Button 
+                    Style="{StaticResource MaterialDesignRaisedButton}" 
+                    Margin="5,0,5,0" Content="Duyệt" HorizontalAlignment="Center"
+                    Width="150" Height="35"
+                    IsEnabled="{Binding IsApproveButtonEnabled}"
+                    Command="{Binding ApproveCmd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </Grid>
+            <Grid Grid.Column="4">
+                <Button 
+                    Style="{StaticResource MaterialDesignRaisedButton}" 
+                    Margin="5,0,5,0" Content="Từ chối" HorizontalAlignment="Center"
+                    Width="150" Height="35"
+                    IsEnabled="{Binding IsRejectButtonEnabled}"
+                    Command="{Binding RejectCmd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </Grid>
         </Grid>
         <Grid
             Grid.Column="16" Grid.ColumnSpan="15"
@@ -123,6 +174,8 @@
                         <RowDefinition></RowDefinition>
                         <RowDefinition></RowDefinition>
                         <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition></ColumnDefinition>
@@ -135,34 +188,59 @@
                             VerticalAlignment="Center"
                             FontSize="18" 
                             materialDesign:HintAssist.Hint="Mã yêu cầu" 
-                            IsEnabled="False"
+                            IsReadOnly="True"
                             Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
                             Foreground="{StaticResource SecondaryAccentBrush}" 
-                            Text="{Binding NgayMoSo, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                            Text="{Binding UsingClassId, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                     </Grid>
                     <Grid Grid.Row="1" Grid.Column="0">
-                        <TextBox 
+                        <ComboBox 
                             Margin="20,5,20,5"
                             HorizontalAlignment="Stretch"
                             VerticalAlignment="Center"
-                            FontSize="18" 
                             materialDesign:HintAssist.Hint="Môn học" 
-                            IsEnabled="True"
-                            Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
-                            Foreground="{StaticResource SecondaryAccentBrush}" 
-                            Text="{Binding NgayMoSo, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                            Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                            ItemsSource="{Binding ListSubject}" 
+                            KeyboardNavigation.TabIndex="1" 
+                            SelectedItem="{Binding SelectedSubject, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }" >
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding SubjectName}"></TextBlock>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="SelectionChanged">
+                                    <i:InvokeCommandAction Command="{Binding LTK_SelectionChangedCommand}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </ComboBox>
                     </Grid>
-                    <Grid Grid.Row="1" Grid.Column="1">
+                    <Grid Grid.Row="0" Grid.Column="1">
                         <TextBox 
                             Margin="20,5,20,5"
                             HorizontalAlignment="Stretch"
                             VerticalAlignment="Center"
                             FontSize="18" 
                             materialDesign:HintAssist.Hint="Giảng viên" 
-                            IsEnabled="True"
+                            IsReadOnly="True"
                             Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
                             Foreground="{StaticResource SecondaryAccentBrush}" 
-                            Text="{Binding NgayMoSo, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                            Text="{Binding LecturerId, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                    </Grid>
+
+                    <Grid Grid.Row="1" Grid.Column="1">
+                        <TextBox 
+                            Margin="20,5,20,5"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Center"
+                            FontSize="18" 
+                            materialDesign:HintAssist.Hint="Khoa" 
+                            IsReadOnly="True"
+                            Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                            Foreground="{StaticResource SecondaryAccentBrush}" 
+                            Text="{Binding SelectedSubject.FACAULTY.FacaultyName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                     </Grid>
                     <Grid Grid.Row="2" Grid.Column="0">
                         <ComboBox 
@@ -171,10 +249,66 @@
                             VerticalAlignment="Center"
                             materialDesign:HintAssist.Hint="Hệ" 
                             Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                            ItemsSource="{Binding TenLoaiTietKiem}" 
+                            ItemsSource="{Binding ListTrainingProgram}" 
                             KeyboardNavigation.TabIndex="1" 
-                            Text ="{Binding CbxTenLoaiTietKiem}" 
-                            SelectedItem="{Binding SelectedTenLoaiTietKiem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }" >
+                            SelectedItem="{Binding SelectedTrainingProgram, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }" >
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding TrainingProgramName}"></TextBlock>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="SelectionChanged">
+                                    <i:InvokeCommandAction Command="{Binding YenCute}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </ComboBox>
+                    </Grid>
+                    
+                    <Grid Grid.Row="2" Grid.Column="1">
+                        <ComboBox 
+                            Margin="20,5,20,5"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Center"
+                            materialDesign:HintAssist.Hint="Ngày trong tuần" 
+                            Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                            ItemsSource="{Binding ListDayOfWeek}" 
+                            KeyboardNavigation.TabIndex="1" 
+                            SelectedItem="{Binding SelectedDayOfWeek, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }" >
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Name}"></TextBlock>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="SelectionChanged">
+                                    <i:InvokeCommandAction Command="{Binding YenCute}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </ComboBox>
+                    </Grid>
+
+                    <Grid Grid.Row="3" Grid.Column="0">
+                        <ComboBox 
+                            Margin="20,5,20,5"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Center"
+                            materialDesign:HintAssist.Hint="Học kỳ" 
+                            Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                            ItemsSource="{Binding ListSemester}" 
+                            KeyboardNavigation.TabIndex="1" 
+                            SelectedItem="{Binding SelectedSemester, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }" >
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Name}"></TextBlock>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="SelectionChanged">
                                     <i:InvokeCommandAction Command="{Binding LTK_SelectionChangedCommand}"/>
@@ -182,103 +316,186 @@
                             </i:Interaction.Triggers>
                         </ComboBox>
                     </Grid>
-                    <Grid Grid.Row="2" Grid.Column="1">
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <ComboBox Width="200" materialDesign:HintAssist.Hint="Khoa" VerticalAlignment="Center" Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                                  ItemsSource="{Binding TenLoaiTietKiem}" KeyboardNavigation.TabIndex="1" Text ="{Binding CbxTenLoaiTietKiem}" SelectedItem="{Binding SelectedTenLoaiTietKiem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }" >
-                                <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="SelectionChanged">
-                                        <i:InvokeCommandAction Command="{Binding LTK_SelectionChangedCommand}"/>
-                                    </i:EventTrigger>
-                                </i:Interaction.Triggers>
-                            </ComboBox>
-                        </StackPanel>
-                    </Grid>
-                    <Grid Grid.Row="3" Grid.Column="0">
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <ComboBox Width="200" materialDesign:HintAssist.Hint="Học kỳ" VerticalAlignment="Center" Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                                  ItemsSource="{Binding TenLoaiTietKiem}" KeyboardNavigation.TabIndex="1" Text ="{Binding CbxTenLoaiTietKiem}" SelectedItem="{Binding SelectedTenLoaiTietKiem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }" >
-                                <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="SelectionChanged">
-                                        <i:InvokeCommandAction Command="{Binding LTK_SelectionChangedCommand}"/>
-                                    </i:EventTrigger>
-                                </i:Interaction.Triggers>
-                            </ComboBox>
-                        </StackPanel>
-                    </Grid>
                     <Grid Grid.Row="3" Grid.Column="1">
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <ComboBox Width="200" materialDesign:HintAssist.Hint="Năm học" VerticalAlignment="Center" Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                                  ItemsSource="{Binding TenLoaiTietKiem}" KeyboardNavigation.TabIndex="1" Text ="{Binding CbxTenLoaiTietKiem}" SelectedItem="{Binding SelectedTenLoaiTietKiem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }" >
-                                <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="SelectionChanged">
-                                        <i:InvokeCommandAction Command="{Binding LTK_SelectionChangedCommand}"/>
-                                    </i:EventTrigger>
-                                </i:Interaction.Triggers>
-                            </ComboBox>
-                        </StackPanel>
+                        <ComboBox 
+                            Margin="20,5,20,5"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Center"
+                            materialDesign:HintAssist.Hint="Năm học" 
+                            Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                            ItemsSource="{Binding ListSchoolYear}" 
+                            KeyboardNavigation.TabIndex="1" 
+                            SelectedItem="{Binding SelectedSchoolYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }" >
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Name}"></TextBlock>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="SelectionChanged">
+                                    <i:InvokeCommandAction Command="{Binding LTK_SelectionChangedCommand}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </ComboBox>
                     </Grid>
                     <Grid Grid.Row="4" Grid.Column="0">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                             <DatePicker
-                                Width="200"
+                                Width="244"
                                 materialDesign:HintAssist.Hint="Từ ngày"
-                                Style="{StaticResource MaterialDesignFloatingHintDatePicker}"/>      
+                                Style="{StaticResource MaterialDesignFloatingHintDatePicker}" Margin="20,5,20,5"
+                                SelectedDate="{Binding StartDate}"/>
                         </StackPanel>
                     </Grid>
                     <Grid Grid.Row="4" Grid.Column="1">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                             <DatePicker
-                                Width="200"
+                                Width="246"
                                 materialDesign:HintAssist.Hint="Đến ngày"
-                                Style="{StaticResource MaterialDesignFloatingHintDatePicker}"/>
+                                Style="{StaticResource MaterialDesignFloatingHintDatePicker}" Margin="20,5,20,5"
+                                SelectedDate="{Binding EndDate}"/>
                         </StackPanel>
                     </Grid>
                     <Grid Grid.Row="5" Grid.Column="0">
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <TextBox 
-                                Width="200" 
-                                FontSize="18" 
-                                materialDesign:HintAssist.Hint="Thời lượng buổi học" 
-                                IsEnabled="True"
-                                Style="{StaticResource MaterialDesignFloatingHintTextBox}" Foreground="{StaticResource SecondaryAccentBrush}" VerticalAlignment="Center"
-                                Text="{Binding NgayMoSo, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-                        </StackPanel>
+                        <TextBox 
+                            Margin="20,5,20,5"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Center"
+                            FontSize="18" 
+                            materialDesign:HintAssist.Hint="Thời lượng buổi học" 
+                            IsEnabled="True"
+                            Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                            Foreground="{StaticResource SecondaryAccentBrush}" 
+                            Text="{Binding Duration, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                     </Grid>
                     <Grid Grid.Row="5" Grid.Column="1">
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <TextBox 
-                                Width="200" 
-                                FontSize="18" 
-                                materialDesign:HintAssist.Hint="Sĩ số" 
-                                IsEnabled="True"
-                                Style="{StaticResource MaterialDesignFloatingHintTextBox}" Foreground="{StaticResource SecondaryAccentBrush}" VerticalAlignment="Center"
-                                Text="{Binding NgayMoSo, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-                        </StackPanel>
+                        <TextBox 
+                            Margin="20,5,20,5"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Center"
+                            FontSize="18" 
+                            materialDesign:HintAssist.Hint="Sĩ số" 
+                            IsEnabled="True"
+                            Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                            Foreground="{StaticResource SecondaryAccentBrush}" 
+                            Text="{Binding Population, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                     </Grid>
-                    <Grid Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2">
+                    <Grid Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                             <TextBox 
-                                Width="400" 
+                                Width="531" 
                                 FontSize="18" 
                                 materialDesign:HintAssist.Hint="Ghi chú" 
                                 IsEnabled="True"
                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" Foreground="{StaticResource SecondaryAccentBrush}" VerticalAlignment="Center"
-                                Text="{Binding NgayMoSo, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                                Text="{Binding Description, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="20,5,20,5" />
                         </StackPanel>
                     </Grid>
+                    <Grid Grid.Row="9" Grid.Column="0">
+                        <Button Style="{StaticResource MaterialDesignRaisedButton}" 
+                            Margin="20,5,20,5" Content="Xác nhận" HorizontalAlignment="Center"
+                            Width="150" Height="35"
+                            Command="{Binding ConfirmCmd}"/>
+                    </Grid>
+                    <Grid Grid.Row="9" Grid.Column="1">
+                        <Button Style="{StaticResource MaterialDesignRaisedButton}" 
+                            Margin="20,5,20,5" Content="Hủy" HorizontalAlignment="Center"
+                            Width="150" Height="35"
+                            Command="{Binding CancelCmd}"/>
+                    </Grid>
+
+                    <!-- CuteTN Note: forgive me I'm just testing -->
+                    <Grid Grid.Row="6" Grid.Column="0">
+                        <ComboBox 
+                            Margin="20,5,20,5"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Center"
+                            materialDesign:HintAssist.Hint="Mã lớp" 
+                            Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                            ItemsSource="{Binding ListClass}" 
+                            KeyboardNavigation.TabIndex="1" 
+                            SelectedItem="{Binding SelectedClass, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }" >
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding ClassID}"></TextBlock>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="SelectionChanged">
+                                    <i:InvokeCommandAction Command="{Binding LTK_SelectionChangedCommand}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </ComboBox>
+                    </Grid>
+
+                    <Grid Grid.Row="6" Grid.Column="1">
+                        <TextBox 
+                            Margin="20,5,20,5"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Center"
+                            FontSize="18" 
+                            materialDesign:HintAssist.Hint="Tên lớp" 
+                            IsEnabled="True"
+                            Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                            Foreground="{StaticResource SecondaryAccentBrush}" 
+                            Text="{Binding ClassName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                    </Grid>
+
                     <Grid Grid.Row="7" Grid.Column="0">
-                        <Button Style="{StaticResource MaterialDesignRaisedButton}" 
-                            Margin="5,0,5,0" Content="Thêm" HorizontalAlignment="Center"
-                            Width="150" Height="35"
-                            Command="{Binding AddLTKCommand}"/>
+                        <ComboBox 
+                            Margin="20,5,20,5" 
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Center"
+                            materialDesign:HintAssist.Hint="Tiết bắt đầu" 
+                            Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                            ItemsSource="{Binding ListTimeRange}" 
+                            KeyboardNavigation.TabIndex="1" 
+                            SelectedItem="{Binding SelectedStartTimeRange, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }" >
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding PeriodName}"></TextBlock>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="SelectionChanged">
+                                    <i:InvokeCommandAction Command="{Binding YenCute}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </ComboBox>
                     </Grid>
+
                     <Grid Grid.Row="7" Grid.Column="1">
-                        <Button Style="{StaticResource MaterialDesignRaisedButton}" 
-                            Margin="5,0,5,0" Content="Hủy" HorizontalAlignment="Center"
-                            Width="150" Height="35"
-                            Command="{Binding AddLTKCommand}"/>
+                        <ComboBox 
+                            Margin="20,5,20,5"                            
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Center"
+                            materialDesign:HintAssist.Hint="Phòng" 
+                            Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                            ItemsSource="{Binding ListRoom}" 
+                            KeyboardNavigation.TabIndex="1" 
+                            SelectedItem="{Binding SelectedRoom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }" >
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding RoomName}"></TextBlock>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="SelectionChanged">
+                                    <i:InvokeCommandAction Command="{Binding YenCute}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </ComboBox>
                     </Grid>
+
+                    <Grid Grid.Row="9" Grid.Column="1"/>
                 </Grid>
             </materialDesign:Card>
         </Grid>

@@ -1,6 +1,7 @@
 ﻿using QuanLyGiangDuong.Model;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data.Entity;
 using System.Linq;
 using System.Security.Cryptography;
@@ -107,6 +108,86 @@ namespace QuanLyGiangDuong.Utilities
             int durationInMinute = (int)Math.Round(duration.TotalMinutes);
             return CalcEndPeriod(startPeriod, durationInMinute);
         }
+        #endregion
+
+        #region data that is int for db but string for UI
+        /// <summary>
+        /// using keyvalue pair is actually the same, but wrapping this would make the code more readable
+        /// </summary>
+        public class IdNamePair<IdType>
+        {
+            private KeyValuePair<IdType, string> data;
+
+            public IdNamePair(IdType id, string name)
+            {
+                data = new KeyValuePair<IdType, string>(id, name);
+            }
+
+            public IdType Id { get => data.Key; }
+            public string Name { get => data.Value; }
+        }
+
+        static private BindingList<IdNamePair<int>> _semesters = null;
+        static public BindingList<IdNamePair<int>> Semesters
+        {
+            get
+            {
+                if(_semesters == null)
+                {
+                    _semesters = new BindingList<IdNamePair<int>>();
+
+                    _semesters.Add(new IdNamePair<int>(1, "Học kỳ 1"));
+                    _semesters.Add(new IdNamePair<int>(2, "Học kỳ 2"));
+                    _semesters.Add(new IdNamePair<int>(3, "Học kỳ hè"));
+                }
+
+                return _semesters;
+            }
+        }
+
+        static private BindingList<IdNamePair<int>> _schoolYears;
+        static public BindingList<IdNamePair<int>> SchoolYears
+        {
+            get
+            {
+                if(_schoolYears == null)
+                {
+                    _schoolYears = new BindingList<IdNamePair<int>>();
+
+                    // CuteTN Note: a const for 2000 maybe better...
+                    for(int i = DateTime.Now.Year; i >= 2000; i--)
+                    {
+                        _schoolYears.Add(new IdNamePair<int>(i, $"{i} - {i+1}"));
+                    }
+                }
+
+                return _schoolYears;
+            }
+        }
+
+        static private BindingList<IdNamePair<int>> _daysOfWeek = null;
+        static public BindingList<IdNamePair<int>> DaysOfWeek
+        {
+            get
+            {
+                if(_daysOfWeek == null)
+                {
+                    _daysOfWeek = new BindingList<IdNamePair<int>>();
+
+                    _daysOfWeek.Add(new IdNamePair<int>(NullIntId, "[Tự động]"));
+                    _daysOfWeek.Add(new IdNamePair<int>((int)DayOfWeek.Monday, "Thứ hai"));
+                    _daysOfWeek.Add(new IdNamePair<int>((int)DayOfWeek.Tuesday, "Thứ ba"));
+                    _daysOfWeek.Add(new IdNamePair<int>((int)DayOfWeek.Wednesday, "Thứ tư"));
+                    _daysOfWeek.Add(new IdNamePair<int>((int)DayOfWeek.Thursday, "Thứ năm"));
+                    _daysOfWeek.Add(new IdNamePair<int>((int)DayOfWeek.Friday, "Thứ sáu"));
+                    _daysOfWeek.Add(new IdNamePair<int>((int)DayOfWeek.Saturday, "Thứ bảy"));
+                    _daysOfWeek.Add(new IdNamePair<int>((int)DayOfWeek.Sunday, "Chủ nhật"));
+                }
+
+                return _daysOfWeek;
+            }
+        }
+
         #endregion
     }
 }

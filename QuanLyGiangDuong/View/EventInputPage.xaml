@@ -217,7 +217,7 @@
                                 Width="200" 
                                 FontSize="18" 
                                 materialDesign:HintAssist.Hint="Mã đăng ký sự kiện" 
-                                IsEnabled="False"
+                                IsReadOnly="True"
                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" Foreground="{StaticResource SecondaryAccentBrush}" VerticalAlignment="Center"
                                 Text="{Binding UsingEventId, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                         </StackPanel>
@@ -258,7 +258,7 @@
                                 Width="200" 
                                 FontSize="18" 
                                 materialDesign:HintAssist.Hint="Người đăng ký" 
-                                IsEnabled="False"
+                                IsReadOnly="True"
                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" Foreground="{StaticResource SecondaryAccentBrush}" VerticalAlignment="Center"
                                 Text="{Binding LecturerId, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                         </StackPanel>
@@ -302,7 +302,7 @@
                     </Grid>
                     <Grid Grid.Row="3" Grid.Column="0">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <ComboBox Width="200" materialDesign:HintAssist.Hint="Từ" VerticalAlignment="Center" Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                            <ComboBox Width="200" materialDesign:HintAssist.Hint="Tiết bắt đầu" VerticalAlignment="Center" Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                   ItemsSource="{Binding ListTimeRange}" KeyboardNavigation.TabIndex="1" SelectedItem="{Binding SelectedStartTimeRange, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }" >
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
