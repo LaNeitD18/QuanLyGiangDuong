@@ -22,6 +22,11 @@ namespace QuanLyGiangDuong.ViewModel
             set { _roomID = value; }
         }
 
+        /// <summary>
+        /// Tuple:
+        ///     first parameter: UsingClass ID
+        ///     second parameter: UsingClass Name
+        /// </summary>
         private List<Tuple<string, string>> _tiet;
         
         public List<Tuple<string, string>> tiet
@@ -317,8 +322,6 @@ namespace QuanLyGiangDuong.ViewModel
                     tb.Add(room);
                 }
             }
-
-            
         }
     }
 }
