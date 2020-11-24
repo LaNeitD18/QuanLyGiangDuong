@@ -84,16 +84,28 @@
             Grid.Column="0" Grid.ColumnSpan="15"
             Grid.Row="1" Grid.RowSpan="12"
             Margin="0,10,0,0">
-            <DataGrid 
+            <DataGrid x:Name="datagrid_UsingClases"
+                ItemsSource = "{Binding ListUsingClass, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                SelectionUnit="FullRow"
+                SelectionMode="Extended"
                 HorizontalAlignment="Stretch" 
                 VerticalAlignment="Top" 
+                AutoGenerateColumns="False"
+                IsReadOnly="True"
                 Grid.RowSpan="2">
                 <DataGrid.Columns>
-                    <DataGridCheckBoxColumn Header="Chọn"/>
-                    <DataGridTextColumn Header="Trạng thái"/>
-                    <DataGridTextColumn Header="Mã yêu cầu"/>
-                    <DataGridTextColumn Header="Tên môn học"/>
+                    <DataGridTextColumn Binding="{Binding StatusString, Mode=TwoWay}" Header="Trạng thái"/>
+                    <DataGridTextColumn Binding="{Binding UsingClassID, Mode=TwoWay}" Header="Mã yêu cầu"/>
+                    <DataGridTextColumn Binding="{Binding CLASS.ClassName, Mode=TwoWay}" Header="Tên lớp"/>
+                    <DataGridTextColumn Binding="{Binding RoomID, Mode=TwoWay}" Header="Mã phòng"/>
                 </DataGrid.Columns>
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <i:InvokeCommandAction 
+                            Command="{Binding ListUsingEvent_SelectionChangedCmd}"
+                            CommandParameter="{Binding ElementName=datagrid_UsingClases}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
             </DataGrid>
         </Grid>
         <Grid
@@ -210,11 +222,6 @@
                                     </StackPanel>
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="SelectionChanged">
-                                    <i:InvokeCommandAction Command="{Binding LTK_SelectionChangedCommand}"/>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
                         </ComboBox>
                     </Grid>
                     <Grid Grid.Row="0" Grid.Column="1">
@@ -259,11 +266,6 @@
                                     </StackPanel>
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="SelectionChanged">
-                                    <i:InvokeCommandAction Command="{Binding YenCute}"/>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
                         </ComboBox>
                     </Grid>
                     
@@ -284,11 +286,6 @@
                                     </StackPanel>
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="SelectionChanged">
-                                    <i:InvokeCommandAction Command="{Binding YenCute}"/>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
                         </ComboBox>
                     </Grid>
 
@@ -309,11 +306,6 @@
                                     </StackPanel>
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="SelectionChanged">
-                                    <i:InvokeCommandAction Command="{Binding LTK_SelectionChangedCommand}"/>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
                         </ComboBox>
                     </Grid>
                     <Grid Grid.Row="3" Grid.Column="1">
@@ -333,11 +325,6 @@
                                     </StackPanel>
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="SelectionChanged">
-                                    <i:InvokeCommandAction Command="{Binding LTK_SelectionChangedCommand}"/>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
                         </ComboBox>
                     </Grid>
                     <Grid Grid.Row="4" Grid.Column="0">
@@ -424,11 +411,6 @@
                                     </StackPanel>
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="SelectionChanged">
-                                    <i:InvokeCommandAction Command="{Binding LTK_SelectionChangedCommand}"/>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
                         </ComboBox>
                     </Grid>
 
@@ -462,11 +444,6 @@
                                     </StackPanel>
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="SelectionChanged">
-                                    <i:InvokeCommandAction Command="{Binding YenCute}"/>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
                         </ComboBox>
                     </Grid>
 
@@ -487,11 +464,6 @@
                                     </StackPanel>
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="SelectionChanged">
-                                    <i:InvokeCommandAction Command="{Binding YenCute}"/>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
                         </ComboBox>
                     </Grid>
 

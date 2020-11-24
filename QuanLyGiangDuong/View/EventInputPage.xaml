@@ -96,10 +96,10 @@
                 Grid.RowSpan="2">
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding StatusString, Mode=TwoWay}" Header="Trạng thái"/>
-                    <DataGridTextColumn Binding="{Binding EVENT_.LECTURER.LecturerName, Mode=TwoWay}" Header="Người đăng ký"/>
                     <DataGridTextColumn Binding="{Binding UsingEventID, Mode=TwoWay}" Header="Mã đăng ký"/>
-                    <DataGridTextColumn Binding="{Binding RoomID, Mode=TwoWay}" Header="Mã phòng"/>
+                    <DataGridTextColumn Binding="{Binding EVENT_.LECTURER.LecturerName, Mode=TwoWay}" Header="Người đăng ký"/>
                     <DataGridTextColumn Binding="{Binding EVENT_.EventName, Mode=TwoWay}" Header="Tên sự kiện"/>
+                    <DataGridTextColumn Binding="{Binding RoomID, Mode=TwoWay}" Header="Mã phòng"/>
                     <DataGridTextColumn Binding="{Binding ShortDateString, Mode=TwoWay}" Header="Ngày tổ chức"/>
                 </DataGrid.Columns>
                 <i:Interaction.Triggers>

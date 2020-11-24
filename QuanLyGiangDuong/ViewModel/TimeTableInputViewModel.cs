@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using QuanLyGiangDuong.Model;
 using QuanLyGiangDuong.Utilities;
@@ -52,7 +54,6 @@ namespace QuanLyGiangDuong.ViewModel
         /// all the boolean variables below doesnt actually have its own value
         /// it depends on the state of the form (Datagrid number of selected rows, and editting mode)
 
-        /*
         public bool IsAddButtonEnabled
         {
             get => (!IsEdittingFormMode);
@@ -94,7 +95,6 @@ namespace QuanLyGiangDuong.ViewModel
             IsApproveButtonEnabled = true;
             IsRejectButtonEnabled = true;
         }
-        */
         #endregion
 
         #region Simple Fields
@@ -473,6 +473,61 @@ namespace QuanLyGiangDuong.ViewModel
         }
         #endregion
 
+        #region datagrid using classes
+        private ObservableCollection<USINGCLASS> LoadUsingClasses()
+        {
+            ObservableCollection<USINGCLASS> result = new ObservableCollection<USINGCLASS>
+                (
+                    DataProvider.Ins.DB.USINGCLASSes.ToList()
+                );
+            return result;
+        }
+
+        private ObservableCollection<USINGCLASS> _listUsingClass = null;
+        public ObservableCollection<USINGCLASS> ListUsingClass
+        {
+            get
+            {
+                if (_listUsingClass == null)
+                    _listUsingClass = LoadUsingClasses();
+                return _listUsingClass;
+            }
+            set
+            {
+                _listUsingClass = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private ObservableCollection<USINGCLASS> _selectedUsingClasses = new ObservableCollection<USINGCLASS>();
+        public ObservableCollection<USINGCLASS> SelectedUsingClasses
+        {
+            get => _selectedUsingClasses;
+            set
+            {
+                _selectedUsingClasses = value;
+                ListUsingClass_OnSelectionChanged();
+                OnPropertyChanged();
+            }
+        }
+
+        private ICommand _listUsingEvent_SelectionChangedCmd = null;
+        public ICommand ListUsingEvent_SelectionChangedCmd
+        {
+            get
+            {
+                if (_listUsingEvent_SelectionChangedCmd == null)
+                    _listUsingEvent_SelectionChangedCmd = new RelayCommand(obj => ListUsingClass_OnSelectionChanged(obj));
+                return _listUsingEvent_SelectionChangedCmd;
+            }
+            set
+            {
+                _listUsingEvent_SelectionChangedCmd = value;
+                OnPropertyChanged();
+            }
+        }
+        #endregion
+
         #endregion
 
         #region button handler
@@ -580,7 +635,7 @@ namespace QuanLyGiangDuong.ViewModel
             ListClass = LoadClasses();
             ListTimeRange = LoadPeriod_TimeRanges();
             ListRoom = LoadRooms();
-
+            ListUsingClass = LoadUsingClasses();
         }
 
         private void Reset()
@@ -690,6 +745,67 @@ namespace QuanLyGiangDuong.ViewModel
             }
 
             SaveDB();
+        }
+
+        /// <summary>
+        /// Get selected item info from datagrid for previewing.
+        /// </summary>
+        /// <param name="usingEvent"></param>
+        private void LoadContentToForm(USINGCLASS usingClass)
+        {
+            UsingClassId = usingClass.UsingClassID;
+
+            SelectedClass = usingClass.CLASS;
+            ClassName = usingClass.CLASS.ClassName;
+            SelectedTrainingProgram = usingClass.CLASS.TRAINING_PROGRAM;
+            // CuteTN Note to do, let's kill this love
+            // SelectedDayOfWeek = usingClass.Day_;
+            // SelectedSemester
+            // SelectedSchoolDay
+            SelectedSubject = usingClass.CLASS.SUBJECT_;
+            StartDate = usingClass.CLASS.StartDate;
+            EndDate = usingClass.CLASS.EndDate;
+            Duration = (int)Math.Round(usingClass.Duration.TotalMinutes);
+            Population = usingClass.CLASS.Population_;
+            SelectedStartTimeRange = usingClass.PERIOD_TIMERANGE;
+            SelectedRoom = usingClass.ROOM;
+            Description = usingClass.Description_;
+        }
+
+        private void GetDataGridSelectedItems(DataGrid datagrid)
+        {
+            SelectedUsingClasses.Clear();
+
+            foreach (var item in datagrid.SelectedItems)
+            {
+                USINGCLASS uc = (USINGCLASS)item;
+                if (uc != null && !SelectedUsingClasses.Contains(uc))
+                    SelectedUsingClasses.Add(uc);
+            }
+        }
+
+        private void ListUsingClass_OnSelectionChanged(Object obj = null)
+        {
+            DataGrid dataGrid = obj as DataGrid;
+            if (dataGrid == null)
+                return;
+
+            GetDataGridSelectedItems(dataGrid);
+            UpdateEnabledViewElements(); 
+
+            // update form content when user is not in editting mode
+            if (!IsEdittingFormMode)
+            {
+                if (SelectedUsingClasses.Count == 1)
+                {
+                    var selectedUC = SelectedUsingClasses[0];
+                    LoadContentToForm(selectedUC);
+                }
+                else
+                {
+                    ResetForm();
+                }
+            }
         }
 
         private void SaveDB()
