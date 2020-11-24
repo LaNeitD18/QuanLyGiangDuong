@@ -477,7 +477,7 @@ namespace QuanLyGiangDuong.ViewModel
         {
             ObservableCollection<USINGCLASS> result = new ObservableCollection<USINGCLASS>
                 (
-                    DataProvider.Ins.DB.USINGCLASSes.ToList()
+                    DataProvider.Ins.DB.USINGCLASSes.Where(x => x.Status_ != (int)Enums.UsingStatus.Deleted).ToList()
                 );
             return result;
         }
@@ -641,8 +641,9 @@ namespace QuanLyGiangDuong.ViewModel
         #region delete button
         private void HandleDeleteButtonClick()
         {
-            // CuteTN: More code here...
-            MessageBox.Show("delete");
+            var dlgRes = MessageBox.Show("Bạn có chắc muốn xoá các đăng ký phòng học này không?", "Xoá", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
+            if (dlgRes == MessageBoxResult.Yes)
+                SetStatusSelectedUsingClasses(Enums.UsingStatus.Deleted, x => true);
         }
         private ICommand _deleteCmd = null;
         public ICommand DeleteCmd
@@ -656,6 +657,54 @@ namespace QuanLyGiangDuong.ViewModel
             set
             {
                 _deleteCmd = value;
+                OnPropertyChanged();
+            }
+        }
+        #endregion
+
+        #region approve button
+        private void HandleApproveButtonClick()
+        {
+            var dlgRes = MessageBox.Show("Bạn có chắc muốn duyệt các đăng ký phòng học này không?", "Duyệt", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
+            if (dlgRes == MessageBoxResult.Yes)
+                SetStatusSelectedUsingClasses(Enums.UsingStatus.Approved, x => true);
+        }
+        private ICommand _approveCmd = null;
+        public ICommand ApproveCmd
+        {
+            get
+            {
+                if (_approveCmd == null)
+                    _approveCmd = new RelayCommand(obj => HandleApproveButtonClick());
+                return _approveCmd;
+            }
+            set
+            {
+                _approveCmd = value;
+                OnPropertyChanged();
+            }
+        }
+        #endregion
+
+        #region reject button
+        private void HandleRejectButtonClick()
+        {
+            var dlgRes = MessageBox.Show("Bạn có chắc muốn từ chối các đăng ký phòng học này không?", "Từ chối", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
+            if (dlgRes == MessageBoxResult.Yes)
+                SetStatusSelectedUsingClasses(Enums.UsingStatus.Rejected, x => true);
+        }
+        private ICommand _rejectCmd = null;
+        public ICommand RejectCmd
+        {
+            get
+            {
+                if (_rejectCmd == null)
+                    _rejectCmd = new RelayCommand(obj => HandleRejectButtonClick());
+                return _rejectCmd;
+            }
+            set
+            {
+                _rejectCmd = value;
                 OnPropertyChanged();
             }
         }
@@ -882,11 +931,6 @@ namespace QuanLyGiangDuong.ViewModel
             IsEdittingFormMode = true;
         }
 
-        private void DeleteSelectedRowsFromList()
-        {
-            // CuteTN: more code
-        }
-
         private void ChangeToAddState()
         {
             ResetForm();
@@ -896,6 +940,18 @@ namespace QuanLyGiangDuong.ViewModel
         private void ChangeToEditState()
         {
             EnableEditingForm();
+        }
+
+        private void SetStatusSelectedUsingClasses(Enums.UsingStatus newStatus, Func<USINGCLASS, bool> validateFunc)
+        {
+            foreach (var uc in SelectedUsingClasses)
+            {
+                if(validateFunc(uc))
+                    uc.Status_ = (int)newStatus;
+            }
+
+            SaveDB();
+            ListUsingClass = LoadUsingClasses();
         }
 
         private void SaveDB()

@@ -21,30 +21,6 @@ namespace QuanLyGiangDuong.ViewModel
 {
     class EventInputViewModel: BaseViewModel
     {
-        #region Note
-        /*
-        CREATE TABLE EVENT_
-        (
-            EventID VARCHAR(20) NOT NULL PRIMARY KEY,
-            LecturerID VARCHAR(20) NOT NULL FOREIGN KEY REFERENCES LECTURER(LecturerID),
-            EventName NVARCHAR(MAX) NOT NULL,
-            Population_ INT NOT NULL,
-            Description_ NVARCHAR(MAX),
-        )
-        CREATE TABLE USINGEVENT
-        (
-            UsingEventID VARCHAR(20) NOT NULL PRIMARY KEY,
-            RoomID VARCHAR(20) NOT NULL FOREIGN KEY REFERENCES ROOM(RoomID),
-            EventID VARCHAR(20) NOT NULL FOREIGN KEY REFERENCES EVENT_(EventID),
-            Date_ SMALLDATETIME NOT NULL,
-            StartPeriod INT NOT NULL FOREIGN KEY REFERENCES PERIOD_TIMERANGE(PeriodID),
-            EndPeriod INT NOT NULL FOREIGN KEY REFERENCES PERIOD_TIMERANGE(PeriodID),
-            Status_ INT NOT NULL,
-            Description_ NVARCHAR(50),
-        )
-         */
-        #endregion
-
         #region Fields
 
         #region Default Fields
@@ -440,11 +416,10 @@ namespace QuanLyGiangDuong.ViewModel
         }
         #endregion
 
-
         #region cancel button
         private void HandleCancelButton()
         {
-            var dlgRes = MessageBox.Show("Bạn có chắc muốn huỷ lớp học này không?", "Huỷ", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
+            var dlgRes = MessageBox.Show("Bạn có chắc muốn huỷ đăng ký sự kiện này không?", "Huỷ", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
             if(dlgRes == MessageBoxResult.Yes)
                 Reset();
         }
@@ -464,7 +439,6 @@ namespace QuanLyGiangDuong.ViewModel
             }
         }
         #endregion
-
 
         #region add button
         private void HandleAddButtonClick()
@@ -488,7 +462,6 @@ namespace QuanLyGiangDuong.ViewModel
             }
         }
         #endregion
-
 
         #region edit button
         private void HandleEditButtonClick()
@@ -514,12 +487,12 @@ namespace QuanLyGiangDuong.ViewModel
         }
         #endregion
 
-
         #region delete button
         private void HandleDeleteButtonClick()
         {
-            // CuteTN: More code here...
-            MessageBox.Show("delete");
+            var dlgRes = MessageBox.Show("Bạn có chắc muốn xoá các đăng ký sự kiện này không?", "Xoá", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
+            if (dlgRes == MessageBoxResult.Yes)
+                SetStatusSelectedUsingEvents(Enums.UsingStatus.Deleted, x => true);
         }
         private ICommand _deleteCmd = null;
         public ICommand DeleteCmd
@@ -533,6 +506,54 @@ namespace QuanLyGiangDuong.ViewModel
             set
             {
                 _deleteCmd = value;
+                OnPropertyChanged();
+            }
+        }
+        #endregion
+
+        #region approve button
+        private void HandleApproveButtonClick()
+        {
+            var dlgRes = MessageBox.Show("Bạn có chắc muốn duyệt các đăng ký sự kiện này không?", "Duyệt", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
+            if (dlgRes == MessageBoxResult.Yes)
+                SetStatusSelectedUsingEvents(Enums.UsingStatus.Approved, x => true);
+        }
+        private ICommand _approveCmd = null;
+        public ICommand ApproveCmd
+        {
+            get
+            {
+                if (_approveCmd == null)
+                    _approveCmd = new RelayCommand(obj => HandleApproveButtonClick());
+                return _approveCmd;
+            }
+            set
+            {
+                _approveCmd = value;
+                OnPropertyChanged();
+            }
+        }
+        #endregion
+
+        #region reject button
+        private void HandleRejectButtonClick()
+        {
+            var dlgRes = MessageBox.Show("Bạn có chắc muốn từ chối các đăng ký sự kiện này không?", "Từ chối", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
+            if (dlgRes == MessageBoxResult.Yes)
+                SetStatusSelectedUsingEvents(Enums.UsingStatus.Rejected, x => true);
+        }
+        private ICommand _rejectCmd = null;
+        public ICommand RejectCmd
+        {
+            get
+            {
+                if (_rejectCmd == null)
+                    _rejectCmd = new RelayCommand(obj => HandleRejectButtonClick());
+                return _rejectCmd;
+            }
+            set
+            {
+                _rejectCmd = value;
                 OnPropertyChanged();
             }
         }
@@ -681,10 +702,18 @@ namespace QuanLyGiangDuong.ViewModel
             IsEdittingFormMode = true;
         }
 
-        private void DeleteSelectedRowsFromList()
+        private void SetStatusSelectedUsingEvents(Enums.UsingStatus newStatus, Func<USINGEVENT, bool> validateFunc)
         {
-            // CuteTN: more code
+            foreach (var ue in SelectedUsingEvents)
+            {
+                if (validateFunc(ue))
+                    ue.Status_ = (int)newStatus;
+            }
+
+            SaveDB();
+            ListUsingEvent = LoadUsingEvents();
         }
+
 
         private void ChangeToAddState()
         {
