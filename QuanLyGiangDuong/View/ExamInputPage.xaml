@@ -93,10 +93,10 @@
                 SelectedItem="{Binding SelectedUsingExam, Mode=TwoWay}"
                 SelectionUnit="FullRow" >
                 <DataGrid.Columns>
-                    <DataGridCheckBoxColumn Header="Chọn"/>
-                    <DataGridTextColumn Header="Trạng thái" Binding="{Binding Status_}"/>
+                    <DataGridTextColumn Header="Trạng thái" Binding="{Binding StatusString}"/>
                     <DataGridTextColumn Header="Phòng" Binding="{Binding RoomID}"/>
-                    <DataGridTextColumn Header="Lớp" Binding="{Binding ClassID}"/>
+                    <DataGridTextColumn Header="Lớp" Binding="{Binding EXAM.CLASS.ClassName}"/>
+                    <DataGridTextColumn Header="Giám thị" Binding="{Binding EXAM.LECTURER.LecturerName}"/>
                 </DataGrid.Columns>
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">

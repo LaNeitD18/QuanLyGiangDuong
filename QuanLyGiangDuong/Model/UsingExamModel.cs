@@ -1,4 +1,5 @@
-﻿using System;
+﻿using QuanLyGiangDuong.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -37,6 +38,12 @@ namespace QuanLyGiangDuong.Model
                 "GV: " + value.lec.LecturerName + Environment.NewLine +
                 "______________" + Environment.NewLine +
                 "Sỉ số: " + value.ex.Population_;
+        }
+
+        public string StatusString
+        {
+            get => Enums.GetStringOf((Enums.UsingStatus)Status_);
+            set { /* cant set this field */ }
         }
     }
 }

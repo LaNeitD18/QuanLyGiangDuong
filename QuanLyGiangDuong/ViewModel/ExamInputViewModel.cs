@@ -56,6 +56,13 @@ namespace QuanLyGiangDuong.ViewModel
             set { _SelectedUsingExam = value; OnPropertyChanged(); }
         }
 
+        private ObservableCollection<USINGEXAM> _ListSelectedUsingExam;
+        public ObservableCollection<USINGEXAM> ListSelectedUsingExam
+        {
+            get { return _ListSelectedUsingExam; }
+            set { _ListSelectedUsingExam = value; OnPropertyChanged(); }
+        }
+
         private ObservableCollection<EXAM> _ListExam;
         public ObservableCollection<EXAM> ListExam
         {
@@ -206,8 +213,9 @@ namespace QuanLyGiangDuong.ViewModel
             var listClass = DataProvider.Ins.DB.CLASSes;
             ListClass = new ObservableCollection<CLASS>(listClass);
 
-            var listUsingExam = DataProvider.Ins.DB.USINGEXAMs;
+            var listUsingExam = DataProvider.Ins.DB.USINGEXAMs.Where(x => x.Status_ <= 3).OrderBy(x => x.Status_);
             ListUsingExam = new ObservableCollection<USINGEXAM>(listUsingExam);
+            ListSelectedUsingExam = new ObservableCollection<USINGEXAM>();
 
             var listSupervisor = DataProvider.Ins.DB.LECTURERs;
             ListSupervisor = new ObservableCollection<LECTURER>(listSupervisor);
@@ -382,6 +390,87 @@ namespace QuanLyGiangDuong.ViewModel
             SelectedUsingExam = temp;
         }
 
+        private void DeleteUsingExam()
+        {
+            SelectedUsingExam.Status_ = 3;
+            DataProvider.Ins.DB.SaveChanges();
+
+            int length = ListUsingExam.Count();
+            for (int i = 0; i < length; i++)
+            {
+                if (ListUsingExam[i].UsingExamID == SelectedUsingExam.UsingExamID)
+                {
+                    ListUsingExam.RemoveAt(i);
+                    break;
+                }
+            }
+            SelectedUsingExam = null;
+        }
+
+        private void DeleteUsingExams()
+        {
+            List<USINGEXAM> list = ListSelectedUsingExam.ToList();
+            foreach (var usingExam in list)
+            {
+                SelectedUsingExam = usingExam;
+                DeleteUsingExam();
+            }
+        }
+
+        private void ApproveUsingExam()
+        {
+            SelectedUsingExam.Status_ = 1;
+            DataProvider.Ins.DB.SaveChanges();
+
+            int length = ListUsingExam.Count();
+            for (int i = 0; i < length; i++)
+            {
+                if (ListUsingExam[i].UsingExamID == SelectedUsingExam.UsingExamID)
+                {
+                    ListUsingExam.RemoveAt(i);
+                    break;
+                }
+            }
+            SelectedUsingExam = null;
+        }
+
+        private void ApproveUsingExams()
+        {
+            List<USINGEXAM> list = ListSelectedUsingExam.ToList();
+            foreach (var usingExam in list)
+            {
+                SelectedUsingExam = usingExam;
+                ApproveUsingExam();
+            }
+        }
+
+        private void RejectUsingExam()
+        {
+            SelectedUsingExam.Status_ = 2;
+            DataProvider.Ins.DB.SaveChanges();
+
+            int length = ListUsingExam.Count();
+            for (int i = 0; i < length; i++)
+            {
+                if (ListUsingExam[i].UsingExamID == SelectedUsingExam.UsingExamID)
+                {
+                    ListUsingExam.RemoveAt(i);
+                    break;
+                }
+            }
+            SelectedUsingExam = null;
+        }
+
+        private void RejectUsingExams()
+        {
+            List<USINGEXAM> list = ListSelectedUsingExam.ToList();
+            foreach (var usingExam in list)
+            {
+                SelectedUsingExam = usingExam;
+                RejectUsingExam();
+            }
+        }
+
         private bool IsValidInput()
         {
             bool flag = true;
@@ -449,6 +538,16 @@ namespace QuanLyGiangDuong.ViewModel
 
             return flag;
         }
+
+        private void GetDataGridSelectedItems(DataGrid dataGrid)
+        {
+            ListSelectedUsingExam.Clear();
+
+            foreach (var item in dataGrid.SelectedItems)
+            {
+                ListSelectedUsingExam.Add((USINGEXAM)item);
+            }
+        }
         #endregion
 
         #region ICommand
@@ -486,6 +585,27 @@ namespace QuanLyGiangDuong.ViewModel
                 UsingExamID = SelectedUsingExam.UsingExamID;
             });
 
+            DeleteCommand = new RelayCommand((p) => {
+                EnableOnlyDeleting();
+                EnableElements();
+
+                UsingExamID = SelectedUsingExam.UsingExamID;
+            });
+
+            ApproveCommand = new RelayCommand((p) => {
+                EnableOnlyApproving();
+                EnableElements();
+
+                UsingExamID = SelectedUsingExam.UsingExamID;
+            });
+
+            RejectCommand = new RelayCommand((p) => {
+                EnableOnlyRejecting();
+                EnableElements();
+
+                UsingExamID = SelectedUsingExam.UsingExamID;
+            });
+
             ConfirmCommand = new RelayCommand((p) => {
                 // xong het nho lam check dk
                 if(IsBeingInTask) { 
@@ -503,8 +623,29 @@ namespace QuanLyGiangDuong.ViewModel
                             ResetAll();
                         }
                     }
-                    else if(IsDeletingEnabled) { 
-                        
+                    else if(IsDeletingEnabled) {
+                        if(ListSelectedUsingExam.Count() == 1) {
+                            DeleteUsingExam();
+                        } else {
+                            DeleteUsingExams();
+                        }
+                        ResetAll();
+                    }
+                    else if(IsApprovingEnabled) {
+                        if(ListSelectedUsingExam.Count() == 1) {
+                            ApproveUsingExam();
+                        } else {
+                            ApproveUsingExams();
+                        }
+                        ResetAll();
+                    }
+                    else {
+                        if(ListSelectedUsingExam.Count() == 1) {
+                            RejectUsingExam();
+                        } else {
+                            RejectUsingExams();
+                        }
+                        ResetAll();
                     }
                 }
 
@@ -543,13 +684,13 @@ namespace QuanLyGiangDuong.ViewModel
                 }
 
                 var dataGrid = p as DataGrid;
-                //GetDataGridSelectedItems(dataGrid);
+                GetDataGridSelectedItems(dataGrid);
 
                 if (SelectedUsingExam != null)
                 {
                     SelectedExam = DataProvider.Ins.DB.EXAMs.Where(x => x.ExamID == SelectedUsingExam.ExamID).SingleOrDefault();
                     SetValueForElements();
-                    IsEditingEnabled = IsDeletingEnabled = true;
+                    IsEditingEnabled = IsDeletingEnabled = IsApprovingEnabled = IsRejectingEnabled = true;
                 }
             });
         }
