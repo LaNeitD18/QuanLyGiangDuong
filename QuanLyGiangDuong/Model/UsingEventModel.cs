@@ -8,23 +8,23 @@ using System.Windows;
 
 namespace QuanLyGiangDuong.Model
 {
-    class UsingEventModel: USINGEVENT
+    public partial class USINGEVENT : IUsing
     {
-        public UsingEventModel(USINGEVENT usingEvent)
-        {
-            UsingEventID = usingEvent.UsingEventID;
-            RoomID = usingEvent.RoomID;
-            EventID = usingEvent.EventID;
-            Date_ = usingEvent.Date_;
-            StartPeriod = usingEvent.StartPeriod;
-            Duration = usingEvent.Duration;
-            Status_ = usingEvent.Status_;
-            Description_ = usingEvent.Description_;
+        //public UsingEventModel(USINGEVENT usingEvent)
+        //{
+        //    UsingEventID = usingEvent.UsingEventID;
+        //    RoomID = usingEvent.RoomID;
+        //    EventID = usingEvent.EventID;
+        //    Date_ = usingEvent.Date_;
+        //    StartPeriod = usingEvent.StartPeriod;
+        //    Duration = usingEvent.Duration;
+        //    Status_ = usingEvent.Status_;
+        //    Description_ = usingEvent.Description_;
 
-            EVENT_ = usingEvent.EVENT_;
-            ROOM = usingEvent.ROOM;
-            PERIOD_TIMERANGE = usingEvent.PERIOD_TIMERANGE;
-        }
+        //    EVENT_ = usingEvent.EVENT_;
+        //    ROOM = usingEvent.ROOM;
+        //    PERIOD_TIMERANGE = usingEvent.PERIOD_TIMERANGE;
+        //}
 
         public string StatusString
         {
@@ -38,13 +38,26 @@ namespace QuanLyGiangDuong.Model
             set { /* cant set this field */ }
         }
 
-        public USINGEVENT USINGEVENT
+        public string GetDisplayString()
+        {
+            return "Sự kiện" + Environment.NewLine + 
+                "-------------------" + Environment.NewLine +
+                DataProvider.Ins.DB.EVENT_.Find(EventID).EventName;    
+        }
+
+        private string _displayName;
+        public string DisplayName
         {
             get
             {
-                USINGEVENT res = (USINGEVENT)this.MemberwiseClone();
-                return (USINGEVENT)this.MemberwiseClone();
-            }                
+                _displayName = GetDisplayString();
+                return _displayName;
+            }
+
+            set
+            {
+                _displayName = value;
+            }
         }
     }
 }

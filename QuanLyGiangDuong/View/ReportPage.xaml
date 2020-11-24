@@ -1,0 +1,131 @@
+﻿<Page x:Class="QuanLyGiangDuong.View.ReportPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:QuanLyGiangDuong.View"
+      mc:Ignorable="d" 
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+      d:DesignHeight="640" d:DesignWidth="1200"
+      Title="ReportPage"
+      xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+      
+      DataContext="{StaticResource ReportVM}">
+
+    <Grid x:Name="reportPage" Background="White">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid 
+            Grid.Row="1" Grid.Column="16"
+            Grid.RowSpan="1" Grid.ColumnSpan="4">
+            <ComboBox
+                FontSize="18" 
+                materialDesign:HintAssist.Hint="Chọn tháng" 
+                VerticalAlignment="Center" 
+                Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                ItemsSource="{Binding ListMonth}" 
+                KeyboardNavigation.TabIndex="1" 
+                SelectedItem="{Binding SelectedMonth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }"
+                IsEnabled="True">
+            </ComboBox>
+        </Grid>
+        <Grid 
+            Grid.Row="1" Grid.Column="21"
+            Grid.ColumnSpan="4">
+            <ComboBox
+                FontSize="18" 
+                materialDesign:HintAssist.Hint="Chọn năm" 
+                VerticalAlignment="Center" 
+                Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                ItemsSource="{Binding ListYear}" 
+                KeyboardNavigation.TabIndex="1" 
+                SelectedItem="{Binding SelectedYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }"
+                IsEnabled="True">
+            </ComboBox>
+        </Grid>
+        <Grid 
+            Grid.Row="1" Grid.Column="26"
+            Grid.ColumnSpan="4">
+            <Button
+                Style="{StaticResource MaterialDesignRaisedButton}"
+                Background="{DynamicResource DarkGrayishBlue}"
+                Margin="5,0,5,0" Content="Xem báo cáo" 
+                HorizontalAlignment="Center"
+                Width="150" Height="35"
+                Command="{Binding CreateReportCommand}"
+                IsEnabled="True">
+            </Button>
+        </Grid>
+        <Grid 
+            Grid.Row="6" Grid.Column="1" 
+            Grid.RowSpan="10" Grid.ColumnSpan="12">
+            <lvc:PieChart 
+                LegendLocation="Bottom" 
+                Series="{Binding PieSeries}">
+            </lvc:PieChart>
+        </Grid>
+        <Grid
+            Grid.Row="4" Grid.Column="16"
+            Grid.RowSpan="12" Grid.ColumnSpan="14">
+            <lvc:CartesianChart LegendLocation="Bottom" Series="{Binding ColumnSeries}">
+                <lvc:CartesianChart.AxisY>
+                    <lvc:Axis Title="Số lượng phòng được sử dụng trong 1 tháng"></lvc:Axis>
+                </lvc:CartesianChart.AxisY>
+                <lvc:CartesianChart.AxisX>
+                    <lvc:Axis Labels="Phòng học, Phòng sự kiện, Phòng thi"></lvc:Axis>
+                </lvc:CartesianChart.AxisX>
+            </lvc:CartesianChart>
+        </Grid>
+    </Grid>
+</Page>

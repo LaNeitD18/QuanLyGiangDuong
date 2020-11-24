@@ -187,7 +187,6 @@ namespace QuanLyGiangDuong.ViewModel
             } else {
                 MessageBox.Show("Phong dang duoc su dung");
             }
-            
         }
         private void DeleteRooms() {
             List<ROOM> list = ListSelectedRoom.ToList();

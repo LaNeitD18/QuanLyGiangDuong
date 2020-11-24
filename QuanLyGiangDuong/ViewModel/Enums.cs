@@ -38,7 +38,7 @@ namespace QuanLyGiangDuong.ViewModel
                 case UsingStatus.Rejected:
                     return "Đã từ chối";
                 case UsingStatus.Deleted:
-                    return "Đã Xoá";
+                    return "Đã xóa";
                 default:
                     throw new Exception(us.ToString() + "'s string was not define");
             }

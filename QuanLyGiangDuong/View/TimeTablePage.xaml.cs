@@ -202,6 +202,26 @@ namespace QuanLyGiangDuong.View
                 MessageBox.Show(e.Message);
             }
         }
+
+        private void dataGrid_CellTapped(object sender, GridCellTappedEventArgs e)
+        {
+            int columnIndex = e.RowColumnIndex.ColumnIndex;
+
+            if (columnIndex == 0) return;
+
+            var record = e.Record;
+
+            TimeTableViewModel vm = DataContext as TimeTableViewModel;
+
+            if ((record as table).tiet[columnIndex - 1] != null)
+            {
+                vm.selectedUsingClassID = (record as table).tiet[columnIndex - 1].Item1;
+            }
+            else
+            {
+                vm.selectedUsingClassID = "";
+            }
+        }
     }
 
     public class ValueToColorBackgroundConverter : IValueConverter

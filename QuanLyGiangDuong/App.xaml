@@ -12,15 +12,20 @@
             <viewmodel:RoomViewModel x:Key="RoomVM"></viewmodel:RoomViewModel>
             <viewmodel:TimeTableInputViewModel x:Key="TimeTableInputVM"></viewmodel:TimeTableInputViewModel>
             <viewmodel:EventInputViewModel x:Key="EventInputVM"></viewmodel:EventInputViewModel>
+            <viewmodel:ExamInputViewModel x:Key="ExamInputVM"></viewmodel:ExamInputViewModel>
             <viewmodel:RoomManagementViewModel x:Key="RoomManagementVM"></viewmodel:RoomManagementViewModel>
             <viewmodel:LoginViewModel x:Key="LoginVM"></viewmodel:LoginViewModel>
+            <viewmodel:ReportViewModel x:Key="ReportVM"></viewmodel:ReportViewModel>
             <!-- primary -->
             <SolidColorBrush x:Key="PrimaryHueLightBrush" Color="#80fbdd"/>
             <SolidColorBrush x:Key="PrimaryHueLightForegroundBrush" Color="#FFFFFF"/>
-            <SolidColorBrush x:Key="PrimaryHueMidBrush" Color="#49c7ab"/>
+            <SolidColorBrush x:Key="PrimaryHueMidBrush" Color="#3D435A"/>
             <SolidColorBrush x:Key="PrimaryHueMidForegroundBrush" Color="#FFFFFF"/>
-            <SolidColorBrush x:Key="PrimaryHueDarkBrush" Color="#00967c"/>
+            <SolidColorBrush x:Key="PrimaryHueDarkBrush" Color="#3D435A"/>
             <SolidColorBrush x:Key="PrimaryHueDarkForegroundBrush" Color="#FFFFFF"/>
+            <SolidColorBrush x:Key="MidNight" Color="#1c2938"/>
+            <SolidColorBrush x:Key="Bunting" Color="#263246"/>
+            <SolidColorBrush x:Key="DarkGrayishBlue" Color="#3D435A"/>
             <!-- accent -->
             <SolidColorBrush x:Key="SecondaryAccentBrush" Color="#236084"/>
             <SolidColorBrush x:Key="SecondaryAccentForegroundBrush" Color="#FFFFFF"/>
