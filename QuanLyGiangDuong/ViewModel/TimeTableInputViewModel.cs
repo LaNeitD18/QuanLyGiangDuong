@@ -759,9 +759,9 @@ namespace QuanLyGiangDuong.ViewModel
             ClassName = usingClass.CLASS.ClassName;
             SelectedTrainingProgram = usingClass.CLASS.TRAINING_PROGRAM;
             // CuteTN Note to do, let's kill this love
-            // SelectedDayOfWeek = usingClass.Day_;
-            // SelectedSemester
-            // SelectedSchoolDay
+            SelectedDayOfWeek = Utils.GetElementById(ListDayOfWeek, usingClass.Day_);
+            SelectedSemester = Utils.GetElementById(ListSemester, usingClass.CLASS.Semester);
+            SelectedSchoolYear = Utils.GetElementById(ListSchoolYear, usingClass.CLASS.Year_);
             SelectedSubject = usingClass.CLASS.SUBJECT_;
             StartDate = usingClass.CLASS.StartDate;
             EndDate = usingClass.CLASS.EndDate;

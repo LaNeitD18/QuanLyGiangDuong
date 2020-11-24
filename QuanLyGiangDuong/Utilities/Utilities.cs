@@ -188,6 +188,24 @@ namespace QuanLyGiangDuong.Utilities
             }
         }
 
+        /// <summary>
+        /// return the element with a specified Id from a bindinglist of IdNamePair
+        /// </summary>
+        /// <typeparam name="IdType"></typeparam>
+        /// <param name=""></param>
+        /// <returns></returns>
+        static public IdNamePair<IdType> GetElementById<IdType>(BindingList<IdNamePair<IdType>> items, IdType id)
+        {
+            try
+            { 
+                return items.Where(x => x.Id.Equals(id)).ElementAt(0);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
         #endregion
     }
 }
