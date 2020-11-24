@@ -174,7 +174,8 @@
         <Grid
             Grid.Column="16" Grid.ColumnSpan="15"
             Grid.Row="1" Grid.RowSpan="16"
-            Margin="0,10,0,0">
+            Margin="0,10,0,0"
+            IsEnabled="{Binding IsEdittingFormMode}">
             <materialDesign:Card>
                 <Grid>
                     <Grid.RowDefinitions>

@@ -444,7 +444,7 @@ namespace QuanLyGiangDuong.ViewModel
         #region cancel button
         private void HandleCancelButton()
         {
-            var dlgRes = MessageBox.Show("Huỷ", "Bạn có chắc muốn huỷ sự kiện này không?", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
+            var dlgRes = MessageBox.Show("Bạn có chắc muốn huỷ lớp học này không?", "Huỷ", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
             if(dlgRes == MessageBoxResult.Yes)
                 Reset();
         }

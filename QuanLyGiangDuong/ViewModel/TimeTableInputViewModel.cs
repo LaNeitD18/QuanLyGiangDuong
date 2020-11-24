@@ -44,8 +44,7 @@ namespace QuanLyGiangDuong.ViewModel
             set
             {
                 _isEdittingFormMode = value;
-                // CuteTN note delete this later
-                // UpdateEnabledViewElements();
+                UpdateEnabledViewElements();
                 OnPropertyChanged();
             }
         }
@@ -571,7 +570,7 @@ namespace QuanLyGiangDuong.ViewModel
         #region cancel button
         private void HandleCancelButton()
         {
-            var dlgRes = MessageBox.Show("Huỷ", "Bạn có chắc muốn huỷ lớp học này không?", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
+            var dlgRes = MessageBox.Show("Bạn có chắc muốn huỷ lớp học này không?", "Huỷ", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
             if (dlgRes == MessageBoxResult.Yes)
                 Reset();
         }
@@ -587,6 +586,76 @@ namespace QuanLyGiangDuong.ViewModel
             set
             {
                 _cancelCmd = value;
+                OnPropertyChanged();
+            }
+        }
+        #endregion
+
+        #region add button
+        private void HandleAddButtonClick()
+        {
+            // CuteTN: More code here...
+            ChangeToAddState();
+        }
+        private ICommand _addCmd = null;
+        public ICommand AddCmd
+        {
+            get
+            {
+                if (_addCmd == null)
+                    _addCmd = new RelayCommand(obj => HandleAddButtonClick());
+                return _addCmd;
+            }
+            set
+            {
+                _addCmd = value;
+                OnPropertyChanged();
+            }
+        }
+        #endregion
+
+        #region edit button
+        private void HandleEditButtonClick()
+        {
+            // CuteTN: More code here...
+            ChangeToEditState();
+        }
+
+        private ICommand _editCmd = null;
+        public ICommand EditCmd
+        {
+            get
+            {
+                if (_editCmd == null)
+                    _editCmd = new RelayCommand(obj => HandleEditButtonClick());
+                return _editCmd;
+            }
+            set
+            {
+                _editCmd = value;
+                OnPropertyChanged();
+            }
+        }
+        #endregion
+
+        #region delete button
+        private void HandleDeleteButtonClick()
+        {
+            // CuteTN: More code here...
+            MessageBox.Show("delete");
+        }
+        private ICommand _deleteCmd = null;
+        public ICommand DeleteCmd
+        {
+            get
+            {
+                if (_deleteCmd == null)
+                    _deleteCmd = new RelayCommand(obj => HandleDeleteButtonClick());
+                return _deleteCmd;
+            }
+            set
+            {
+                _deleteCmd = value;
                 OnPropertyChanged();
             }
         }
@@ -613,6 +682,7 @@ namespace QuanLyGiangDuong.ViewModel
 
         private void ResetForm()
         {
+            UsingClassId = null;
             SelectedSubject = null;
             SelectedTrainingProgram = null;
             // SelectedSemester = null; 
@@ -758,7 +828,6 @@ namespace QuanLyGiangDuong.ViewModel
             SelectedClass = usingClass.CLASS;
             ClassName = usingClass.CLASS.ClassName;
             SelectedTrainingProgram = usingClass.CLASS.TRAINING_PROGRAM;
-            // CuteTN Note to do, let's kill this love
             SelectedDayOfWeek = Utils.GetElementById(ListDayOfWeek, usingClass.Day_);
             SelectedSemester = Utils.GetElementById(ListSemester, usingClass.CLASS.Semester);
             SelectedSchoolYear = Utils.GetElementById(ListSchoolYear, usingClass.CLASS.Year_);
@@ -806,6 +875,27 @@ namespace QuanLyGiangDuong.ViewModel
                     ResetForm();
                 }
             }
+        }
+
+        private void EnableEditingForm()
+        {
+            IsEdittingFormMode = true;
+        }
+
+        private void DeleteSelectedRowsFromList()
+        {
+            // CuteTN: more code
+        }
+
+        private void ChangeToAddState()
+        {
+            ResetForm();
+            EnableEditingForm();
+        }
+
+        private void ChangeToEditState()
+        {
+            EnableEditingForm();
         }
 
         private void SaveDB()
