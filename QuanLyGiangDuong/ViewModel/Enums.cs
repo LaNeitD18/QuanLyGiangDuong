@@ -16,6 +16,7 @@ namespace QuanLyGiangDuong.ViewModel
             Pending     = 0,
             Approved    = 1,
             Rejected    = 2,
+            Deleted     = 3
         }
 
         public enum UserType
@@ -36,6 +37,8 @@ namespace QuanLyGiangDuong.ViewModel
                     return "Đã duyệt";
                 case UsingStatus.Rejected:
                     return "Đã từ chối";
+                case UsingStatus.Deleted:
+                    return "Đã xóa";
                 default:
                     throw new Exception(us.ToString() + "'s string was not define");
             }

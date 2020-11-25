@@ -27,6 +27,14 @@ namespace QuanLyGiangDuong.ViewModel
             set { _FrameContent = value; OnPropertyChanged(); }
         }
 
+        private string _Title;
+
+        public string Title
+        {
+            get { return _Title; }
+            set { _Title = value; OnPropertyChanged(); }
+        }
+
         private Visibility _IsVisibleCanvas;
 
         public Visibility IsVisibleCanvas
@@ -57,6 +65,7 @@ namespace QuanLyGiangDuong.ViewModel
         public ICommand EventInput_Page_SelectedCommand { get; set; }
         public ICommand ExamInput_Page_SelectedCommand { get; set; }
         public ICommand RoomManagement_Page_SelectedCommand { get; set; }
+        public ICommand Report_Page_SelectedCommand { get; set; }
         public ICommand Menu_Click_Command { get; set; }
         public ICommand Canvas_MouseLeave_Command { get; set; }
 
@@ -116,36 +125,48 @@ namespace QuanLyGiangDuong.ViewModel
             FrameColumn = 1;
 
             // initial page
+            Title = "Trang chủ";
             FrameContent = new HomePage();
 
             // commands
             Home_Page_SelectedCommand = new RelayCommand((p) => {
+                Title = "Trang chủ";
                 FrameContent = new HomePage();
             });
 
             TimeTable_Page_SelectedCommand = new RelayCommand((p) => {
+                Title = "Lịch dạng TKB";
                 FrameContent = new TimeTablePage();
             });
 
             Room_Page_SelectedCommand = new RelayCommand((p) => {
+                Title = "Lịch dạng phòng";
                 FrameContent = new RoomPage();
             });
 
             TimeTableInput_Page_SelectedCommand = new RelayCommand((p) => {
+                Title = "Nhập phòng học";
                 FrameContent = new TimeTableInputPage();
             });
 
             EventInput_Page_SelectedCommand = new RelayCommand((p) => {
+                Title = "Nhập sự kiện";
                 FrameContent = new EventInputPage();
             });
 
             ExamInput_Page_SelectedCommand = new RelayCommand((p) => {
+                Title = "Nhập phòng thi";
                 FrameContent = new ExamInputPage();
-                FrameContent.DataContext = new EventInputViewModel();
             });
 
             RoomManagement_Page_SelectedCommand = new RelayCommand((p) => {
+                Title = "Quản lý phòng";
                 FrameContent = new RoomManagementPage();
+            });
+
+            Report_Page_SelectedCommand = new RelayCommand((p) => {
+                Title = "Lập báo cáo";
+                FrameContent = new ReportPage();
             });
 
             Menu_Click_Command = new RelayCommand((p) => {
