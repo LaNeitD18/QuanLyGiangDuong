@@ -321,6 +321,80 @@ namespace QuanLyGiangDuong.Utilities
             return null;
         }
 
+        static public List<USINGEVENT> CheckOverLapEvent(USINGCLASS usingClass, CLASS class_)
+        {
+            List<USINGEVENT> listOverlappedEvent = new List<USINGEVENT>();
+
+            var listEventMayOverlap = (from UsingEvent in DataProvider.Ins.DB.USINGEVENTs
+                                       join StartPeriod in DataProvider.Ins.DB.PERIOD_TIMERANGE on UsingEvent.StartPeriod equals StartPeriod.PeriodID
+                                       where UsingEvent.RoomID == usingClass.RoomID
+                                       select new { UsingEvent, StartPeriod }).ToList();
+
+            listEventMayOverlap = listEventMayOverlap.FindAll(x =>
+            {
+                int dayOfWeek = (int)x.UsingEvent.Date_.DayOfWeek;
+                var startPeriod = (from period in DataProvider.Ins.DB.PERIOD_TIMERANGE
+                                   where period.PeriodID == usingClass.StartPeriod
+                                   select period).Single();
+
+                return
+                ((x.UsingEvent.Date_ - ((DateTime)usingClass.StartDate)).Days / 7) % usingClass.RepeatCycle == 0 &&
+                dayOfWeek == usingClass.Day_ &&
+                (x.UsingEvent.Date_ >= usingClass.StartDate && x.UsingEvent.Date_ <= usingClass.EndDate) &&
+                !(x.StartPeriod.StartTime + x.UsingEvent.Duration <= startPeriod.StartTime || x.StartPeriod.StartTime >= startPeriod.StartTime + usingClass.Duration);
+            });
+
+            foreach(var event_ in listEventMayOverlap)
+            {
+                listOverlappedEvent.Add(event_.UsingEvent);
+            }
+
+            return listOverlappedEvent;
+        }
+
+        static public bool HandleOverlapEvent(USINGCLASS usingClass, CLASS class_)
+        {
+            List<USINGCLASS> listSplitedUsingClass = new List<USINGCLASS>();
+
+            listSplitedUsingClass.Add(usingClass);
+
+            var listOverlappedEvent = CheckOverLapEvent(usingClass, class_);
+
+            if(listOverlappedEvent.Count > 3)
+            {
+                // NOT HANDLED YET
+                return false;
+            }
+            else
+            {
+                var listRoomFiltered = (from room in DataProvider.Ins.DB.ROOMs
+                                        where room.Capacity >= class_.Population_
+                                        select room).ToList();
+
+                listRoomFiltered.Reverse();
+
+                listOverlappedEvent.OrderBy(x => x.Date_);
+
+                foreach(var overlapEvent in listOverlappedEvent)
+                {
+                    // split the last using class
+                    USINGCLASS targetUsingClass = listSplitedUsingClass[listSplitedUsingClass.Count - 1];
+                    listSplitedUsingClass.RemoveAt(listSplitedUsingClass.Count - 1);
+
+                    USINGCLASS firstHalf = new USINGCLASS(targetUsingClass);
+                    USINGCLASS secondHalf = new USINGCLASS(targetUsingClass);
+
+                    firstHalf.EndDate = overlapEvent.Date_.AddDays(-(int)overlapEvent.Date_.DayOfWeek);
+                    secondHalf.StartDate = overlapEvent.Date_.AddDays(7 - ((int)overlapEvent.Date_.DayOfWeek - 1));
+
+                    listSplitedUsingClass.Add(firstHalf);
+                    listSplitedUsingClass.Add(secondHalf);
+                }
+            }
+
+            return false;
+        }
+
         #endregion
     }
 }

@@ -44,9 +44,13 @@ namespace QuanLyGiangDuong.ViewModel
             newUsingClass.Day_ = 1;
             newUsingClass.StartDate = new DateTime(2020, 11, 2);
             newUsingClass.EndDate = new DateTime(2021, 1, 31);
+            // extension
+            newUsingClass.StartPeriod = 1;
+            newUsingClass.RoomID = "B6.06";
 
-            var result = Utilities.Utils.AutoMakeSchedule(newUsingClass, newClass);
+            //var result = Utilities.Utils.AutoMakeSchedule(newUsingClass, newClass);
 
+            Utilities.Utils.HandleOverlapEvent(newUsingClass, newClass);
 
             LoginCommand = new RelayCommand((p) =>
             {
