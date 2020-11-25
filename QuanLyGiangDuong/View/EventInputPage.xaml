@@ -178,6 +178,8 @@
                     IsEnabled="{Binding IsRejectButtonEnabled}"
                     Command="{Binding RejectCmd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
+
+
         </Grid>
         <Grid
             Grid.Column="16" Grid.ColumnSpan="15"

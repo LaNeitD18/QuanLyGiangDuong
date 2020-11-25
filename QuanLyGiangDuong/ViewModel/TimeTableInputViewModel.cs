@@ -6,10 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Forms;
 using System.Windows.Controls;
 using System.Windows.Input;
 using QuanLyGiangDuong.Model;
 using QuanLyGiangDuong.Utilities;
+using System.Globalization;
+using System.Data.Entity.Migrations;
 
 namespace QuanLyGiangDuong.ViewModel
 {
@@ -83,6 +86,12 @@ namespace QuanLyGiangDuong.ViewModel
             set => OnPropertyChanged();
         }
 
+        public bool IsReadExcelButtonEnabled
+        {
+            get => (!IsEdittingFormMode);
+            set => OnPropertyChanged();
+        }
+
         /// <summary>
         /// we also have to invoke changes to view by calling enabled bools setter when needed.
         ///</summary> 
@@ -93,6 +102,7 @@ namespace QuanLyGiangDuong.ViewModel
             IsDeleteButtonEnabled = true;
             IsApproveButtonEnabled = true;
             IsRejectButtonEnabled = true;
+            IsReadExcelButtonEnabled = true;
         }
         #endregion
 
@@ -547,7 +557,7 @@ namespace QuanLyGiangDuong.ViewModel
             else
             {
                 string msg = errors.Aggregate((x, y) => x + "\n" + y);
-                MessageBox.Show(msg);
+                System.Windows.MessageBox.Show(msg);
             }
         }
         private ICommand _confirmCmd = null;
@@ -570,11 +580,10 @@ namespace QuanLyGiangDuong.ViewModel
         #region cancel button
         private void HandleCancelButton()
         {
-            var dlgRes = MessageBox.Show("Bạn có chắc muốn huỷ lớp học này không?", "Huỷ", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
+            var dlgRes = System.Windows.MessageBox.Show("Bạn có chắc muốn huỷ lớp học này không?", "Huỷ", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
             if (dlgRes == MessageBoxResult.Yes)
             { 
                 Reset();
-                LoadSelectedContentToForm();
             }
         }
         private ICommand _cancelCmd = null;
@@ -644,7 +653,7 @@ namespace QuanLyGiangDuong.ViewModel
         #region delete button
         private void HandleDeleteButtonClick()
         {
-            var dlgRes = MessageBox.Show("Bạn có chắc muốn xoá các đăng ký phòng học này không?", "Xoá", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
+            var dlgRes = System.Windows.MessageBox.Show("Bạn có chắc muốn xoá các đăng ký phòng học này không?", "Xoá", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
             if (dlgRes == MessageBoxResult.Yes)
                 SetStatusSelectedUsingClasses(Enums.UsingStatus.Deleted, x => true);
         }
@@ -668,7 +677,7 @@ namespace QuanLyGiangDuong.ViewModel
         #region approve button
         private void HandleApproveButtonClick()
         {
-            var dlgRes = MessageBox.Show("Bạn có chắc muốn duyệt các đăng ký phòng học này không?", "Duyệt", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
+            var dlgRes = System.Windows.MessageBox.Show("Bạn có chắc muốn duyệt các đăng ký phòng học này không?", "Duyệt", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
             if (dlgRes == MessageBoxResult.Yes)
                 SetStatusSelectedUsingClasses(Enums.UsingStatus.Approved, x => true);
         }
@@ -692,7 +701,7 @@ namespace QuanLyGiangDuong.ViewModel
         #region reject button
         private void HandleRejectButtonClick()
         {
-            var dlgRes = MessageBox.Show("Bạn có chắc muốn từ chối các đăng ký phòng học này không?", "Từ chối", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
+            var dlgRes = System.Windows.MessageBox.Show("Bạn có chắc muốn từ chối các đăng ký phòng học này không?", "Từ chối", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
             if (dlgRes == MessageBoxResult.Yes)
                 SetStatusSelectedUsingClasses(Enums.UsingStatus.Rejected, x => true);
         }
@@ -708,6 +717,29 @@ namespace QuanLyGiangDuong.ViewModel
             set
             {
                 _rejectCmd = value;
+                OnPropertyChanged();
+            }
+        }
+        #endregion
+
+        #region read Excel button
+        private void HandleReadExcelButtonClick()
+        {
+            // CuteTN note: more code. ..
+            ReadFromExcel();
+        }
+        private ICommand _readExcelCmd = null;
+        public ICommand ReadExcelCmd
+        {
+            get
+            {
+                if (_readExcelCmd == null)
+                    _readExcelCmd = new RelayCommand(obj => HandleReadExcelButtonClick());
+                return _readExcelCmd;
+            }
+            set
+            {
+                _readExcelCmd = value;
                 OnPropertyChanged();
             }
         }
@@ -765,6 +797,7 @@ namespace QuanLyGiangDuong.ViewModel
             RefreshData();
             ResetForm();
             IsEdittingFormMode = false;
+            LoadSelectedContentToForm();
         }
 
         private void PrintClassInfoTest()
@@ -784,7 +817,7 @@ namespace QuanLyGiangDuong.ViewModel
             toPrint += $"room name = {SelectedRoom.RoomName}\n";
             toPrint += $"start period = {SelectedStartTimeRange.PeriodName}\n";
 
-            MessageBox.Show(toPrint);
+            System.Windows.MessageBox.Show(toPrint);
         }
 
         /// <summary>
@@ -906,7 +939,7 @@ namespace QuanLyGiangDuong.ViewModel
             }
         }
 
-        private void GetDataGridSelectedItems(DataGrid datagrid)
+        private void GetDataGridSelectedItems(System.Windows.Controls.DataGrid datagrid)
         {
             SelectedUsingClasses.Clear();
 
@@ -920,7 +953,7 @@ namespace QuanLyGiangDuong.ViewModel
 
         private void ListUsingClass_OnSelectionChanged(Object obj = null)
         {
-            DataGrid dataGrid = obj as DataGrid;
+            System.Windows.Controls.DataGrid dataGrid = obj as System.Windows.Controls.DataGrid;
             if (dataGrid == null)
                 return;
 
@@ -965,6 +998,115 @@ namespace QuanLyGiangDuong.ViewModel
         private void SaveDB()
         {
             DataProvider.Ins.DB.SaveChanges();
+        }
+
+
+        /// <summary>
+        /// <para> parse a row raw information into CLASS and USINGCLASS </para>
+        /// <para> WARNING: this function does NOT generate the Ids </para>
+        /// </summary>
+        /// <param name="template"></param>
+        /// <param name="rawData"></param>
+        /// <param name="outputClass"></param>
+        /// <param name="outputUsingClass"></param>
+        private void ParseExcelRowFromTemplate(List<string> template, List<string> rawData, out CLASS outputClass, out USINGCLASS outputUsingClass)
+        {
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            
+            for(int i=0; i<template.Count; i++)
+            {
+                dict.Add(template[i].ToUpper(), rawData[i]);
+            }
+
+            outputClass = new CLASS();
+            outputUsingClass = new USINGCLASS();
+
+            // CuteTN: using string directly here is way tooooo DIRTY. but I have no time lol
+            outputClass.ClassName = dict["TÊN LỚP"];
+            outputClass.SubjectID = dict["MÃ MÔN HỌC"];
+
+            string trainingProgramName = dict["HỆ ĐÀO TẠO"];
+            outputClass.TRAINING_PROGRAM = DataProvider.Ins.DB.TRAINING_PROGRAM.Where(x => x.TrainingProgramName == trainingProgramName).First();
+
+            outputClass.Year_ = Utils.GetElementByName(ListSchoolYear, dict["NĂM HỌC"]).Id;
+            outputClass.Semester = Utils.GetElementByName(ListSemester, dict["HỌC KỲ"]).Id;
+            outputClass.LecturerID = dict["MÃ GIẢNG VIÊN"];
+            outputClass.StartDate = DateTime.ParseExact(dict["NGÀY BẮT ĐẦU"], "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            outputClass.EndDate = DateTime.ParseExact(dict["NGÀY KẾT THÚC"], "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            outputClass.Population_ = int.Parse(dict["SĨ SỐ"]);
+
+            outputUsingClass.Duration = TimeSpan.FromMinutes(int.Parse(dict["THỜI LƯỢNG"]));
+            outputUsingClass.Description_ = dict["GHI CHÚ"];
+
+            // default fields
+            outputUsingClass.RoomID = Utils.NullStringId;
+            outputUsingClass.StartPeriod = Utils.NullIntId;
+            outputUsingClass.Day_ = Utils.NullIntId;
+            outputUsingClass.RepeatCycle = 1;
+            outputUsingClass.Status_ = (int)Enums.UsingStatus.Pending;
+        }
+
+        private void ReadFromExcel()
+        {
+            var dlg = new OpenFileDialog();
+            dlg.Filter = "Excel file (*.xlsx;*.xls)|*.xlsx;*.xls|All files (*.*)|*.*";
+            var dlgRes = dlg.ShowDialog();
+
+            List<List<string>> importedData;
+
+            try
+            {
+                importedData = MsExcelReader.Read(dlg.FileName);
+            }
+            catch(Exception e)
+            {
+                System.Windows.MessageBox.Show($"Đã xảy ra lỗi trong quá trình đọc file, vui lòng kiểm tra định dạng.\n{e.Message}");
+                return;
+            }
+
+            // var testStr = Utils.Convert2DListToString(importedData);
+            // System.Windows.MessageBox.Show(testStr.ToUpper());
+
+            CLASS parsedClass, tempClass;
+            USINGCLASS parsedUsingClass;
+
+            for(int i = 1; i < importedData.Count; i++)
+            {
+                ParseExcelRowFromTemplate(importedData[0], importedData[i], out parsedClass, out parsedUsingClass);
+                
+                tempClass = null;
+
+                // trying searching for the same class first...
+                try
+                {
+                    tempClass = DataProvider.Ins.DB.CLASSes.Where
+                        (x =>
+                            (x.ClassName == parsedClass.ClassName)
+                            &&(x.Year_ == parsedClass.Year_)
+                            &&(x.Semester == parsedClass.Semester)
+                            &&(x.TrainingProgramID == parsedClass.TrainingProgramID)
+                        ).First();
+                }
+                catch { }
+
+                if (tempClass != null)
+                {
+                    parsedClass.ClassID = tempClass.ClassID;
+                    
+                }
+                else
+                {
+                    parsedClass.ClassID = Utils.GenerateStringId(DataProvider.Ins.DB.CLASSes);
+                }
+                DataProvider.Ins.DB.CLASSes.AddOrUpdate(parsedClass); // using System.Data.Entity.Migrations
+
+                parsedUsingClass.UsingClassID = Utils.GenerateStringId(DataProvider.Ins.DB.USINGCLASSes);
+                parsedUsingClass.CLASS = parsedClass;
+                DataProvider.Ins.DB.USINGCLASSes.Add(parsedUsingClass);
+
+                DataProvider.Ins.DB.SaveChanges();
+                Reset();
+            }
         }
 
         #endregion

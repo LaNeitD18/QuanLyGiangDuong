@@ -117,6 +117,7 @@
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0">
                 <Button 
@@ -158,6 +159,15 @@
                     IsEnabled="{Binding IsRejectButtonEnabled}"
                     Command="{Binding RejectCmd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
+            <Grid Grid.Column="5">
+                <Button 
+                    Style="{StaticResource MaterialDesignRaisedButton}" 
+                    Margin="5,0,5,0" Content="Excel" HorizontalAlignment="Center"
+                    Width="150" Height="35"
+                    IsEnabled="{Binding IsReadExcelButtonEnabled}"
+                    Command="{Binding ReadExcelCmd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </Grid>
+            
         </Grid>
         <Grid
             Grid.Column="16" Grid.ColumnSpan="15"

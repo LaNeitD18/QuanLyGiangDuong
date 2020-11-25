@@ -226,6 +226,41 @@ namespace QuanLyGiangDuong.Utilities
             }
         }
 
+        static public IdNamePair<IdType> GetElementByName<IdType>(BindingList<IdNamePair<IdType>> items, string name, bool caseSensitive = false)
+        {
+            try
+            {
+                return items.Where
+                    (
+                        x => 
+                        { 
+                            if(caseSensitive)
+                                return x.Name == name;
+                            else
+                                return x.Name.ToUpper() == name.ToUpper();
+                        }
+
+                    ).ElementAt(0);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        #endregion
+
+        #region print test
+        static public string  Convert2DListToString(List<List<string>> list)
+        {
+            string result = list.Select
+                (
+                    x => x.Aggregate((s1, s2) => s1 + "\t\t" + s2)
+                ).Aggregate((s1, s2) => s1 + "\n" + s2);
+
+            return result;
+        }
+
         #endregion
     }
 }
