@@ -29,6 +29,8 @@ namespace QuanLyGiangDuong.Model
         public int Day_ { get; set; }
         public int Status_ { get; set; }
         public string Description_ { get; set; }
+        public Nullable<System.DateTime> StartDate { get; set; }
+        public Nullable<System.DateTime> EndDate { get; set; }
     
         public virtual CLASS CLASS { get; set; }
         public virtual PERIOD_TIMERANGE PERIOD_TIMERANGE { get; set; }

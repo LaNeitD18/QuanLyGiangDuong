@@ -34,6 +34,7 @@ namespace QuanLyGiangDuong.ViewModel
             newClass.StartDate = new DateTime(2020, 11, 2);
             newClass.EndDate = new DateTime(2021, 1, 31);
             newClass.Population_ = 90;
+            newClass.LecturerID = "1";
 
             USINGCLASS newUsingClass = new USINGCLASS();
             newUsingClass.UsingClassID = "xyz";
@@ -41,6 +42,8 @@ namespace QuanLyGiangDuong.ViewModel
             newUsingClass.Duration = new TimeSpan(1, 30, 0);
             newUsingClass.RepeatCycle = 1;
             newUsingClass.Day_ = 1;
+            newUsingClass.StartDate = new DateTime(2020, 11, 2);
+            newUsingClass.EndDate = new DateTime(2021, 1, 31);
 
             var result = Utilities.Utils.AutoMakeSchedule(newUsingClass, newClass);
 

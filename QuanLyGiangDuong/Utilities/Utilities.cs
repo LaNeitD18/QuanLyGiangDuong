@@ -155,7 +155,7 @@ namespace QuanLyGiangDuong.Utilities
                             where room.Capacity >= class_.Population_
                             select room).ToList();
 
-            var targetDate = class_.StartDate.AddDays(usingClass.Day_ - 1);
+            var targetDate = ((DateTime)usingClass.StartDate).AddDays(usingClass.Day_ - 1);
 
             TimeTableViewModel timeTableViewModel = new TimeTableViewModel();
 
@@ -180,8 +180,9 @@ namespace QuanLyGiangDuong.Utilities
                 usingClass.StartPeriod = 1; // if we found a room that not used, just start at Tiet 1
 
                 USINGCLASS overlappedUsingClass = CheckOverlapUsingClass(usingClass, class_);
+                USINGCLASS overlappedLecturerUsingClass = CheckOverlapLecturerTimeUsingClass(usingClass, class_);
 
-                if (overlappedUsingClass == null)
+                if (overlappedUsingClass == null && overlappedLecturerUsingClass == null)
                 {
                     // we found an empty room and time, finish here
                     return 0;
@@ -203,13 +204,26 @@ namespace QuanLyGiangDuong.Utilities
                         usingClass.StartPeriod = newStartPeriod;
 
                         overlappedUsingClass = CheckOverlapUsingClass(usingClass, class_);
+                        overlappedLecturerUsingClass = CheckOverlapLecturerTimeUsingClass(usingClass, class_);
 
-                        if (overlappedUsingClass == null)
+                        if (overlappedUsingClass == null && overlappedLecturerUsingClass == null)
                         {
                             return 0;
                         }
 
-                        newStartPeriod = CalcEndPeriod(overlappedUsingClass.StartPeriod, overlappedUsingClass.Duration) + 1;
+                        if(overlappedUsingClass == null)
+                        {
+                            newStartPeriod = CalcEndPeriod(overlappedLecturerUsingClass.StartPeriod, overlappedLecturerUsingClass.Duration) + 1;
+                        }
+                        else if (overlappedLecturerUsingClass == null || overlappedUsingClass.StartPeriod > overlappedLecturerUsingClass.StartPeriod)
+                        {
+                            newStartPeriod = CalcEndPeriod(overlappedUsingClass.StartPeriod, overlappedUsingClass.Duration) + 1;
+                        }
+                        else
+                        {
+                            newStartPeriod = CalcEndPeriod(overlappedLecturerUsingClass.StartPeriod, overlappedLecturerUsingClass.Duration) + 1;
+                        }
+
                         endPeriod = CalcEndPeriod(newStartPeriod, usingClass.Duration);
                     }
                 }
@@ -245,7 +259,7 @@ namespace QuanLyGiangDuong.Utilities
                     var cmcm = !(x.StartPeriod.StartTime + x.usgClass.Duration < startPeriod.StartTime || x.StartPeriod.StartTime > startPeriod.StartTime + usingClass.Duration);
 
                     return
-                    !(x.Class.EndDate < class_.StartDate || x.Class.StartDate > class_.EndDate) &&
+                    !(x.usgClass.EndDate < usingClass.StartDate || x.usgClass.StartDate > usingClass.EndDate) &&
                     !(x.StartPeriod.StartTime + x.usgClass.Duration <= startPeriod.StartTime || x.StartPeriod.StartTime >= startPeriod.StartTime + usingClass.Duration);
                 });
 
@@ -258,7 +272,47 @@ namespace QuanLyGiangDuong.Utilities
                     return usingClassMayOverlap.usgClass;
                 }
                 // have the same repeat cycle but start after
-                else if (((class_.StartDate - usingClassMayOverlap.Class.StartDate).Days / 7) % usingClass.RepeatCycle == 0)
+                else if ((((DateTime)usingClass.StartDate - (DateTime)usingClassMayOverlap.usgClass.StartDate).Days / 7) % usingClass.RepeatCycle == 0)
+                {
+                    return usingClassMayOverlap.usgClass;
+                }
+            }
+
+            return null;
+        }
+
+        static USINGCLASS CheckOverlapLecturerTimeUsingClass(USINGCLASS usingClass, CLASS class_)
+        {
+            var startPeriod = (from period in DataProvider.Ins.DB.PERIOD_TIMERANGE
+                               where period.PeriodID == usingClass.StartPeriod
+                               select period).Single();
+
+            var listUsingClassMayOverlap = (from usgClass in DataProvider.Ins.DB.USINGCLASSes
+                                            join Class in DataProvider.Ins.DB.CLASSes on usgClass.ClassID equals Class.ClassID
+                                            join StartPeriod in DataProvider.Ins.DB.PERIOD_TIMERANGE on usgClass.StartPeriod equals StartPeriod.PeriodID
+                                            where Class.LecturerID == class_.LecturerID &&
+                                                  usgClass.Day_ == usingClass.Day_
+                                            select new { usgClass, Class, StartPeriod }).ToList();
+
+            listUsingClassMayOverlap = listUsingClassMayOverlap.FindAll(x =>
+            {
+                var cmcm = !(x.StartPeriod.StartTime + x.usgClass.Duration < startPeriod.StartTime || x.StartPeriod.StartTime > startPeriod.StartTime + usingClass.Duration);
+
+                return
+                !(x.usgClass.EndDate < usingClass.StartDate || x.usgClass.StartDate > usingClass.EndDate) &&
+                !(x.StartPeriod.StartTime + x.usgClass.Duration <= startPeriod.StartTime || x.StartPeriod.StartTime >= startPeriod.StartTime + usingClass.Duration);
+            });
+
+
+
+            foreach (var usingClassMayOverlap in listUsingClassMayOverlap)
+            {
+                if (usingClass.RepeatCycle != usingClassMayOverlap.usgClass.RepeatCycle)
+                {
+                    return usingClassMayOverlap.usgClass;
+                }
+                // have the same repeat cycle but start after
+                else if ((((DateTime)usingClass.StartDate - (DateTime)usingClassMayOverlap.usgClass.StartDate).Days / 7) % usingClass.RepeatCycle == 0)
                 {
                     return usingClassMayOverlap.usgClass;
                 }
