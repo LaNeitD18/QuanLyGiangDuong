@@ -7,6 +7,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using QuanLyGiangDuong.ViewModel;
+using System.Data.Entity.Core.Objects;
 
 namespace QuanLyGiangDuong.Utilities
 {
@@ -132,8 +133,24 @@ namespace QuanLyGiangDuong.Utilities
 
         #region Auto make schedule functions
 
-        static void AutoMakeSchedule(USINGCLASS usingClass, CLASS class_)
+        /// <summary>
+        /// Auto choose the Room and Start period for the usingclass
+        /// 
+        /// If successs, the Room and Start period inside the usingClass parameter will be modified 
+        /// follow the result. Otherwise, every parameter stay unchanged.
+        /// 
+        /// </summary>
+        /// <param name="usingClass"></param>
+        /// <param name="class_"></param>
+        /// <returns> 
+        ///     return 0 if successs find the room and start period
+        ///     otherwise, return -1;
+        /// </returns>
+        static public int AutoMakeSchedule(USINGCLASS usingClass, CLASS class_)
         {
+            var beginningRoomID = usingClass.RoomID;
+            var beginningStartPeriod = usingClass.StartPeriod;
+
             var listRoomFiltered = (from room in DataProvider.Ins.DB.ROOMs
                             where room.Capacity >= class_.Population_
                             select room).ToList();
@@ -157,16 +174,51 @@ namespace QuanLyGiangDuong.Utilities
 
             List<ROOM> listUnusedRoom = listRoomFiltered.Where(x => {return !ListUsedRoom.Contains(x.RoomID); }).ToList();
 
-            foreach(var room in listUnusedRoom)
+            foreach(var room in listRoomFiltered)
             {
                 usingClass.RoomID = room.RoomID;
                 usingClass.StartPeriod = 1; // if we found a room that not used, just start at Tiet 1
-                if(CheckOverlapUsingClass(usingClass, class_) == null)
+
+                USINGCLASS overlappedUsingClass = CheckOverlapUsingClass(usingClass, class_);
+
+                if (overlappedUsingClass == null)
                 {
                     // we found an empty room and time, finish here
-                    return;
+                    return 0;
+                }
+                else
+                {
+                    int newStartPeriod = CalcEndPeriod(overlappedUsingClass.StartPeriod, overlappedUsingClass.Duration) + 1;
+                    int endPeriod = CalcEndPeriod(newStartPeriod, usingClass.Duration);
+
+                    // loop through period to find the next fit in room on target date
+                    while (endPeriod != -1)
+                    {
+                        if (newStartPeriod <= 5 && endPeriod > 5)
+                        {
+                            newStartPeriod = 6;
+                            endPeriod = CalcEndPeriod(newStartPeriod, usingClass.Duration);
+                        }
+
+                        usingClass.StartPeriod = newStartPeriod;
+
+                        overlappedUsingClass = CheckOverlapUsingClass(usingClass, class_);
+
+                        if (overlappedUsingClass == null)
+                        {
+                            return 0;
+                        }
+
+                        newStartPeriod = CalcEndPeriod(overlappedUsingClass.StartPeriod, overlappedUsingClass.Duration) + 1;
+                        endPeriod = CalcEndPeriod(newStartPeriod, usingClass.Duration);
+                    }
                 }
             }
+
+            usingClass.RoomID = beginningRoomID;
+            usingClass.StartPeriod = beginningStartPeriod;
+
+            return -1;
         }
 
         /// <summary>
@@ -183,14 +235,23 @@ namespace QuanLyGiangDuong.Utilities
 
             var listUsingClassMayOverlap = (from usgClass in DataProvider.Ins.DB.USINGCLASSes
                                             join Class in DataProvider.Ins.DB.CLASSes on usgClass.ClassID equals Class.ClassID
-                                            join strPeriod in DataProvider.Ins.DB.PERIOD_TIMERANGE on usgClass.StartPeriod equals strPeriod.PeriodID
+                                            join StartPeriod in DataProvider.Ins.DB.PERIOD_TIMERANGE on usgClass.StartPeriod equals StartPeriod.PeriodID
                                             where usgClass.RoomID == usingClass.RoomID &&
-                                                  usgClass.Day_ == usingClass.Day_ &&
-                                                  !(Class.EndDate < class_.StartDate || Class.StartDate > class_.EndDate) &&
-                                                  !(strPeriod.StartTime + usgClass.Duration < startPeriod.StartTime || strPeriod.StartTime > startPeriod.StartTime + usingClass.Duration)
-                                            select new { usgClass, Class }).ToList();
+                                                  usgClass.Day_ == usingClass.Day_
+                                            select new { usgClass, Class, StartPeriod }).ToList();
 
-            foreach(var usingClassMayOverlap in listUsingClassMayOverlap)
+            listUsingClassMayOverlap = listUsingClassMayOverlap.FindAll(x =>
+                {
+                    var cmcm = !(x.StartPeriod.StartTime + x.usgClass.Duration < startPeriod.StartTime || x.StartPeriod.StartTime > startPeriod.StartTime + usingClass.Duration);
+
+                    return
+                    !(x.Class.EndDate < class_.StartDate || x.Class.StartDate > class_.EndDate) &&
+                    !(x.StartPeriod.StartTime + x.usgClass.Duration <= startPeriod.StartTime || x.StartPeriod.StartTime >= startPeriod.StartTime + usingClass.Duration);
+                });
+
+            
+
+            foreach (var usingClassMayOverlap in listUsingClassMayOverlap)
             {
                 if (usingClass.RepeatCycle != usingClassMayOverlap.usgClass.RepeatCycle)
                 {

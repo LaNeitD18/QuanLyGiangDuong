@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using QuanLyGiangDuong.Model;
 
 namespace QuanLyGiangDuong.ViewModel
 {
@@ -27,6 +28,22 @@ namespace QuanLyGiangDuong.ViewModel
             //DatabaseCheck.Ins.Check();
             UserName = "";
             Password = "";
+
+            CLASS newClass = new CLASS();
+            newClass.ClassID = "abc";
+            newClass.StartDate = new DateTime(2020, 11, 2);
+            newClass.EndDate = new DateTime(2021, 1, 31);
+            newClass.Population_ = 90;
+
+            USINGCLASS newUsingClass = new USINGCLASS();
+            newUsingClass.UsingClassID = "xyz";
+            newUsingClass.ClassID = newClass.ClassID;
+            newUsingClass.Duration = new TimeSpan(1, 30, 0);
+            newUsingClass.RepeatCycle = 1;
+            newUsingClass.Day_ = 1;
+
+            var result = Utilities.Utils.AutoMakeSchedule(newUsingClass, newClass);
+
 
             LoginCommand = new RelayCommand((p) =>
             {
