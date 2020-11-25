@@ -1,5 +1,7 @@
-﻿using System;
+﻿using QuanLyGiangDuong.Model;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,7 +13,7 @@ namespace QuanLyGiangDuong.ViewModel
 {
     public class LoginViewModel : BaseViewModel
     {
-        static public int TaiKhoanSuDung = 0; // tao bien static nguoi dung
+        static public LECTURER currentUser; // tao bien static nguoi dung
 
         public ICommand CloseWindowCommand { get; set; }
         public ICommand LoginCommand { get; set; }
@@ -34,26 +36,18 @@ namespace QuanLyGiangDuong.ViewModel
                 if (UserName == null || Password == null)
                     MessageBox.Show("Mời nhập tài khoản!");
 
-                //ObservableCollection<NGUOIDUNG> Account = new ObservableCollection<NGUOIDUNG>(DataProvider.Ins.DB.NGUOIDUNGs);
+                ObservableCollection<LECTURER> ListUser = new ObservableCollection<LECTURER>(DataProvider.Ins.DB.LECTURERs);
 
-                //foreach (var item in Account)
-                //{
-                //    if (item.TenDangNhap == UserName && item.MatKhau == Password)
-                //    {
-                //        //Gan static TaiKhoanSuDung
-                //        TaiKhoanSuDung = item;
-                //        //MessageBox.Show("Đăng nhập thành công");
-                //        p.Close();
-                //        return;
-                //    }
-                //}
-
-                if (UserName == "admin" && Password == "admin")
+                foreach (var user in ListUser)
                 {
-                    //MessageBox.Show("Đăng nhập thành công");
-                    TaiKhoanSuDung = 1;
-                    loginWindow.Close();
-                    return;
+                    if (user.LecturerID == UserName && user.Password_ == Password)
+                    {
+                        //Gan static TaiKhoanSuDung
+                        currentUser = user;
+                        //MessageBox.Show("Đăng nhập thành công");
+                        loginWindow.Close();
+                        return;
+                    }
                 }
                 MessageBox.Show("Tài khoản không hợp lệ!");
 

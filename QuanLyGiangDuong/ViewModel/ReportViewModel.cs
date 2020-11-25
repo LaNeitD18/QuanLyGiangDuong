@@ -111,7 +111,7 @@ namespace QuanLyGiangDuong.ViewModel
         }
 
         private void LoadBarChartInput() {
-            int classRooms = DataProvider.Ins.DB.USINGCLASSes.Count();
+            int classRooms = DataProvider.Ins.DB.USINGCLASSes.Count(); // nho sua thang nay
             int eventRooms = DataProvider.Ins.DB.USINGEVENTs.Where(x => x.Date_.Month == SelectedMonth && x.Date_.Year == SelectedYear).Count();
             int examRooms = DataProvider.Ins.DB.USINGEXAMs.Where(x => x.Date_.Month == SelectedMonth && x.Date_.Year == SelectedYear).Count();
             PointLabel = chartPoint => string.Format("{0} ({1:P})", chartPoint.Y, chartPoint.Participation);

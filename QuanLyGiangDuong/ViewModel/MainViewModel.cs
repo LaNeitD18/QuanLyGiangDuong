@@ -13,6 +13,8 @@ using System.Windows;
 
 using QuanLyGiangDuong.Utilities;
 using System.Windows.Threading;
+using QuanLyGiangDuong.Model;
+using System.Collections.ObjectModel;
 
 namespace QuanLyGiangDuong.ViewModel
 {
@@ -20,7 +22,6 @@ namespace QuanLyGiangDuong.ViewModel
     {
         #region Variables
         private Page _FrameContent;
-
         public Page FrameContent
         {
             get { return _FrameContent; }
@@ -28,7 +29,6 @@ namespace QuanLyGiangDuong.ViewModel
         }
 
         private string _Title;
-
         public string Title
         {
             get { return _Title; }
@@ -36,7 +36,6 @@ namespace QuanLyGiangDuong.ViewModel
         }
 
         private Visibility _IsVisibleCanvas;
-
         public Visibility IsVisibleCanvas
         {
             get { return _IsVisibleCanvas; }
@@ -44,11 +43,122 @@ namespace QuanLyGiangDuong.ViewModel
         }
 
         private int _FrameColumn;
-
         public int FrameColumn
         {
             get { return _FrameColumn; }
             set { _FrameColumn = value; OnPropertyChanged(); }
+        }
+
+        private bool _IsHomeEnabled;
+        public bool IsHomeEnabled
+        {
+            get { return _IsHomeEnabled; }
+            set { _IsHomeEnabled = value; OnPropertyChanged(); }
+        }
+
+        private Visibility _IsHomeVisible;
+        public Visibility IsHomeVisible
+        {
+            get { return _IsHomeVisible; }
+            set { _IsHomeVisible = value; OnPropertyChanged(); }
+        }
+
+        private bool _IsTimetableEnabled;
+        public bool IsTimetableEnabled
+        {
+            get { return _IsTimetableEnabled; }
+            set { _IsTimetableEnabled = value; OnPropertyChanged(); }
+        }
+
+        private Visibility _IsTimetableVisible;
+        public Visibility IsTimetableVisible
+        {
+            get { return _IsTimetableVisible; }
+            set { _IsTimetableVisible = value; OnPropertyChanged(); }
+        }
+
+        private bool _IsRoomEnabled;
+        public bool IsRoomEnabled
+        {
+            get { return _IsRoomEnabled; }
+            set { _IsRoomEnabled = value; OnPropertyChanged(); }
+        }
+
+        private Visibility _IsRoomVisible;
+        public Visibility IsRoomVisible
+        {
+            get { return _IsRoomVisible; }
+            set { _IsRoomVisible = value; OnPropertyChanged(); }
+        }
+
+        private bool _IsTimetableInputEnabled;
+        public bool IsTimetableInputEnabled
+        {
+            get { return _IsTimetableInputEnabled; }
+            set { _IsTimetableInputEnabled = value; OnPropertyChanged(); }
+        }
+
+        private Visibility _IsTimetableInputVisible;
+        public Visibility IsTimetableInputVisible
+        {
+            get { return _IsTimetableInputVisible; }
+            set { _IsTimetableInputVisible = value; OnPropertyChanged(); }
+        }
+
+        private bool _IsEventInputEnabled;
+        public bool IsEventInputEnabled
+        {
+            get { return _IsEventInputEnabled; }
+            set { _IsEventInputEnabled = value; OnPropertyChanged(); }
+        }
+
+        private Visibility _IsEventInputVisible;
+        public Visibility IsEventInputVisible
+        {
+            get { return _IsEventInputVisible; }
+            set { _IsEventInputVisible = value; OnPropertyChanged(); }
+        }
+
+        private bool _IsExamInputEnabled;
+        public bool IsExamInputEnabled
+        {
+            get { return _IsExamInputEnabled; }
+            set { _IsExamInputEnabled = value; OnPropertyChanged(); }
+        }
+
+        private Visibility _IsExamInputVisible;
+        public Visibility IsExamInputVisible
+        {
+            get { return _IsExamInputVisible; }
+            set { _IsExamInputVisible = value; OnPropertyChanged(); }
+        }
+
+        private bool _IsRoomManagementEnabled;
+        public bool IsRoomManagementEnabled
+        {
+            get { return _IsRoomManagementEnabled; }
+            set { _IsRoomManagementEnabled = value; OnPropertyChanged(); }
+        }
+
+        private Visibility _IsRoomManagementVisible;
+        public Visibility IsRoomManagementVisible
+        {
+            get { return _IsRoomManagementVisible; }
+            set { _IsRoomManagementVisible = value; OnPropertyChanged(); }
+        }
+
+        private bool _IsReportEnabled;
+        public bool IsReportEnabled
+        {
+            get { return _IsReportEnabled; }
+            set { _IsReportEnabled = value; OnPropertyChanged(); }
+        }
+
+        private Visibility _IsReportVisible;
+        public Visibility IsReportVisible
+        {
+            get { return _IsReportVisible; }
+            set { _IsReportVisible = value; OnPropertyChanged(); }
         }
 
         static public DispatcherTimer _timer;
@@ -73,12 +183,66 @@ namespace QuanLyGiangDuong.ViewModel
         #endregion
 
         #region Functions
-        private void ChangePage(Page currentPage, BaseViewModel currentViewModel)
+        private void DisableButtons()
         {
-            FrameContent = currentPage;
-            FrameContent.DataContext = currentViewModel;
+            // disable and hidden all buttons
+            IsHomeEnabled = IsTimetableEnabled = IsRoomEnabled = IsTimetableInputEnabled = IsEventInputEnabled = 
+                IsExamInputEnabled = IsRoomManagementEnabled = IsReportEnabled = false;
+            IsHomeVisible = IsTimetableVisible = IsRoomVisible = IsTimetableInputVisible = IsEventInputVisible =
+                IsExamInputVisible = IsRoomManagementVisible = IsReportVisible = Visibility.Hidden;
         }
 
+        private void InitButton(int featureID)
+        {
+            switch (featureID)
+            {
+                case 1:
+                    IsHomeEnabled = true;
+                    IsHomeVisible = Visibility.Visible;
+                    break;
+                case 2:
+                    IsTimetableEnabled = true;
+                    IsTimetableVisible = Visibility.Visible;
+                    break;
+                case 3:
+                    IsRoomEnabled = true;
+                    IsRoomVisible = Visibility.Visible;
+                    break;
+                case 4:
+                    IsTimetableInputEnabled = true;
+                    IsTimetableInputVisible = Visibility.Visible;
+                    break;
+                case 5:
+                    IsEventInputEnabled = true;
+                    IsEventInputVisible = Visibility.Visible;
+                    break;
+                case 6:
+                    IsExamInputEnabled = true;
+                    IsExamInputVisible = Visibility.Visible;
+                    break;
+                case 7:
+                    IsRoomManagementEnabled = true;
+                    IsRoomManagementVisible = Visibility.Visible;
+                    break;
+                case 8:
+                    IsReportEnabled = true;
+                    IsReportVisible = Visibility.Visible;
+                    break;
+            }
+        }
+
+        private void InitButtonsForUsing(LECTURER user)
+        {
+            DisableButtons();
+            ObservableCollection<PERMISSION> listPermission = new ObservableCollection<PERMISSION>(DataProvider.Ins.DB.PERMISSIONs);
+            foreach (var item in listPermission)
+            {
+                if (item.LectureTypeID == user.LecturerTypeID)
+                {
+                    InitButton(item.FeatureID);
+                }
+            }
+        }
         #endregion
 
         public MainViewModel()
@@ -108,9 +272,9 @@ namespace QuanLyGiangDuong.ViewModel
                 _timer.Interval = TimeSpan.FromSeconds(1);
                 _timer.Tick += (sender, args) =>
                 {
-                    if (LoginViewModel.TaiKhoanSuDung != 0)
+                    if (LoginViewModel.currentUser != null)
                     {
-                        //Init_Button_User(LoginViewModel.TaiKhoanSuDung);
+                        InitButtonsForUsing(LoginViewModel.currentUser);
 
                         _timer.Stop();
                     }

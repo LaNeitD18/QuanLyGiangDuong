@@ -81,8 +81,26 @@
                 <StackPanel 
                     HorizontalAlignment="Center" 
                     VerticalAlignment="Center">
-                    <TextBlock Text="Thời gian hiện tại" HorizontalAlignment="Center" LineHeight="26"></TextBlock>
+                    <TextBlock FontSize="22" Text="Thời gian hiện tại" HorizontalAlignment="Center" LineHeight="26"></TextBlock>
                     <TextBlock Text="{Binding CurrentDateTime}" HorizontalAlignment="Center" LineHeight="26" FontSize="18" FontWeight="SemiBold"/>
+                </StackPanel>
+            </materialDesign:Card>
+        </Grid>
+        <Grid Grid.Column="21" Grid.ColumnSpan="10" Grid.Row="0" Grid.RowSpan="3">
+            <materialDesign:Card 
+                Background="{DynamicResource DarkGrayishBlue}" 
+                Foreground="White"
+                materialDesign:ShadowAssist.ShadowDepth="Depth3"
+                materialDesign:ShadowAssist.ShadowEdges="All" 
+                Margin="10" 
+                VerticalAlignment="Stretch" 
+                HorizontalAlignment="Stretch" 
+                UniformCornerRadius="20">
+                <StackPanel 
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center">
+                    <TextBlock FontSize="22" Text="Số phòng còn trống" HorizontalAlignment="Center" LineHeight="26"></TextBlock>
+                    <TextBlock Text="{Binding EmptyRooms}" HorizontalAlignment="Center" LineHeight="26" FontSize="18" FontWeight="SemiBold"/>
                 </StackPanel>
             </materialDesign:Card>
         </Grid>
