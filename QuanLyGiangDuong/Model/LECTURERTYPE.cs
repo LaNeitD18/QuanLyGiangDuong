@@ -12,27 +12,21 @@ namespace QuanLyGiangDuong.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class LECTURER
+    public partial class LECTURERTYPE
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public LECTURER()
+        public LECTURERTYPE()
         {
-            this.CLASSes = new HashSet<CLASS>();
-            this.EVENT_ = new HashSet<EVENT_>();
-            this.EXAMs = new HashSet<EXAM>();
+            this.LECTURERs = new HashSet<LECTURER>();
+            this.PERMISSIONs = new HashSet<PERMISSION>();
         }
     
-        public string LecturerID { get; set; }
         public int LecturerTypeID { get; set; }
-        public string LecturerName { get; set; }
-        public string Password_ { get; set; }
+        public string LecturerTypeName { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CLASS> CLASSes { get; set; }
+        public virtual ICollection<LECTURER> LECTURERs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<EVENT_> EVENT_ { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<EXAM> EXAMs { get; set; }
-        public virtual LECTURERTYPE LECTURERTYPE { get; set; }
+        public virtual ICollection<PERMISSION> PERMISSIONs { get; set; }
     }
 }

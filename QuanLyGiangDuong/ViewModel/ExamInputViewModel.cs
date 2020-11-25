@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -334,7 +335,7 @@ namespace QuanLyGiangDuong.ViewModel
             var exam = new EXAM()
             {
                 ExamID = ExamID,
-                LecturerID = Supervisor,
+                LecturerID = SelectedSupervisor.LecturerName,
                 ClassID = SelectedClass.ClassID,
                 Population_ = Convert.ToInt32(Population)
             };
@@ -373,6 +374,7 @@ namespace QuanLyGiangDuong.ViewModel
             SelectedUsingExam.Date_ = Convert.ToDateTime(StartDate);
             SelectedUsingExam.Duration = new TimeSpan(0, Convert.ToInt32(ExamTime), 0);
             SelectedUsingExam.Description_ = Description;
+            SelectedUsingExam.Status_ = (int)Enums.UsingStatus.Pending;
             DataProvider.Ins.DB.SaveChanges();
 
             var temp = SelectedUsingExam;
@@ -392,15 +394,17 @@ namespace QuanLyGiangDuong.ViewModel
 
         private void DeleteUsingExam()
         {
-            SelectedUsingExam.Status_ = 3;
+            SelectedUsingExam.Status_ = (int)Enums.UsingStatus.Deleted;
             DataProvider.Ins.DB.SaveChanges();
 
+            var temp = SelectedUsingExam;
             int length = ListUsingExam.Count();
             for (int i = 0; i < length; i++)
             {
                 if (ListUsingExam[i].UsingExamID == SelectedUsingExam.UsingExamID)
                 {
                     ListUsingExam.RemoveAt(i);
+                    ListUsingExam.Insert(i, temp);
                     break;
                 }
             }
@@ -419,15 +423,17 @@ namespace QuanLyGiangDuong.ViewModel
 
         private void ApproveUsingExam()
         {
-            SelectedUsingExam.Status_ = 1;
+            SelectedUsingExam.Status_ = (int)Enums.UsingStatus.Approved;
             DataProvider.Ins.DB.SaveChanges();
 
+            var temp = SelectedUsingExam;
             int length = ListUsingExam.Count();
             for (int i = 0; i < length; i++)
             {
                 if (ListUsingExam[i].UsingExamID == SelectedUsingExam.UsingExamID)
                 {
                     ListUsingExam.RemoveAt(i);
+                    ListUsingExam.Insert(i, temp);
                     break;
                 }
             }
@@ -446,15 +452,17 @@ namespace QuanLyGiangDuong.ViewModel
 
         private void RejectUsingExam()
         {
-            SelectedUsingExam.Status_ = 2;
+            SelectedUsingExam.Status_ = (int)Enums.UsingStatus.Rejected;
             DataProvider.Ins.DB.SaveChanges();
 
+            var temp = SelectedUsingExam;
             int length = ListUsingExam.Count();
             for (int i = 0; i < length; i++)
             {
                 if (ListUsingExam[i].UsingExamID == SelectedUsingExam.UsingExamID)
                 {
                     ListUsingExam.RemoveAt(i);
+                    ListUsingExam.Insert(i, temp);
                     break;
                 }
             }
@@ -499,7 +507,7 @@ namespace QuanLyGiangDuong.ViewModel
         private bool IsNotDuplicatedForAdding()
         {
             bool flag = true;
-            var classID = DataProvider.Ins.DB.CLASSes.Where(x => x.ClassID == SelectedClass.ClassID);
+            var classID = DataProvider.Ins.DB.EXAMs.Where(x => x.ClassID == SelectedClass.ClassID);
 
             if (classID.Count() != 0)
             {
@@ -586,24 +594,43 @@ namespace QuanLyGiangDuong.ViewModel
             });
 
             DeleteCommand = new RelayCommand((p) => {
-                EnableOnlyDeleting();
-                EnableElements();
+                //EnableOnlyDeleting();
+                //EnableElements();
 
-                UsingExamID = SelectedUsingExam.UsingExamID;
+                //UsingExamID = SelectedUsingExam.UsingExamID;
+                var dlgRes = MessageBox.Show("Bạn có muốn xóa không?", "cap", MessageBoxButton.YesNo);
+                if(dlgRes == MessageBoxResult.Yes) { 
+                    if(ListSelectedUsingExam.Count() == 1) {
+                        DeleteUsingExam();
+                    } else {
+                        DeleteUsingExams();
+                    }
+                    ResetAll();
+                }
             });
 
             ApproveCommand = new RelayCommand((p) => {
-                EnableOnlyApproving();
-                EnableElements();
-
-                UsingExamID = SelectedUsingExam.UsingExamID;
+                var dlgRes = MessageBox.Show("Bạn có muốn duyệt không?", "cap", MessageBoxButton.YesNo);
+                if(dlgRes == MessageBoxResult.Yes) { 
+                    if(ListSelectedUsingExam.Count() == 1) {
+                        ApproveUsingExam();
+                    } else {
+                        ApproveUsingExams();
+                    }
+                    ResetAll();
+                }
             });
 
             RejectCommand = new RelayCommand((p) => {
-                EnableOnlyRejecting();
-                EnableElements();
-
-                UsingExamID = SelectedUsingExam.UsingExamID;
+                var dlgRes = MessageBox.Show("Bạn có muốn từ chối không?", "cap", MessageBoxButton.YesNo);
+                if(dlgRes == MessageBoxResult.Yes) { 
+                    if(ListSelectedUsingExam.Count() == 1) {
+                        RejectUsingExam();
+                    } else {
+                        RejectUsingExams();
+                    }
+                    ResetAll();
+                }
             });
 
             ConfirmCommand = new RelayCommand((p) => {
@@ -623,53 +650,7 @@ namespace QuanLyGiangDuong.ViewModel
                             ResetAll();
                         }
                     }
-                    else if(IsDeletingEnabled) {
-                        if(ListSelectedUsingExam.Count() == 1) {
-                            DeleteUsingExam();
-                        } else {
-                            DeleteUsingExams();
-                        }
-                        ResetAll();
-                    }
-                    else if(IsApprovingEnabled) {
-                        if(ListSelectedUsingExam.Count() == 1) {
-                            ApproveUsingExam();
-                        } else {
-                            ApproveUsingExams();
-                        }
-                        ResetAll();
-                    }
-                    else {
-                        if(ListSelectedUsingExam.Count() == 1) {
-                            RejectUsingExam();
-                        } else {
-                            RejectUsingExams();
-                        }
-                        ResetAll();
-                    }
                 }
-
-                //if (IsBeingInTask && IsEditingEnabled)
-                //{
-                //    if (IsValidInput() && IsNotDuplicatedForEditing())
-                //    {
-                //        EditRoom();
-                //        ResetAll();
-                //    }
-                //}
-                //if (IsBeingInTask && IsDeletingEnabled)
-                //{
-                //    if (ListSelectedRoom.Count() == 1)
-                //    {
-                //        DeleteRoom();
-                //        ResetAll();
-                //    }
-                //    else
-                //    {
-                //        DeleteRooms();
-                //        ResetAll();
-                //    }
-                //}
             });
 
             CancelCommand = new RelayCommand((p) => {
@@ -686,11 +667,27 @@ namespace QuanLyGiangDuong.ViewModel
                 var dataGrid = p as DataGrid;
                 GetDataGridSelectedItems(dataGrid);
 
-                if (SelectedUsingExam != null)
-                {
+                ResetElements();
+                DisableElements();
+                UsingExamID = "";
+
+                if (ListSelectedUsingExam.Count() == 1) {
                     SelectedExam = DataProvider.Ins.DB.EXAMs.Where(x => x.ExamID == SelectedUsingExam.ExamID).SingleOrDefault();
-                    SetValueForElements();
-                    IsEditingEnabled = IsDeletingEnabled = IsApprovingEnabled = IsRejectingEnabled = true;
+                    SetValueForElements(); // count=1 --> display data
+
+                    IsEditingEnabled = IsDeletingEnabled = true;
+                    if(LoginViewModel.currentUser.LecturerTypeID == 1) {
+                        IsApprovingEnabled = IsRejectingEnabled = true; // enable approve & reject for admin
+                    }
+                } 
+                else if(ListSelectedUsingExam.Count() > 1) {
+                    SelectedExam = DataProvider.Ins.DB.EXAMs.Where(x => x.ExamID == SelectedUsingExam.ExamID).SingleOrDefault();
+
+                    IsDeletingEnabled = true;
+                    if(LoginViewModel.currentUser.LecturerTypeID == 1) {
+                        IsApprovingEnabled = IsRejectingEnabled = true;
+                    }
+                    IsEditingEnabled = false;    // cannot edit when selecting many items
                 }
             });
         }

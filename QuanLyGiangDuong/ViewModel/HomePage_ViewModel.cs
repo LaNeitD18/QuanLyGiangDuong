@@ -13,7 +13,6 @@ namespace QuanLyGiangDuong.ViewModel
     {
         #region Variables
         private string _CurrentDateTime;
-
         public string CurrentDateTime
         {
             get { return _CurrentDateTime; }
@@ -24,17 +23,11 @@ namespace QuanLyGiangDuong.ViewModel
             }
         }
 
-        private string _TextBlock;
-
-        public string TextBlock
+        private int _EmptyRooms;
+        public int EmptyRooms
         {
-            get { return _TextBlock; }
-            set
-            {
-                if (_TextBlock == value)
-                    return;
-                _TextBlock = value; OnPropertyChanged();
-            }
+            get { return _EmptyRooms; }
+            set { _EmptyRooms = value; OnPropertyChanged(); }
         }
 
         public DispatcherTimer _timer;
@@ -65,6 +58,9 @@ namespace QuanLyGiangDuong.ViewModel
         public HomePage_ViewModel()
         {
             GetTimeNow();
+
+            // count empty rooms
+            EmptyRooms = DataProvider.Ins.DB.ROOMs.Where(x => x.Status_ == "Còn sử dụng").Count();
         }
     }
 }
