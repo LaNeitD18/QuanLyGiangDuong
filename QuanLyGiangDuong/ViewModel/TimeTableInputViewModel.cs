@@ -540,7 +540,7 @@ namespace QuanLyGiangDuong.ViewModel
             // if there was no error, print test, save DB and reset the form
             if (errors.Count == 0)
             {
-                PrintClassInfoTest();
+                // PrintClassInfoTest();
                 AddClassToPendingList();
                 Reset();
             }
@@ -572,7 +572,10 @@ namespace QuanLyGiangDuong.ViewModel
         {
             var dlgRes = MessageBox.Show("Bạn có chắc muốn huỷ lớp học này không?", "Huỷ", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
             if (dlgRes == MessageBoxResult.Yes)
+            { 
                 Reset();
+                LoadSelectedContentToForm();
+            }
         }
         private ICommand _cancelCmd = null;
         public ICommand CancelCmd
@@ -890,6 +893,19 @@ namespace QuanLyGiangDuong.ViewModel
             Description = usingClass.Description_;
         }
 
+        private void LoadSelectedContentToForm()
+        {
+            if (SelectedUsingClasses.Count == 1)
+            {
+                var selectedUE = SelectedUsingClasses[0];
+                LoadContentToForm(selectedUE);
+            }
+            else
+            {
+                ResetForm();
+            }
+        }
+
         private void GetDataGridSelectedItems(DataGrid datagrid)
         {
             SelectedUsingClasses.Clear();
@@ -914,15 +930,7 @@ namespace QuanLyGiangDuong.ViewModel
             // update form content when user is not in editting mode
             if (!IsEdittingFormMode)
             {
-                if (SelectedUsingClasses.Count == 1)
-                {
-                    var selectedUC = SelectedUsingClasses[0];
-                    LoadContentToForm(selectedUC);
-                }
-                else
-                {
-                    ResetForm();
-                }
+                LoadSelectedContentToForm();   
             }
         }
 

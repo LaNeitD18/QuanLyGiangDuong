@@ -499,7 +499,7 @@ namespace QuanLyGiangDuong.ViewModel
         private bool IsNotDuplicatedForAdding()
         {
             bool flag = true;
-            var classID = DataProvider.Ins.DB.CLASSes.Where(x => x.ClassID == SelectedClass.ClassID);
+            var classID = DataProvider.Ins.DB.EXAMs.Where(x => x.ClassID == SelectedClass.ClassID);
 
             if (classID.Count() != 0)
             {

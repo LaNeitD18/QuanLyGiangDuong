@@ -215,7 +215,7 @@
     <Compile Include="Model\ROOMIGNORE.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\RoomExt.cs" />
+    <Compile Include="Model\RoomModel.cs" />
     <Compile Include="Model\SUBJECT_.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
@@ -225,7 +225,6 @@
     <Compile Include="Model\USINGCLASS.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\UsingClassExt.cs" />
     <Compile Include="Model\UsingClassModel.cs" />
     <Compile Include="Model\USINGEVENT.cs">
       <DependentUpon>Model.tt</DependentUpon>

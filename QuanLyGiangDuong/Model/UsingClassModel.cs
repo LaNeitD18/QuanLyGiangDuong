@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using QuanLyGiangDuong.Utilities;
 using QuanLyGiangDuong.ViewModel;
 
 namespace QuanLyGiangDuong.Model
@@ -27,6 +28,19 @@ namespace QuanLyGiangDuong.Model
         //    ROOM = uSINGCLASS.ROOM;
         //    ROOMIGNOREs = uSINGCLASS.ROOMIGNOREs;
         //}
+
+        public int EndPeriod
+        {
+            get
+            {
+                return Utils.CalcEndPeriod(StartPeriod, Duration);
+            }
+
+            set
+            {
+                Duration = TimeSpan.FromMinutes(Utils.CalcDuration(StartPeriod, value));
+            }
+        }
 
         public string StatusString
         {

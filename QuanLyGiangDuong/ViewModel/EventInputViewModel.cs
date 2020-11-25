@@ -319,12 +319,10 @@ namespace QuanLyGiangDuong.ViewModel
         #region datagrid using events
         private ObservableCollection<USINGEVENT> LoadUsingEvents()
         {
-            ObservableCollection<USINGEVENT> result = new ObservableCollection<USINGEVENT>();
-            
-            foreach(var ue in DataProvider.Ins.DB.USINGEVENTs)
-            {
-                result.Add(ue);
-            }
+            ObservableCollection<USINGEVENT> result = new ObservableCollection<USINGEVENT>
+                (
+                    DataProvider.Ins.DB.USINGEVENTs.Where(x => x.Status_ != (int)Enums.UsingStatus.Deleted).ToList()
+                );
 
             return result;
         }
@@ -421,7 +419,10 @@ namespace QuanLyGiangDuong.ViewModel
         {
             var dlgRes = MessageBox.Show("Bạn có chắc muốn huỷ đăng ký sự kiện này không?", "Huỷ", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
             if(dlgRes == MessageBoxResult.Yes)
+            { 
                 Reset();
+                LoadSelectedContentToForm();
+            }
         }
         private ICommand _cancelCmd = null;
         public ICommand CancelCmd
@@ -726,6 +727,19 @@ namespace QuanLyGiangDuong.ViewModel
             EnableEditingForm();
         }
 
+        private void LoadSelectedContentToForm()
+        {
+            if (SelectedUsingEvents.Count == 1)
+            {
+                var selectedUE = SelectedUsingEvents[0];
+                LoadContentToForm(selectedUE);
+            }
+            else
+            {
+                ResetForm();
+            }
+        }
+
         /// <summary>
         /// Get selected item info from datagrid for previewing.
         /// </summary>
@@ -769,15 +783,7 @@ namespace QuanLyGiangDuong.ViewModel
             // update form content when user is not in editting mode
             if(!IsEdittingFormMode)
             { 
-                if(SelectedUsingEvents.Count == 1)
-                {
-                    var selectedUE = SelectedUsingEvents[0];
-                    LoadContentToForm(selectedUE);
-                }
-                else
-                {
-                    ResetForm();
-                }
+                LoadSelectedContentToForm();
             }
         }
 
