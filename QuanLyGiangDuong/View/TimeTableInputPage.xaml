@@ -245,7 +245,7 @@
                             IsReadOnly="True"
                             Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
                             Foreground="{StaticResource SecondaryAccentBrush}" 
-                            Text="{Binding LecturerId, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                            Text="{Binding SelectedClass.LECTURER.LecturerName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                     </Grid>
 
                     <Grid Grid.Row="1" Grid.Column="1">

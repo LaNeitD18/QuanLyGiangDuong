@@ -1026,7 +1026,7 @@ namespace QuanLyGiangDuong.ViewModel
             outputClass.SubjectID = dict["MÃ MÔN HỌC"];
 
             string trainingProgramName = dict["HỆ ĐÀO TẠO"];
-            outputClass.TRAINING_PROGRAM = DataProvider.Ins.DB.TRAINING_PROGRAM.Where(x => x.TrainingProgramName == trainingProgramName).First();
+            outputClass.TrainingProgramID = DataProvider.Ins.DB.TRAINING_PROGRAM.Where(x => x.TrainingProgramName == trainingProgramName).First().TrainingProgramID;
 
             outputClass.Year_ = Utils.GetElementByName(ListSchoolYear, dict["NĂM HỌC"]).Id;
             outputClass.Semester = Utils.GetElementByName(ListSemester, dict["HỌC KỲ"]).Id;
@@ -1069,11 +1069,21 @@ namespace QuanLyGiangDuong.ViewModel
 
             CLASS parsedClass, tempClass;
             USINGCLASS parsedUsingClass;
+            List<int> errorLines = new List<int>();
 
             for(int i = 1; i < importedData.Count; i++)
             {
-                ParseExcelRowFromTemplate(importedData[0], importedData[i], out parsedClass, out parsedUsingClass);
-                
+
+                try
+                { 
+                    ParseExcelRowFromTemplate(importedData[0], importedData[i], out parsedClass, out parsedUsingClass);
+                }
+                catch
+                {
+                    errorLines.Add(i);
+                    continue;
+                }
+
                 tempClass = null;
 
                 // trying searching for the same class first...
@@ -1087,26 +1097,42 @@ namespace QuanLyGiangDuong.ViewModel
                             &&(x.TrainingProgramID == parsedClass.TrainingProgramID)
                         ).First();
                 }
-                catch { }
+                catch(Exception e)
+                {
+                    System.Windows.MessageBox.Show(e.Message);
+                }
 
                 if (tempClass != null)
                 {
                     parsedClass.ClassID = tempClass.ClassID;
-                    
+
+                    tempClass.SubjectID = parsedClass.SubjectID;
+                    tempClass.LecturerID = parsedClass.LecturerID;
+                    tempClass.StartDate = parsedClass.StartDate;
+                    tempClass.EndDate = parsedClass.EndDate;
+                    tempClass.Population_ = parsedClass.Population_;
                 }
                 else
                 {
                     parsedClass.ClassID = Utils.GenerateStringId(DataProvider.Ins.DB.CLASSes);
+                    DataProvider.Ins.DB.CLASSes.AddOrUpdate(parsedClass); // using System.Data.Entity.Migrations
                 }
-                DataProvider.Ins.DB.CLASSes.AddOrUpdate(parsedClass); // using System.Data.Entity.Migrations
+
 
                 parsedUsingClass.UsingClassID = Utils.GenerateStringId(DataProvider.Ins.DB.USINGCLASSes);
-                parsedUsingClass.CLASS = parsedClass;
+                parsedUsingClass.ClassID = parsedClass.ClassID;
                 DataProvider.Ins.DB.USINGCLASSes.Add(parsedUsingClass);
 
                 DataProvider.Ins.DB.SaveChanges();
                 Reset();
             }
+
+            if(errorLines.Count == 0) { }
+            else
+                System.Windows.MessageBox.Show(
+                    "Đã xảy ra lỗi ở các dòng sau: " +
+                    errorLines.Select(x => x.ToString()).Aggregate((x, y) => x + "; " + y)
+                    );
         }
 
         #endregion
