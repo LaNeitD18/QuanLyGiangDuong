@@ -395,6 +395,83 @@ namespace QuanLyGiangDuong.Utilities
             return null;
         }
 
+
+        static public USINGEXAM AutoMakeExam(USINGEXAM usingExam, EXAM exam, DateTime startdate, DateTime endDate)
+        {
+            DateTime selectedDate = startdate;
+            List<ROOM> listRoomFiltered = (from r in DataProvider.Ins.DB.ROOMs
+                                           where r.Capacity >= exam.Population_
+                                           orderby r.Capacity ascending
+                                           select r).ToList();
+            
+            while(selectedDate <= endDate)
+            {
+                if(selectedDate.DayOfWeek != DayOfWeek.Sunday)
+                {
+                    foreach (ROOM room in listRoomFiltered)
+                    {
+                        usingExam.Date_ = selectedDate;
+                        usingExam.StartPeriod = 1;
+                        usingExam.RoomID = room.RoomID;
+
+                        while (CalcEndPeriod(usingExam.StartPeriod, usingExam.Duration) != -1)
+                        {
+                            var listOverlapExam = CheckOverlapExam(usingExam);
+                            var listOverlapEvent = CheckOverlapEvent(usingExam);
+
+                            int maxOverlapEndPeriod = 0;
+
+                            if (listOverlapEvent == null && listOverlapExam == null)
+                            {
+                                return usingExam;
+                            }
+
+                            if (listOverlapExam != null)
+                            {
+                                foreach (var overlapExam in listOverlapExam)
+                                {
+                                    int overlapEndPeriod = CalcEndPeriod(overlapExam.StartPeriod, overlapExam.Duration);
+
+                                    if (maxOverlapEndPeriod < overlapEndPeriod)
+                                    {
+                                        maxOverlapEndPeriod = overlapEndPeriod;
+                                    }
+                                }
+                            }
+
+                            if (listOverlapEvent != null)
+                            {
+                                foreach (var overlapEvent in listOverlapEvent)
+                                {
+                                    int overlapEndPeriod = CalcEndPeriod(overlapEvent.StartPeriod, overlapEvent.Duration);
+
+                                    if (maxOverlapEndPeriod < overlapEndPeriod)
+                                    {
+                                        maxOverlapEndPeriod = overlapEndPeriod;
+                                    }
+                                }
+                            }
+
+                            int newStartPeriod = maxOverlapEndPeriod + 1;
+                            int newEndperiod = CalcEndPeriod(newStartPeriod, usingExam.Duration);
+
+                            if (newStartPeriod <= 5 && newEndperiod > 5)
+                            {
+                                newStartPeriod = 6;
+                            }
+
+                            usingExam.StartPeriod = newStartPeriod;
+
+                        }
+                    }
+                }
+
+                selectedDate = selectedDate.AddDays(1);
+            }
+
+            return null;
+        }
+
         /// <summary>
         /// return the first usingclass that overlap with using class parameter
         /// </summary>
@@ -510,6 +587,62 @@ namespace QuanLyGiangDuong.Utilities
             }
 
             return listOverlappedEvent;
+        }
+
+        static public List<USINGEXAM> CheckOverlapExam(USINGEXAM usingExam)
+        {
+            var listExamMayOverlap = (from ue in DataProvider.Ins.DB.USINGEXAMs
+                                      where ue.RoomID == usingExam.RoomID &&
+                                            ue.Date_ == usingExam.Date_
+                                      select ue).ToList();
+
+            List<USINGEXAM> listExamOverlap = listExamMayOverlap.FindAll(x =>
+            {
+                var ueStartTime = DataProvider.Ins.DB.PERIOD_TIMERANGE.Find(usingExam.StartPeriod).StartTime;
+                var overlapStartTime = DataProvider.Ins.DB.PERIOD_TIMERANGE.Find(x.StartPeriod).StartTime;
+
+                if(ueStartTime + usingExam.Duration <= overlapStartTime ||
+                   ueStartTime >= overlapStartTime + x.Duration)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            });
+
+            if (listExamOverlap.Count == 0) return null;
+
+            return listExamOverlap;
+        }
+
+        static public List<USINGEVENT> CheckOverlapEvent(USINGEXAM usingExam)
+        {
+            var listEventMayOverlap = (from ue in DataProvider.Ins.DB.USINGEVENTs
+                                      where ue.RoomID == usingExam.RoomID &&
+                                            ue.Date_ == usingExam.Date_
+                                      select ue).ToList();
+
+            List<USINGEVENT> listExamOverlap = listEventMayOverlap.FindAll(x =>
+            {
+                var ueStartTime = DataProvider.Ins.DB.PERIOD_TIMERANGE.Find(usingExam.StartPeriod).StartTime;
+                var overlapStartTime = DataProvider.Ins.DB.PERIOD_TIMERANGE.Find(x.StartPeriod).StartTime;
+
+                if(ueStartTime + usingExam.Duration <= overlapStartTime ||
+                   ueStartTime >= overlapStartTime + x.Duration)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            });
+
+            if (listExamOverlap.Count == 0) return null;
+
+            return listExamOverlap;
         }
 
         /// <summary>

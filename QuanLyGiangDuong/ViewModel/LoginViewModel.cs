@@ -29,6 +29,8 @@ namespace QuanLyGiangDuong.ViewModel
             UserName = "";
             Password = "";
 
+            #region Demo Auto schedule using class
+            /*
             CLASS newClass = new CLASS();
             newClass.ClassID = "abc";
             newClass.StartDate = new DateTime(2020, 11, 2);
@@ -49,6 +51,23 @@ namespace QuanLyGiangDuong.ViewModel
             ChoosenRoom = DataProvider.Ins.DB.ROOMs.Find("B6.06");
 
             var result = Utilities.Utils.AutoMakeSchedule(newUsingClass, newClass, ChoosenRoom, null, 2);
+            */
+            #endregion
+
+            #region Demo Auto schedule using exam
+
+            EXAM newExam = new EXAM();
+            newExam.Population_ = 120;
+
+            USINGEXAM newUsingExam = new USINGEXAM();
+            newUsingExam.Duration = new TimeSpan(1, 30, 0);
+
+            DateTime startDate = new DateTime(2020, 11, 23);
+            DateTime endDate = new DateTime(2020, 11, 29);
+
+            var result = Utilities.Utils.AutoMakeExam(newUsingExam, newExam, startDate, endDate);
+
+            #endregion
 
             LoginCommand = new RelayCommand((p) =>
             {
