@@ -48,7 +48,7 @@ namespace QuanLyGiangDuong.ViewModel
             ROOM ChoosenRoom = null;
             ChoosenRoom = DataProvider.Ins.DB.ROOMs.Find("B6.06");
 
-            var result = Utilities.Utils.AutoMakeSchedule(newUsingClass, newClass, ChoosenRoom, null);
+            var result = Utilities.Utils.AutoMakeSchedule(newUsingClass, newClass, ChoosenRoom, null, 2);
 
             LoginCommand = new RelayCommand((p) =>
             {

@@ -145,7 +145,7 @@ namespace QuanLyGiangDuong.Utilities
         ///     If success, return list of new UsingClass that auto scheduled
         ///     Otherwise, return null
         /// </returns>
-        static public List<USINGCLASS> AutoMakeSchedule(USINGCLASS usingClass, CLASS class_, ROOM selectedRoom, DayOfWeek? selectedDayOfWeek)
+        static public List<USINGCLASS> AutoMakeSchedule(USINGCLASS usingClass, CLASS class_, ROOM selectedRoom, DayOfWeek? selectedDayOfWeek, Nullable<int> selectedStartPeriod)
         {
             List<int> listDayOfWeekToChoose = new List<int>();
 
@@ -165,7 +165,15 @@ namespace QuanLyGiangDuong.Utilities
             foreach(int dayOfWeek in listDayOfWeekToChoose)
             {
                 usingClass.Day_ = dayOfWeek;
-                var result = AutoMakeSchedule(usingClass, class_, selectedRoom);
+                List<USINGCLASS> result;
+                if(selectedStartPeriod == null)
+                {
+                    result = AutoMakeSchedule(usingClass, class_, selectedRoom);
+                }
+                else
+                {
+                    result = AutoMakeSchedule(usingClass, class_, selectedRoom, (int)selectedStartPeriod);
+                }
 
                 if(result != null)
                 {
@@ -316,6 +324,75 @@ namespace QuanLyGiangDuong.Utilities
             usingClass.StartPeriod = beginningStartPeriod;
 
             return result;
+        }
+
+        static public List<USINGCLASS> AutoMakeSchedule(USINGCLASS usingClass, CLASS class_, ROOM selectedRoom, int selectedStartPeriod)
+        {
+            List<USINGCLASS> result = null;
+
+            var beginningRoomID = usingClass.RoomID;
+            var beginningStartPeriod = usingClass.StartPeriod;
+
+            List<ROOM> listRoomFiltered;
+
+            if (selectedRoom == null)
+            {
+                listRoomFiltered = (from room in DataProvider.Ins.DB.ROOMs
+                                        where room.Capacity >= class_.Population_
+                                        select room).ToList();
+            }
+            else if(selectedRoom.Capacity >= class_.Population_)
+            {
+
+                listRoomFiltered = new List<ROOM>();
+                listRoomFiltered.Add(selectedRoom);
+            }
+            else
+            {
+                listRoomFiltered = new List<ROOM>();
+            }
+
+            var targetDate = ((DateTime)usingClass.StartDate).AddDays(usingClass.Day_ - 1);
+
+            TimeTableViewModel timeTableViewModel = new TimeTableViewModel();
+
+            timeTableViewModel.selectedDay = targetDate.Day;
+            timeTableViewModel.selectedMonth.monthValue = targetDate.Month;
+            timeTableViewModel.selectedYear = targetDate.Year;
+
+            timeTableViewModel.GetTimeTable();
+
+            var listUsingClass = timeTableViewModel.tb; // get all using class for that day
+
+            // only get using on the room that satisfy the capacity
+            var listUsingClassFiltered = listUsingClass.Where(x => { return DataProvider.Ins.DB.ROOMs.Find(x.roomID).Capacity >= class_.Population_; }).ToList();
+            var ListUsedRoom = (from usg in listUsingClassFiltered
+                                select usg.roomID).ToList();
+
+            List<ROOM> listUnusedRoom = listRoomFiltered.Where(x => {return !ListUsedRoom.Contains(x.RoomID); }).ToList();
+
+            foreach (var room in listRoomFiltered)
+            {
+                usingClass.RoomID = room.RoomID;
+                usingClass.StartPeriod = selectedStartPeriod;
+
+                USINGCLASS overlappedUsingClass = CheckOverlapUsingClass(usingClass, class_);
+                USINGCLASS overlappedLecturerUsingClass = CheckOverlapLecturerTimeUsingClass(usingClass, class_);
+                List<USINGEVENT> listOverlappedEvent = new List<USINGEVENT>();
+
+                if (overlappedUsingClass == null && overlappedLecturerUsingClass == null)
+                {
+                    // we found an empty room and time, finish here
+                    result = HandleOverlapEvent(usingClass, class_, out listOverlappedEvent);
+
+                    if (result != null)
+                    {
+                        return result;
+                    }
+                }
+            }
+
+            return null;
         }
 
         /// <summary>
