@@ -136,24 +136,83 @@ namespace QuanLyGiangDuong.Utilities
         /// <summary>
         /// Auto choose the Room and Start period for the usingclass
         /// 
-        /// If successs, the Room and Start period inside the usingClass parameter will be modified 
-        /// follow the result. Otherwise, every parameter stay unchanged.
+        /// </summary>
+        /// <param name="usingClass"></param>
+        /// <param name="class_"></param>
+        /// <param name="selectedRoom">If selected room is null, function auto choose the room for you</param>
+        /// <param name="selectedDayOfWeek">If selected day is null, function auto choose the day of week</param>
+        /// <returns> 
+        ///     If success, return list of new UsingClass that auto scheduled
+        ///     Otherwise, return null
+        /// </returns>
+        static public List<USINGCLASS> AutoMakeSchedule(USINGCLASS usingClass, CLASS class_, ROOM selectedRoom, DayOfWeek? selectedDayOfWeek)
+        {
+            List<int> listDayOfWeekToChoose = new List<int>();
+
+            if(selectedDayOfWeek == null)
+            {
+                for (int i = 1; i <= 6; i++)
+                {
+                    listDayOfWeekToChoose.Add(i);
+                }
+            }
+            else
+            {
+                listDayOfWeekToChoose.Add((int)selectedDayOfWeek);
+            }
+            
+
+            foreach(int dayOfWeek in listDayOfWeekToChoose)
+            {
+                usingClass.Day_ = dayOfWeek;
+                var result = AutoMakeSchedule(usingClass, class_, selectedRoom);
+
+                if(result != null)
+                {
+                    return result;
+                }
+            }
+
+
+            return null;
+        }
+
+        /// <summary>
+        /// Auto choose the Room and Start period for the usingclass
         /// 
         /// </summary>
         /// <param name="usingClass"></param>
         /// <param name="class_"></param>
+        /// <param name="selectedRoom">If selected room is null, function auto choose the room for you</param>
         /// <returns> 
-        ///     return 0 if successs find the room and start period
-        ///     otherwise, return -1;
+        ///     If success, return list of new UsingClass that auto scheduled
+        ///     Otherwise, return null
         /// </returns>
-        static public int AutoMakeSchedule(USINGCLASS usingClass, CLASS class_)
+        static public List<USINGCLASS> AutoMakeSchedule(USINGCLASS usingClass, CLASS class_, ROOM selectedRoom)
         {
+            List<USINGCLASS> result = null;
+
             var beginningRoomID = usingClass.RoomID;
             var beginningStartPeriod = usingClass.StartPeriod;
 
-            var listRoomFiltered = (from room in DataProvider.Ins.DB.ROOMs
-                            where room.Capacity >= class_.Population_
-                            select room).ToList();
+            List<ROOM> listRoomFiltered;
+
+            if (selectedRoom == null)
+            {
+                listRoomFiltered = (from room in DataProvider.Ins.DB.ROOMs
+                                        where room.Capacity >= class_.Population_
+                                        select room).ToList();
+            }
+            else if(selectedRoom.Capacity >= class_.Population_)
+            {
+
+                listRoomFiltered = new List<ROOM>();
+                listRoomFiltered.Add(selectedRoom);
+            }
+            else
+            {
+                listRoomFiltered = new List<ROOM>();
+            }
 
             var targetDate = ((DateTime)usingClass.StartDate).AddDays(usingClass.Day_ - 1);
 
@@ -177,41 +236,42 @@ namespace QuanLyGiangDuong.Utilities
             foreach(var room in listRoomFiltered)
             {
                 usingClass.RoomID = room.RoomID;
-                usingClass.StartPeriod = 1; // if we found a room that not used, just start at Tiet 1
+                usingClass.StartPeriod = 1;
 
                 USINGCLASS overlappedUsingClass = CheckOverlapUsingClass(usingClass, class_);
                 USINGCLASS overlappedLecturerUsingClass = CheckOverlapLecturerTimeUsingClass(usingClass, class_);
+                List<USINGEVENT> listOverlappedEvent = new List<USINGEVENT>();
 
                 if (overlappedUsingClass == null && overlappedLecturerUsingClass == null)
                 {
                     // we found an empty room and time, finish here
-                    return 0;
+                    result = HandleOverlapEvent(usingClass, class_,out listOverlappedEvent);
+
+                    if (result != null)
+                    {
+                        return result;
+                    }
                 }
-                else
+
+                if(result == null)
                 {
-                    int newStartPeriod = CalcEndPeriod(overlappedUsingClass.StartPeriod, overlappedUsingClass.Duration) + 1;
-                    int endPeriod = CalcEndPeriod(newStartPeriod, usingClass.Duration);
+                    int newStartPeriod = 0;
+                    int endPeriod = 0;
 
                     // loop through period to find the next fit in room on target date
                     while (endPeriod != -1)
                     {
-                        if (newStartPeriod <= 5 && endPeriod > 5)
+                        if(overlappedUsingClass == null && overlappedLecturerUsingClass == null)
+                        // if both are null, then the problem is with the event
                         {
-                            newStartPeriod = 6;
-                            endPeriod = CalcEndPeriod(newStartPeriod, usingClass.Duration);
+                            listOverlappedEvent.Sort((x, y) =>
+                            {
+                                return Convert.ToInt32(CalcEndPeriod(x.StartPeriod, x.Duration) < CalcEndPeriod(y.StartPeriod, y.Duration));
+                            });
+
+                            newStartPeriod = CalcEndPeriod(listOverlappedEvent[0].StartPeriod, listOverlappedEvent[0].Duration) + 1;
                         }
-
-                        usingClass.StartPeriod = newStartPeriod;
-
-                        overlappedUsingClass = CheckOverlapUsingClass(usingClass, class_);
-                        overlappedLecturerUsingClass = CheckOverlapLecturerTimeUsingClass(usingClass, class_);
-
-                        if (overlappedUsingClass == null && overlappedLecturerUsingClass == null)
-                        {
-                            return 0;
-                        }
-
-                        if(overlappedUsingClass == null)
+                        else if (overlappedUsingClass == null)
                         {
                             newStartPeriod = CalcEndPeriod(overlappedLecturerUsingClass.StartPeriod, overlappedLecturerUsingClass.Duration) + 1;
                         }
@@ -225,6 +285,29 @@ namespace QuanLyGiangDuong.Utilities
                         }
 
                         endPeriod = CalcEndPeriod(newStartPeriod, usingClass.Duration);
+
+                        if (endPeriod == -1) break;
+
+                        if (newStartPeriod <= 5 && endPeriod > 5)
+                        {
+                            newStartPeriod = 6;
+                            endPeriod = CalcEndPeriod(newStartPeriod, usingClass.Duration);
+                        }
+
+                        usingClass.StartPeriod = newStartPeriod;
+
+                        overlappedUsingClass = CheckOverlapUsingClass(usingClass, class_);
+                        overlappedLecturerUsingClass = CheckOverlapLecturerTimeUsingClass(usingClass, class_);
+
+                        if (overlappedUsingClass == null && overlappedLecturerUsingClass == null)
+                        {
+                            result = HandleOverlapEvent(usingClass, class_,out listOverlappedEvent);
+
+                            if (result != null)
+                            {
+                                return result;
+                            }
+                        }
                     }
                 }
             }
@@ -232,7 +315,7 @@ namespace QuanLyGiangDuong.Utilities
             usingClass.RoomID = beginningRoomID;
             usingClass.StartPeriod = beginningStartPeriod;
 
-            return -1;
+            return result;
         }
 
         /// <summary>
@@ -352,18 +435,26 @@ namespace QuanLyGiangDuong.Utilities
             return listOverlappedEvent;
         }
 
-        static public bool HandleOverlapEvent(USINGCLASS usingClass, CLASS class_)
+        /// <summary>
+        /// This function split 1 using class into multiple using class
+        /// so that it cannot overlap with event
+        /// </summary>
+        /// <param name="usingClass"></param>
+        /// <param name="class_"></param>
+        /// <returns></returns>
+        static public List<USINGCLASS> HandleOverlapEvent(USINGCLASS usingClass, CLASS class_,out List<USINGEVENT> listOverlappedEvent)
         {
             List<USINGCLASS> listSplitedUsingClass = new List<USINGCLASS>();
 
             listSplitedUsingClass.Add(usingClass);
 
-            var listOverlappedEvent = CheckOverLapEvent(usingClass, class_);
+            listOverlappedEvent = CheckOverLapEvent(usingClass, class_);
+
 
             if(listOverlappedEvent.Count > 3)
             {
                 // NOT HANDLED YET
-                return false;
+                return null;
             }
             else
             {
@@ -373,7 +464,7 @@ namespace QuanLyGiangDuong.Utilities
 
                 listRoomFiltered.Reverse();
 
-                listOverlappedEvent.OrderBy(x => x.Date_);
+                listOverlappedEvent.Sort((x, y) => { return Convert.ToInt32(x.Date_ > y.Date_); });
 
                 foreach(var overlapEvent in listOverlappedEvent)
                 {
@@ -387,12 +478,40 @@ namespace QuanLyGiangDuong.Utilities
                     firstHalf.EndDate = overlapEvent.Date_.AddDays(-(int)overlapEvent.Date_.DayOfWeek);
                     secondHalf.StartDate = overlapEvent.Date_.AddDays(7 - ((int)overlapEvent.Date_.DayOfWeek - 1));
 
-                    listSplitedUsingClass.Add(firstHalf);
-                    listSplitedUsingClass.Add(secondHalf);
+                    USINGCLASS middle = new USINGCLASS(targetUsingClass);
+                    middle.StartDate = ((DateTime)firstHalf.EndDate).AddDays(1);
+                    middle.EndDate = ((DateTime)secondHalf.StartDate).AddDays(-1);
+
+                    bool middleFound = false;
+
+                    foreach(var room in listRoomFiltered)
+                    {
+                        middle.RoomID = room.RoomID;
+
+                        var overlapUsingClass = CheckOverlapUsingClass(middle, class_);
+
+                        var listOverlapEvent = CheckOverLapEvent(middle, class_);
+
+                        if (overlapUsingClass == null && listOverlapEvent.Count == 0)
+                        {
+                            listSplitedUsingClass.Add(firstHalf);
+                            listSplitedUsingClass.Add(middle);
+                            listSplitedUsingClass.Add(secondHalf);
+
+                            middleFound = true;
+
+                            break;
+                        }
+                    }
+
+                    if(middleFound == false)
+                    {
+                        return null;
+                    }
                 }
             }
 
-            return false;
+            return listSplitedUsingClass;
         }
 
         #endregion
