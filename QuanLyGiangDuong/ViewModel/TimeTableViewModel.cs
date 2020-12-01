@@ -24,8 +24,8 @@ namespace QuanLyGiangDuong.ViewModel
 
         /// <summary>
         /// Tuple:
-        ///     first parameter: UsingClass ID
-        ///     second parameter: UsingClass Name
+        ///     first parameter: Using ID
+        ///     second parameter: Using Display string
         /// </summary>
         private List<Tuple<string, string>> _tiet;
         
@@ -47,13 +47,13 @@ namespace QuanLyGiangDuong.ViewModel
             set { _tiet = value; }
         }
 
-        public void Add(string UsingClassID, string ClassName, int StartPeriod, TimeSpan Duration)
+        public void Add(string UsingID, string UsingName, int StartPeriod, TimeSpan Duration)
         {
             var x = Utilities.Utils.GetListPeriodTimeRange(StartPeriod, Duration);
 
             for(int i=0; i<x.Count; i++)
             {
-                tiet[x[i].PeriodID] = new Tuple<string, string>(UsingClassID, ClassName);
+                tiet[x[i].PeriodID - 1] = new Tuple<string, string>(UsingID, UsingName);
             }
         }
     }
@@ -281,6 +281,96 @@ namespace QuanLyGiangDuong.ViewModel
             return null;
         }
 
+        void GetUsingClass()
+        {
+            DateTime targetDate = new DateTime(selectedYear, selectedMonth.monthValue, selectedDay);
+
+            // Select all needed info from USINGCLASS that fit selected Date
+            var data = (from u in DataProvider.Ins.DB.USINGCLASSes
+                        join c in DataProvider.Ins.DB.CLASSes on u.ClassID equals c.ClassID
+                        where targetDate >= u.StartDate && targetDate <= u.EndDate &&
+                              (int)targetDate.DayOfWeek == u.Day_ && // satisfied the day of week
+                              (DbFunctions.DiffDays(targetDate, c.StartDate) / 7) % u.RepeatCycle == 0 // satisfied the repeat cycle
+                        select new { u.UsingClassID, u.RoomID, c.ClassName, u.StartPeriod, u.Duration }).ToList();
+
+            data.Sort((a, b) => { return string.Compare(a.RoomID, b.RoomID); });
+
+            foreach (var item in data)
+            {
+                if (IsExistRoom(item.RoomID))
+                {
+                    var room = GetRoom(item.RoomID);
+                    room.Add(item.UsingClassID, item.ClassName, item.StartPeriod, item.Duration);
+                }
+                else
+                {
+                    var room = new table();
+                    room.Add(item.UsingClassID, item.ClassName, item.StartPeriod, item.Duration);
+                    room.roomID = item.RoomID;
+                    tb.Add(room);
+                }
+            }
+        }
+
+        void GetUsingEvent()
+        {
+            DateTime targetDate = new DateTime(selectedYear, selectedMonth.monthValue, selectedDay);
+
+            // Select all needed info from USINGCLASS that fit selected Date
+            var data = (from u in DataProvider.Ins.DB.USINGEVENTs
+                        join e in DataProvider.Ins.DB.EVENT_ on u.EventID equals e.EventID
+                        where u.Date_ == targetDate
+                        select new { u.UsingEventID, u.RoomID, e.EventName, u.StartPeriod, u.Duration }).ToList();
+
+            data.Sort((a, b) => { return string.Compare(a.RoomID, b.RoomID); });
+
+            foreach (var item in data)
+            {
+                if (IsExistRoom(item.RoomID))
+                {
+                    var room = GetRoom(item.RoomID);
+                    room.Add(item.UsingEventID, item.EventName, item.StartPeriod, item.Duration);
+                }
+                else
+                {
+                    var room = new table();
+                    room.Add(item.UsingEventID, item.EventName, item.StartPeriod, item.Duration);
+                    room.roomID = item.RoomID;
+                    tb.Add(room);
+                }
+            }
+        }
+
+        void GetUsingExam()
+        {
+            DateTime targetDate = new DateTime(selectedYear, selectedMonth.monthValue, selectedDay);
+
+            // Select all needed info from USINGCLASS that fit selected Date
+            var data = (from u in DataProvider.Ins.DB.USINGEXAMs
+                        join e in DataProvider.Ins.DB.EXAMs on u.ExamID equals e.ExamID
+                        join c in DataProvider.Ins.DB.CLASSes on e.ClassID equals c.ClassID
+                        where u.Date_ == targetDate
+                        select new { u.UsingExamID, u.RoomID, c.ClassName, u.StartPeriod, u.Duration }).ToList();
+
+            data.Sort((a, b) => { return string.Compare(a.RoomID, b.RoomID); });
+
+            foreach (var item in data)
+            {
+                if (IsExistRoom(item.RoomID))
+                {
+                    var room = GetRoom(item.RoomID);
+                    room.Add(item.UsingExamID, "Thi: " + item.ClassName, item.StartPeriod, item.Duration);
+                }
+                else
+                {
+                    var room = new table();
+                    room.Add(item.UsingExamID, "Thi: " + item.ClassName, item.StartPeriod, item.Duration);
+                    room.roomID = item.RoomID;
+                    tb.Add(room);
+                }
+            }
+        }
+
         public void GetTimeTable()
         {
             DateTime targetDate;
@@ -297,31 +387,9 @@ namespace QuanLyGiangDuong.ViewModel
 
             tb.Clear();
 
-            // Select all needed info from USINGCLASS that fit selected Date
-            var data = (from u in DataProvider.Ins.DB.USINGCLASSes
-                        join c in DataProvider.Ins.DB.CLASSes on u.ClassID equals c.ClassID
-                        where targetDate >= c.StartDate && targetDate <= c.EndDate &&
-                              (int)targetDate.DayOfWeek == u.Day_ && // satisfied the day of week
-                              (DbFunctions.DiffDays(targetDate, c.StartDate) / 7) % u.RepeatCycle == 0 // satisfied the repeat cycle
-                        select new { u.UsingClassID, u.RoomID, c.ClassName, u.StartPeriod, u.Duration }).ToList();
-
-            data.Sort((a, b) => { return string.Compare(a.RoomID, b.RoomID); });
-
-            foreach(var item in data)
-            {
-                if(IsExistRoom(item.RoomID))
-                {
-                    var room = GetRoom(item.RoomID);
-                    room.Add(item.UsingClassID, item.ClassName, item.StartPeriod, item.Duration);
-                }
-                else
-                {
-                    var room = new table();
-                    room.Add(item.UsingClassID, item.ClassName, item.StartPeriod, item.Duration);
-                    room.roomID = item.RoomID;
-                    tb.Add(room);
-                }
-            }
+            GetUsingClass();
+            GetUsingEvent();
+            GetUsingExam();
         }
     }
 }
