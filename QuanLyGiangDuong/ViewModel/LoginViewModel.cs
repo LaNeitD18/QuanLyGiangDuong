@@ -56,16 +56,16 @@ namespace QuanLyGiangDuong.ViewModel
 
             #region Demo Auto schedule using exam
 
-            EXAM newExam = new EXAM();
-            newExam.Population_ = 120;
+            //EXAM newExam = new EXAM();
+            //newExam.Population_ = 120;
 
-            USINGEXAM newUsingExam = new USINGEXAM();
-            newUsingExam.Duration = new TimeSpan(1, 30, 0);
+            //USINGEXAM newUsingExam = new USINGEXAM();
+            //newUsingExam.Duration = new TimeSpan(1, 30, 0);
 
-            DateTime startDate = new DateTime(2020, 11, 23);
-            DateTime endDate = new DateTime(2020, 11, 29);
+            //DateTime startDate = new DateTime(2020, 11, 23);
+            //DateTime endDate = new DateTime(2020, 11, 29);
 
-            var result = Utilities.Utils.AutoMakeExam(newUsingExam, newExam, startDate, endDate);
+            //var result = Utilities.Utils.AutoMakeExam(newUsingExam, newExam, startDate, endDate);
 
             #endregion
 
