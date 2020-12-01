@@ -103,7 +103,7 @@
             Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="1" Grid.RowSpan="17"
             Background="{DynamicResource Bunting}" Panel.ZIndex="2" LastChildFill="True"
             Margin="0">
-            <WrapPanel DockPanel.Dock="Top" Margin="10,30,0,10">
+            <WrapPanel DockPanel.Dock="Top" Margin="10,30,0,10" IsEnabled="{Binding IsHomeEnabled}" Visibility="{Binding IsHomeVisible}">
                 <Button Command="{Binding Home_Page_SelectedCommand}" Background="{DynamicResource Bunting}" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0" Margin="0">
 
                     <md:PackIcon Kind="Home" Foreground="White" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="30" Height="30" />
@@ -116,7 +116,7 @@
                     <Label  Content="   Trang chính" VerticalAlignment="Center" Foreground="White" FontSize="14" FontWeight="Bold" />
                 </Canvas>
             </WrapPanel>
-            <WrapPanel DockPanel.Dock="Top" Margin="10,20,0,10">
+            <WrapPanel DockPanel.Dock="Top" Margin="10,20,0,10" IsEnabled="{Binding IsTimetableEnabled}" Visibility="{Binding IsTimetableVisible}">
                 <Button Command="{Binding TimeTable_Page_SelectedCommand}" Background="{DynamicResource Bunting}" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0" Margin="0">
 
                     <md:PackIcon Kind="Timetable" Foreground="White" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="30" Height="30" />
@@ -129,7 +129,7 @@
                     <Label  Content="   Lịch dạng TKB" VerticalAlignment="Center" Foreground="White" FontSize="14" FontWeight="Bold" />
                 </Canvas>
             </WrapPanel>
-            <WrapPanel DockPanel.Dock="Top" Margin="10,20,0,10">
+            <WrapPanel DockPanel.Dock="Top" Margin="10,20,0,10" IsEnabled="{Binding IsRoomEnabled}" Visibility="{Binding IsRoomVisible}">
                 <Button Command="{Binding Room_Page_SelectedCommand}" Background="{DynamicResource Bunting}" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0" Margin="0">
 
                     <md:PackIcon Kind="Timetable" Foreground="White" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="30" Height="30" />
@@ -142,7 +142,7 @@
                     <Label  Content="   Lịch dạng phòng" VerticalAlignment="Center" Foreground="White" FontSize="14" FontWeight="Bold" />
                 </Canvas>
             </WrapPanel>
-            <WrapPanel DockPanel.Dock="Top" Margin="10,20,0,10">
+            <WrapPanel DockPanel.Dock="Top" Margin="10,20,0,10" IsEnabled="{Binding IsTimetableInputEnabled}" Visibility="{Binding IsTimetableInputVisible}">
                 <Button Command="{Binding TimeTableInput_Page_SelectedCommand}" Background="{DynamicResource Bunting}" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0" Margin="0">
 
                     <md:PackIcon Kind="CalendarPlus" Foreground="White" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="30" Height="30" />
@@ -155,7 +155,7 @@
                     <Label  Content="   Nhập phòng học" VerticalAlignment="Center" Foreground="White" FontSize="14" FontWeight="Bold" />
                 </Canvas>
             </WrapPanel>
-            <WrapPanel DockPanel.Dock="Top" Margin="10,20,0,10">
+            <WrapPanel DockPanel.Dock="Top" Margin="10,20,0,10" IsEnabled="{Binding IsEventInputEnabled}" Visibility="{Binding IsEventInputVisible}">
                 <Button Command="{Binding EventInput_Page_SelectedCommand}" Background="{DynamicResource Bunting}" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0" Margin="0">
 
                     <md:PackIcon Kind="CalendarPlus" Foreground="White" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="30" Height="30" />
@@ -169,7 +169,7 @@
                 </Canvas>
             </WrapPanel>
 
-            <WrapPanel DockPanel.Dock="Top" Margin="10,20,0,10">
+            <WrapPanel DockPanel.Dock="Top" Margin="10,20,0,10" IsEnabled="{Binding IsExamInputEnabled}" Visibility="{Binding IsExamInputVisible}">
                 <Button Command="{Binding ExamInput_Page_SelectedCommand}" Background="{DynamicResource Bunting}" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0" Margin="0">
 
                     <md:PackIcon Kind="CalendarPlus" Foreground="White" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="30" Height="30" />
@@ -182,7 +182,7 @@
                     <Label  Content="   Nhập phòng thi" VerticalAlignment="Center" Foreground="White" FontSize="14" FontWeight="Bold" />
                 </Canvas>
             </WrapPanel>
-            <WrapPanel DockPanel.Dock="Top" Margin="10,20,0,10">
+            <WrapPanel DockPanel.Dock="Top" Margin="10,20,0,10" IsEnabled="{Binding IsRoomManagementEnabled}" Visibility="{Binding IsRoomManagementVisible}">
                 <Button Command="{Binding RoomManagement_Page_SelectedCommand}" Background="{DynamicResource Bunting}" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0" Margin="0">
 
                     <md:PackIcon Kind="HomeModern" Foreground="White" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="30" Height="30" />
@@ -195,7 +195,7 @@
                     <Label  Content="   Quản lý phòng" VerticalAlignment="Center" Foreground="White" FontSize="14" FontWeight="Bold" />
                 </Canvas>
             </WrapPanel>
-            <WrapPanel DockPanel.Dock="Top" Margin="10,20,0,10">
+            <WrapPanel DockPanel.Dock="Top" Margin="10,20,0,10" IsEnabled="{Binding IsReportEnabled}" Visibility="{Binding IsReportVisible}">
                 <Button Command="{Binding Report_Page_SelectedCommand}" Background="{DynamicResource Bunting}" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0" Margin="0">
 
                     <md:PackIcon Kind="BarChart" Foreground="White" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="30" Height="30" />

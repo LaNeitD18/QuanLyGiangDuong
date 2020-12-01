@@ -91,7 +91,8 @@
                 SelectionMode="Extended"
                 AutoGenerateColumns="False"
                 SelectedItem="{Binding SelectedUsingExam, Mode=TwoWay}"
-                SelectionUnit="FullRow" >
+                SelectionUnit="FullRow" 
+                CanUserAddRows="False">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Trạng thái" Binding="{Binding StatusString}"/>
                     <DataGridTextColumn Header="Phòng" Binding="{Binding RoomID}"/>
