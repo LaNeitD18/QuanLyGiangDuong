@@ -1,8 +1,10 @@
 ﻿using QuanLyGiangDuong.Model;
+using QuanLyGiangDuong.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -296,7 +298,7 @@ namespace QuanLyGiangDuong.ViewModel
             SelectedSupervisor = ListSupervisor.Where(x => x.LecturerID == SelectedExam.LecturerID).FirstOrDefault();
             Population = SelectedExam.Population_.ToString();
             StartDate = SelectedUsingExam.Date_.ToString();
-            ExamTime = SelectedUsingExam.Duration.Minutes.ToString();
+            ExamTime = SelectedUsingExam.Duration.TotalMinutes.ToString();
             Description = SelectedUsingExam.Description_;
         }
 
@@ -350,8 +352,8 @@ namespace QuanLyGiangDuong.ViewModel
                 ExamID = ExamID,
                 Date_ = Convert.ToDateTime(StartDate),
                 StartPeriod = 1,
-                Duration = new TimeSpan(0, Convert.ToInt32(ExamTime), 0),
-                Status_ = 0
+                Duration = TimeSpan.FromMinutes(Convert.ToInt32(ExamTime)),
+                Status_ = 0,
             };
             MessageBox.Show(StartDate);
             DataProvider.Ins.DB.USINGEXAMs.Add(usingExam);
@@ -556,6 +558,7 @@ namespace QuanLyGiangDuong.ViewModel
                 ListSelectedUsingExam.Add((USINGEXAM)item);
             }
         }
+
         #endregion
 
         #region ICommand
@@ -564,6 +567,7 @@ namespace QuanLyGiangDuong.ViewModel
         public ICommand DeleteCommand { get; set; }
         public ICommand ApproveCommand { get; set; }
         public ICommand RejectCommand { get; set; }
+        public ICommand ReadExcelCommand { get; set; }
         public ICommand ConfirmCommand { get; set; }
         public ICommand CancelCommand { get; set; }
         public ICommand UsingExam_SelectionChangedCommand { get; set; }
@@ -633,11 +637,16 @@ namespace QuanLyGiangDuong.ViewModel
                 }
             });
 
+            // CuteTN - input by Excel
+            ReadExcelCommand = new RelayCommand((p) => {
+                ReadFromExcel();
+            });
+
             ConfirmCommand = new RelayCommand((p) => {
                 // xong het nho lam check dk
                 if(IsBeingInTask) { 
                     if(IsAddingEnabled) {
-                        if(IsValidInput() && IsNotDuplicatedForAdding()) {
+                        if(IsValidInput()) {
                             AddExam();
                             AddUsingExam();
                             ResetAll();
@@ -660,7 +669,6 @@ namespace QuanLyGiangDuong.ViewModel
             UsingExam_SelectionChangedCommand = new RelayCommand((p) =>
             {
                 if (!(p is DataGrid)) {
-                    MessageBox.Show("ZZZ");
                     return;
                 }
 
@@ -691,5 +699,105 @@ namespace QuanLyGiangDuong.ViewModel
                 }
             });
         }
+
+        // CuteTN
+        #region Input by Excel
+        /// <summary>
+        /// <para> parse a row raw information into EXAM and USINGEXAM </para>
+        /// <para> WARNING: this function does NOT generate the Ids </para>
+        /// </summary>
+        /// <param name="template"></param>
+        /// <param name="rawData"></param>
+        private void ParseExcelRowFromTemplate(List<string> template, List<string> rawData, out EXAM outputExam, out USINGEXAM outputUsingExam)
+        {
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+
+            for (int i = 0; i < template.Count; i++)
+            {
+                dict.Add(template[i].ToUpper(), rawData[i]);
+            }
+
+            outputExam = new EXAM();
+            outputUsingExam = new USINGEXAM();
+
+            // CuteTN: using string directly here is way tooooo DIRTY. but I have no time lol
+            outputExam.ClassID = dict["MÃ LỚP"];
+            outputExam.LecturerID = dict["MÃ GIÁM THỊ"];
+            outputExam.Population_ = int.Parse(dict["SĨ SỐ"]);
+
+            outputUsingExam.Duration = TimeSpan.FromMinutes(int.Parse(dict["THỜI GIAN THI"]));
+            outputUsingExam.Description_ = dict["GHI CHÚ"];
+
+            // default fields
+            outputUsingExam.RoomID = Utils.NullStringId;
+            outputUsingExam.StartPeriod = Utils.NullIntId;
+            outputUsingExam.Date_ = DateTime.Now;
+            outputUsingExam.Status_ = (int)Enums.UsingStatus.Pending;
+        }
+
+        private void ReadFromExcel()
+        {
+            var dlg = new System.Windows.Forms.OpenFileDialog();
+            dlg.Filter = "Excel file (*.xlsx;*.xls)|*.xlsx;*.xls|All files (*.*)|*.*";
+            var dlgRes = dlg.ShowDialog();
+
+            if(dlgRes != System.Windows.Forms.DialogResult.OK)
+                return;
+
+            List<List<string>> importedData;
+
+            try
+            {
+                importedData = MsExcelReader.Read(dlg.FileName);
+            }
+            catch (Exception e)
+            {
+                System.Windows.MessageBox.Show($"Đã xảy ra lỗi trong quá trình đọc file, vui lòng kiểm tra định dạng.\n{e.Message}");
+                return;
+            }
+
+            // var testStr = Utils.Convert2DListToString(importedData);
+            // System.Windows.MessageBox.Show(testStr.ToUpper());
+
+            EXAM parsedExam;
+            USINGEXAM parsedUsingExam;
+            List<int> errorLines = new List<int>();
+
+            for (int i = 2; i < importedData.Count; i++)
+            {
+
+                try
+                {
+                    ParseExcelRowFromTemplate(importedData[1], importedData[i], out parsedExam, out parsedUsingExam);
+
+                    parsedExam.ExamID = Utils.GenerateStringId(DataProvider.Ins.DB.EXAMs);
+                    DataProvider.Ins.DB.EXAMs.AddOrUpdate(parsedExam); // using System.Data.Entity.Migrations
+
+                    parsedUsingExam.UsingExamID = Utils.GenerateStringId(DataProvider.Ins.DB.USINGEXAMs);
+                    parsedUsingExam.ExamID = parsedExam.ExamID;
+                    DataProvider.Ins.DB.USINGEXAMs.Add(parsedUsingExam);
+
+                    DataProvider.Ins.DB.SaveChanges();
+
+                    // ListExam.Add(parsedExam);
+                    ListUsingExam.Add(parsedUsingExam);
+                }
+                catch
+                {
+                    errorLines.Add(i);
+                    continue;
+                }
+            }
+
+            if (errorLines.Count == 0) { }
+            else
+                System.Windows.MessageBox.Show(
+                    "Đã xảy ra lỗi ở các dòng sau: " +
+                    errorLines.Select(x => (x + 1).ToString()).Aggregate((x, y) => x + "; " + y)
+                    );
+
+            ResetAll();
+        }
+        #endregion
     }
 }

@@ -1052,6 +1052,9 @@ namespace QuanLyGiangDuong.ViewModel
             dlg.Filter = "Excel file (*.xlsx;*.xls)|*.xlsx;*.xls|All files (*.*)|*.*";
             var dlgRes = dlg.ShowDialog();
 
+            if(dlgRes != DialogResult.OK)
+                return;
+
             List<List<string>> importedData;
 
             try
