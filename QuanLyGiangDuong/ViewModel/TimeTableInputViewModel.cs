@@ -1077,62 +1077,62 @@ namespace QuanLyGiangDuong.ViewModel
                 try
                 { 
                     ParseExcelRowFromTemplate(importedData[0], importedData[i], out parsedClass, out parsedUsingClass);
+
+                    tempClass = null;
+
+                    // trying searching for the same class first...
+                    try
+                    {
+                        tempClass = DataProvider.Ins.DB.CLASSes.Where
+                            (x =>
+                                (x.ClassName == parsedClass.ClassName)
+                                &&(x.Year_ == parsedClass.Year_)
+                                &&(x.Semester == parsedClass.Semester)
+                                &&(x.TrainingProgramID == parsedClass.TrainingProgramID)
+                            ).First();
+                    }
+                    catch(Exception e)
+                    {
+                    }
+
+                    if (tempClass != null)
+                    {
+                        parsedClass.ClassID = tempClass.ClassID;
+
+                        tempClass.SubjectID = parsedClass.SubjectID;
+                        tempClass.LecturerID = parsedClass.LecturerID;
+                        tempClass.StartDate = parsedClass.StartDate;
+                        tempClass.EndDate = parsedClass.EndDate;
+                        tempClass.Population_ = parsedClass.Population_;
+                    }
+                    else
+                    {
+                        parsedClass.ClassID = Utils.GenerateStringId(DataProvider.Ins.DB.CLASSes);
+                        DataProvider.Ins.DB.CLASSes.AddOrUpdate(parsedClass); // using System.Data.Entity.Migrations
+                    }
+
+
+                    parsedUsingClass.UsingClassID = Utils.GenerateStringId(DataProvider.Ins.DB.USINGCLASSes);
+                    parsedUsingClass.ClassID = parsedClass.ClassID;
+                    DataProvider.Ins.DB.USINGCLASSes.Add(parsedUsingClass);
+
+                    DataProvider.Ins.DB.SaveChanges();
                 }
                 catch
                 {
                     errorLines.Add(i);
                     continue;
                 }
-
-                tempClass = null;
-
-                // trying searching for the same class first...
-                try
-                {
-                    tempClass = DataProvider.Ins.DB.CLASSes.Where
-                        (x =>
-                            (x.ClassName == parsedClass.ClassName)
-                            &&(x.Year_ == parsedClass.Year_)
-                            &&(x.Semester == parsedClass.Semester)
-                            &&(x.TrainingProgramID == parsedClass.TrainingProgramID)
-                        ).First();
-                }
-                catch(Exception e)
-                {
-                    System.Windows.MessageBox.Show(e.Message);
-                }
-
-                if (tempClass != null)
-                {
-                    parsedClass.ClassID = tempClass.ClassID;
-
-                    tempClass.SubjectID = parsedClass.SubjectID;
-                    tempClass.LecturerID = parsedClass.LecturerID;
-                    tempClass.StartDate = parsedClass.StartDate;
-                    tempClass.EndDate = parsedClass.EndDate;
-                    tempClass.Population_ = parsedClass.Population_;
-                }
-                else
-                {
-                    parsedClass.ClassID = Utils.GenerateStringId(DataProvider.Ins.DB.CLASSes);
-                    DataProvider.Ins.DB.CLASSes.AddOrUpdate(parsedClass); // using System.Data.Entity.Migrations
-                }
-
-
-                parsedUsingClass.UsingClassID = Utils.GenerateStringId(DataProvider.Ins.DB.USINGCLASSes);
-                parsedUsingClass.ClassID = parsedClass.ClassID;
-                DataProvider.Ins.DB.USINGCLASSes.Add(parsedUsingClass);
-
-                DataProvider.Ins.DB.SaveChanges();
-                Reset();
             }
 
             if(errorLines.Count == 0) { }
             else
                 System.Windows.MessageBox.Show(
                     "Đã xảy ra lỗi ở các dòng sau: " +
-                    errorLines.Select(x => x.ToString()).Aggregate((x, y) => x + "; " + y)
+                    errorLines.Select(x => (x + 1).ToString()).Aggregate((x, y) => x + "; " + y)
                     );
+
+            Reset();
         }
 
         #endregion
