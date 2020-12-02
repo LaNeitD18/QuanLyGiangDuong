@@ -130,6 +130,8 @@
           <Property Name="ClassID" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="StartPeriod" Type="int" Nullable="false" />
           <Property Name="Duration" Type="time" Precision="7" Nullable="false" />
+          <Property Name="StartDate" Type="date" Nullable="false" />
+          <Property Name="EndDate" Type="date" Nullable="false" />
           <Property Name="RepeatCycle" Type="int" Nullable="false" />
           <Property Name="Day_" Type="int" Nullable="false" />
           <Property Name="Status_" Type="int" Nullable="false" />
@@ -756,6 +758,8 @@
           <Property Name="ClassID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="StartPeriod" Type="Int32" Nullable="false" />
           <Property Name="Duration" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="RepeatCycle" Type="Int32" Nullable="false" />
           <Property Name="Day_" Type="Int32" Nullable="false" />
           <Property Name="Status_" Type="Int32" Nullable="false" />
@@ -1178,6 +1182,8 @@
                 <ScalarProperty Name="Status_" ColumnName="Status_" />
                 <ScalarProperty Name="Day_" ColumnName="Day_" />
                 <ScalarProperty Name="RepeatCycle" ColumnName="RepeatCycle" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
                 <ScalarProperty Name="Duration" ColumnName="Duration" />
                 <ScalarProperty Name="StartPeriod" ColumnName="StartPeriod" />
                 <ScalarProperty Name="ClassID" ColumnName="ClassID" />

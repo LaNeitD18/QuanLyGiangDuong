@@ -8,23 +8,25 @@ namespace QuanLyGiangDuong.Model
 {
     public partial class USINGCLASS : IUsing
     {
-        //public UsingClassModel(USINGCLASS uSINGCLASS)
-        //{
-        //    UsingClassID = uSINGCLASS.UsingClassID;
-        //    RoomID = uSINGCLASS.RoomID;
-        //    ClassID = uSINGCLASS.ClassID;
-        //    StartPeriod = uSINGCLASS.StartPeriod;
-        //    Duration = uSINGCLASS.Duration;
-        //    RepeatCycle = uSINGCLASS.RepeatCycle;
-        //    Day_ = uSINGCLASS.Day_;
-        //    Status_ = uSINGCLASS.Status_;
-        //    Description_ = uSINGCLASS.Description_;
-        //    CLASS = uSINGCLASS.CLASS;
+        public USINGCLASS(USINGCLASS uSINGCLASS)
+        {
+            UsingClassID = uSINGCLASS.UsingClassID;
+            RoomID = uSINGCLASS.RoomID;
+            ClassID = uSINGCLASS.ClassID;
+            StartPeriod = uSINGCLASS.StartPeriod;
+            Duration = uSINGCLASS.Duration;
+            RepeatCycle = uSINGCLASS.RepeatCycle;
+            Day_ = uSINGCLASS.Day_;
+            Status_ = uSINGCLASS.Status_;
+            Description_ = uSINGCLASS.Description_;
+            CLASS = uSINGCLASS.CLASS;
+            StartDate = uSINGCLASS.StartDate;
+            EndDate = uSINGCLASS.EndDate;
 
-        //    PERIOD_TIMERANGE = uSINGCLASS.PERIOD_TIMERANGE;
-        //    ROOM = uSINGCLASS.ROOM;
-        //    ROOMIGNOREs = uSINGCLASS.ROOMIGNOREs;
-        //}
+            PERIOD_TIMERANGE = uSINGCLASS.PERIOD_TIMERANGE;
+            ROOM = uSINGCLASS.ROOM;
+            ROOMIGNOREs = uSINGCLASS.ROOMIGNOREs;
+        }
 
         private string _displayName;
         public string DisplayName

@@ -25,6 +25,8 @@ namespace QuanLyGiangDuong.Model
         public string ClassID { get; set; }
         public int StartPeriod { get; set; }
         public System.TimeSpan Duration { get; set; }
+        public System.DateTime StartDate { get; set; }
+        public System.DateTime EndDate { get; set; }
         public int RepeatCycle { get; set; }
         public int Day_ { get; set; }
         public int Status_ { get; set; }

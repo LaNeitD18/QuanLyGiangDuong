@@ -249,6 +249,7 @@ namespace QuanLyGiangDuong.ViewModel
 
         public void GetRoomSchedule()
         {
+
             startDate = new DateTime(selectedYear, selectedMonth.monthValue, selectedDay);
             startDate = startDate.AddDays(-((int)startDate.DayOfWeek + 6)%7);
             endDate = startDate.AddDays(6);
@@ -268,8 +269,8 @@ namespace QuanLyGiangDuong.ViewModel
             var usingClass = (from uc in DataProvider.Ins.DB.USINGCLASSes
                               join cl in DataProvider.Ins.DB.CLASSes on uc.ClassID equals cl.ClassID
                               join rm in DataProvider.Ins.DB.ROOMs on uc.RoomID equals rm.RoomID
-                              where DbFunctions.AddDays(_startDate, (uc.Day_ + 6) % 7) > cl.StartDate &&   // Satisfy the start and end date of class
-                                    DbFunctions.AddDays(_startDate, (uc.Day_ + 6) % 7) < cl.EndDate &&      // Satisfy the start and end date of class
+                              where DbFunctions.AddDays(_startDate, (uc.Day_ + 6) % 7) >= uc.StartDate &&   // Satisfy the start and end date of class
+                                    DbFunctions.AddDays(_startDate, (uc.Day_ + 6) % 7) <= uc.EndDate &&      // Satisfy the start and end date of class
                                     (DbFunctions.DiffDays(DbFunctions.AddDays(_startDate, (uc.Day_ + 6) % 7), cl.StartDate) / 7) % uc.RepeatCycle == 0// satisfied the repeat cycle
                               select new { uc, cl, rm }
                         ).ToList();
@@ -322,8 +323,8 @@ namespace QuanLyGiangDuong.ViewModel
             var usingEvent = (from ev in DataProvider.Ins.DB.USINGEVENTs
                               join cl in DataProvider.Ins.DB.EVENT_ on ev.EventID equals cl.EventID
                               join rm in DataProvider.Ins.DB.ROOMs on ev.RoomID equals rm.RoomID
-                              where ev.Date_ > startDate &&   // Satisfy the start and end date of choosen week
-                                    ev.Date_ < endDate     // Satisfy the start and end date of choosen week
+                              where ev.Date_ >= startDate &&   // Satisfy the start and end date of choosen week
+                                    ev.Date_ <= endDate     // Satisfy the start and end date of choosen week
                               select new { ev, cl, rm }
                         ).ToList();
 
@@ -374,8 +375,8 @@ namespace QuanLyGiangDuong.ViewModel
         {
             var usingExam = (from ue in DataProvider.Ins.DB.USINGEXAMs
                               join rm in DataProvider.Ins.DB.ROOMs on ue.RoomID equals rm.RoomID
-                              where ue.Date_ > startDate &&   // Satisfy the start and end date of choosen week
-                                    ue.Date_ < endDate     // Satisfy the start and end date of choosen week
+                              where ue.Date_ >= startDate &&   // Satisfy the start and end date of choosen week
+                                    ue.Date_ <= endDate     // Satisfy the start and end date of choosen week
                               select new { ue, rm }
                         ).ToList();
 
