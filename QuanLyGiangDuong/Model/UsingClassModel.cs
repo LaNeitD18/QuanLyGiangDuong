@@ -1,8 +1,11 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using QuanLyGiangDuong.Utilities;
+using QuanLyGiangDuong.ViewModel;
 
 namespace QuanLyGiangDuong.Model
 {
@@ -28,6 +31,25 @@ namespace QuanLyGiangDuong.Model
             ROOMIGNOREs = uSINGCLASS.ROOMIGNOREs;
         }
 
+        public int EndPeriod
+        {
+            get
+            {
+                return Utils.CalcEndPeriod(StartPeriod, Duration);
+            }
+
+            set
+            {
+                Duration = TimeSpan.FromMinutes(Utils.CalcDuration(StartPeriod, value));
+            }
+        }
+
+        public string StatusString
+        {
+            get => Enums.GetStringOf((Enums.UsingStatus)Status_);
+            set { /* cant set this field */ }
+        }
+
         private string _displayName;
         public string DisplayName
         {
@@ -50,7 +72,7 @@ namespace QuanLyGiangDuong.Model
                          where cl.ClassID == ClassID
                          select new { cl, lec }).ToList()[0];
 
-            return value.cl.ClassName + Environment.NewLine + value.lec.LecturerName + 
+            return value.cl.ClassName + Environment.NewLine + value.lec.LecturerName +
                 Environment.NewLine + "______________" +
                 Environment.NewLine + "Sỉ số: " + value.cl.Population_;
         }

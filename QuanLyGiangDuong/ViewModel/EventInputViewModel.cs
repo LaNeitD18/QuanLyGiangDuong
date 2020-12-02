@@ -21,30 +21,6 @@ namespace QuanLyGiangDuong.ViewModel
 {
     class EventInputViewModel: BaseViewModel
     {
-        #region Note
-        /*
-        CREATE TABLE EVENT_
-        (
-            EventID VARCHAR(20) NOT NULL PRIMARY KEY,
-            LecturerID VARCHAR(20) NOT NULL FOREIGN KEY REFERENCES LECTURER(LecturerID),
-            EventName NVARCHAR(MAX) NOT NULL,
-            Population_ INT NOT NULL,
-            Description_ NVARCHAR(MAX),
-        )
-        CREATE TABLE USINGEVENT
-        (
-            UsingEventID VARCHAR(20) NOT NULL PRIMARY KEY,
-            RoomID VARCHAR(20) NOT NULL FOREIGN KEY REFERENCES ROOM(RoomID),
-            EventID VARCHAR(20) NOT NULL FOREIGN KEY REFERENCES EVENT_(EventID),
-            Date_ SMALLDATETIME NOT NULL,
-            StartPeriod INT NOT NULL FOREIGN KEY REFERENCES PERIOD_TIMERANGE(PeriodID),
-            EndPeriod INT NOT NULL FOREIGN KEY REFERENCES PERIOD_TIMERANGE(PeriodID),
-            Status_ INT NOT NULL,
-            Description_ NVARCHAR(50),
-        )
-         */
-        #endregion
-
         #region Fields
 
         #region Default Fields
@@ -282,7 +258,13 @@ namespace QuanLyGiangDuong.ViewModel
         private ROOM _selectedRoom = null;
         public ROOM SelectedRoom
         {
-            get => _selectedRoom;
+            get 
+            { 
+                if(_selectedRoom == null)
+                    _selectedRoom = DataProvider.Ins.DB.ROOMs.Find(Utils.NullStringId);
+
+                return _selectedRoom;
+            }
             set
             { 
                 _selectedRoom = value;
@@ -318,7 +300,13 @@ namespace QuanLyGiangDuong.ViewModel
         private PERIOD_TIMERANGE _selectedStartTimeRange = null;
         public PERIOD_TIMERANGE SelectedStartTimeRange
         {
-            get => _selectedStartTimeRange;
+            get 
+            {
+                if(_selectedStartTimeRange == null)
+                    _selectedStartTimeRange = DataProvider.Ins.DB.PERIOD_TIMERANGE.Find(Utils.NullIntId);
+
+                return _selectedStartTimeRange;
+            }
             set
             {
                 _selectedStartTimeRange = value;
@@ -331,12 +319,10 @@ namespace QuanLyGiangDuong.ViewModel
         #region datagrid using events
         private ObservableCollection<USINGEVENT> LoadUsingEvents()
         {
-            ObservableCollection<USINGEVENT> result = new ObservableCollection<USINGEVENT>();
-            
-            foreach(var ue in DataProvider.Ins.DB.USINGEVENTs)
-            {
-                result.Add(ue);
-            }
+            ObservableCollection<USINGEVENT> result = new ObservableCollection<USINGEVENT>
+                (
+                    DataProvider.Ins.DB.USINGEVENTs.Where(x => x.Status_ != (int)Enums.UsingStatus.Deleted).ToList()
+                );
 
             return result;
         }
@@ -401,7 +387,7 @@ namespace QuanLyGiangDuong.ViewModel
             // if there was no error, print test, save DB and reset the form
             if(errors.Count == 0)
             { 
-                PrintEventInfoTest();
+                // PrintEventInfoTest();
                 AddEventToPendingList();
                 Reset();
             }
@@ -428,13 +414,15 @@ namespace QuanLyGiangDuong.ViewModel
         }
         #endregion
 
-
         #region cancel button
         private void HandleCancelButton()
         {
-            var dlgRes = MessageBox.Show("Huỷ", "Bạn có chắc muốn huỷ sự kiện này không?", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
+            var dlgRes = MessageBox.Show("Bạn có chắc muốn huỷ đăng ký sự kiện này không?", "Huỷ", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
             if(dlgRes == MessageBoxResult.Yes)
+            { 
                 Reset();
+                LoadSelectedContentToForm();
+            }
         }
         private ICommand _cancelCmd = null;
         public ICommand CancelCmd
@@ -452,7 +440,6 @@ namespace QuanLyGiangDuong.ViewModel
             }
         }
         #endregion
-
 
         #region add button
         private void HandleAddButtonClick()
@@ -476,7 +463,6 @@ namespace QuanLyGiangDuong.ViewModel
             }
         }
         #endregion
-
 
         #region edit button
         private void HandleEditButtonClick()
@@ -502,12 +488,12 @@ namespace QuanLyGiangDuong.ViewModel
         }
         #endregion
 
-
         #region delete button
         private void HandleDeleteButtonClick()
         {
-            // CuteTN: More code here...
-            MessageBox.Show("delete");
+            var dlgRes = MessageBox.Show("Bạn có chắc muốn xoá các đăng ký sự kiện này không?", "Xoá", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
+            if (dlgRes == MessageBoxResult.Yes)
+                SetStatusSelectedUsingEvents(Enums.UsingStatus.Deleted, x => true);
         }
         private ICommand _deleteCmd = null;
         public ICommand DeleteCmd
@@ -521,6 +507,54 @@ namespace QuanLyGiangDuong.ViewModel
             set
             {
                 _deleteCmd = value;
+                OnPropertyChanged();
+            }
+        }
+        #endregion
+
+        #region approve button
+        private void HandleApproveButtonClick()
+        {
+            var dlgRes = MessageBox.Show("Bạn có chắc muốn duyệt các đăng ký sự kiện này không?", "Duyệt", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
+            if (dlgRes == MessageBoxResult.Yes)
+                SetStatusSelectedUsingEvents(Enums.UsingStatus.Approved, x => true);
+        }
+        private ICommand _approveCmd = null;
+        public ICommand ApproveCmd
+        {
+            get
+            {
+                if (_approveCmd == null)
+                    _approveCmd = new RelayCommand(obj => HandleApproveButtonClick());
+                return _approveCmd;
+            }
+            set
+            {
+                _approveCmd = value;
+                OnPropertyChanged();
+            }
+        }
+        #endregion
+
+        #region reject button
+        private void HandleRejectButtonClick()
+        {
+            var dlgRes = MessageBox.Show("Bạn có chắc muốn từ chối các đăng ký sự kiện này không?", "Từ chối", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
+            if (dlgRes == MessageBoxResult.Yes)
+                SetStatusSelectedUsingEvents(Enums.UsingStatus.Rejected, x => true);
+        }
+        private ICommand _rejectCmd = null;
+        public ICommand RejectCmd
+        {
+            get
+            {
+                if (_rejectCmd == null)
+                    _rejectCmd = new RelayCommand(obj => HandleRejectButtonClick());
+                return _rejectCmd;
+            }
+            set
+            {
+                _rejectCmd = value;
                 OnPropertyChanged();
             }
         }
@@ -540,17 +574,11 @@ namespace QuanLyGiangDuong.ViewModel
             if(string.IsNullOrEmpty(EventName))
                 result.Add("Vui lòng nhập tên sự kiện");
 
-            if(SelectedStartTimeRange == null)
-                result.Add("Vui lòng chọn thời điểm bắt đầu sự kiện");
-
             if (Population <= 0)
                 result.Add("Vui lòng nhập số người dự tính hợp lệ (số nguyên dương)");
 
             if(Duration <= 0)
                 result.Add("Vui lòng nhập thời lượng hợp lệ (số nguyên dương)");
-
-            if(SelectedRoom == null)
-                result.Add("Vui lòng chọn mã phòng tổ chức sự kiện");
 
             return result;
         }
@@ -637,7 +665,6 @@ namespace QuanLyGiangDuong.ViewModel
         {
             UsingEventId = null;
             SelectedEvent = null;
-            EventName = "";
             LecturerId = DefaultLecturerId;
             DateOccurs = DateTime.Today;
             SelectedStartTimeRange = null;
@@ -649,8 +676,8 @@ namespace QuanLyGiangDuong.ViewModel
 
         private void Reset()
         {
-            ResetForm();
             RefreshData();
+            ResetForm();
             IsEdittingFormMode = false;
         }
 
@@ -676,10 +703,18 @@ namespace QuanLyGiangDuong.ViewModel
             IsEdittingFormMode = true;
         }
 
-        private void DeleteSelectedRowsFromList()
+        private void SetStatusSelectedUsingEvents(Enums.UsingStatus newStatus, Func<USINGEVENT, bool> validateFunc)
         {
-            // CuteTN: more code
+            foreach (var ue in SelectedUsingEvents)
+            {
+                if (validateFunc(ue))
+                    ue.Status_ = (int)newStatus;
+            }
+
+            SaveDB();
+            ListUsingEvent = LoadUsingEvents();
         }
+
 
         private void ChangeToAddState()
         {
@@ -690,6 +725,19 @@ namespace QuanLyGiangDuong.ViewModel
         private void ChangeToEditState()
         {
             EnableEditingForm();
+        }
+
+        private void LoadSelectedContentToForm()
+        {
+            if (SelectedUsingEvents.Count == 1)
+            {
+                var selectedUE = SelectedUsingEvents[0];
+                LoadContentToForm(selectedUE);
+            }
+            else
+            {
+                ResetForm();
+            }
         }
 
         /// <summary>
@@ -735,15 +783,7 @@ namespace QuanLyGiangDuong.ViewModel
             // update form content when user is not in editting mode
             if(!IsEdittingFormMode)
             { 
-                if(SelectedUsingEvents.Count == 1)
-                {
-                    var selectedUE = SelectedUsingEvents[0];
-                    LoadContentToForm(selectedUE);
-                }
-                else
-                {
-                    ResetForm();
-                }
+                LoadSelectedContentToForm();
             }
         }
 

@@ -1,6 +1,7 @@
 ﻿using QuanLyGiangDuong.Model;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data.Entity;
 using System.Linq;
 using System.Security.Cryptography;
@@ -652,7 +653,7 @@ namespace QuanLyGiangDuong.Utilities
         /// <param name="usingClass"></param>
         /// <param name="class_"></param>
         /// <returns></returns>
-        static public List<USINGCLASS> HandleOverlapEvent(USINGCLASS usingClass, CLASS class_,out List<USINGEVENT> listOverlappedEvent)
+        static public List<USINGCLASS> HandleOverlapEvent(USINGCLASS usingClass, CLASS class_, out List<USINGEVENT> listOverlappedEvent)
         {
             List<USINGCLASS> listSplitedUsingClass = new List<USINGCLASS>();
 
@@ -661,7 +662,7 @@ namespace QuanLyGiangDuong.Utilities
             listOverlappedEvent = CheckOverLapEvent(usingClass, class_);
 
 
-            if(listOverlappedEvent.Count > 3)
+            if (listOverlappedEvent.Count > 3)
             {
                 // NOT HANDLED YET
                 return null;
@@ -676,7 +677,7 @@ namespace QuanLyGiangDuong.Utilities
 
                 listOverlappedEvent.Sort((x, y) => { return Convert.ToInt32(x.Date_ > y.Date_); });
 
-                foreach(var overlapEvent in listOverlappedEvent)
+                foreach (var overlapEvent in listOverlappedEvent)
                 {
                     // split the last using class
                     USINGCLASS targetUsingClass = listSplitedUsingClass[listSplitedUsingClass.Count - 1];
@@ -694,7 +695,7 @@ namespace QuanLyGiangDuong.Utilities
 
                     bool middleFound = false;
 
-                    foreach(var room in listRoomFiltered)
+                    foreach (var room in listRoomFiltered)
                     {
                         middle.RoomID = room.RoomID;
 
@@ -714,7 +715,7 @@ namespace QuanLyGiangDuong.Utilities
                         }
                     }
 
-                    if(middleFound == false)
+                    if (middleFound == false)
                     {
                         return null;
                     }
@@ -723,7 +724,138 @@ namespace QuanLyGiangDuong.Utilities
 
             return listSplitedUsingClass;
         }
+        #region data that is int for db but string for UI
+        /// <summary>
+        /// using keyvalue pair is actually the same, but wrapping this would make the code more readable
+        /// </summary>
+        public class IdNamePair<IdType>
+        {
+            private KeyValuePair<IdType, string> data;
+
+            public IdNamePair(IdType id, string name)
+            {
+                data = new KeyValuePair<IdType, string>(id, name);
+            }
+
+            public IdType Id { get => data.Key; }
+            public string Name { get => data.Value; }
+        }
+
+        static private BindingList<IdNamePair<int>> _semesters = null;
+        static public BindingList<IdNamePair<int>> Semesters
+        {
+            get
+            {
+                if(_semesters == null)
+                {
+                    _semesters = new BindingList<IdNamePair<int>>();
+
+                    _semesters.Add(new IdNamePair<int>(1, "Học kỳ 1"));
+                    _semesters.Add(new IdNamePair<int>(2, "Học kỳ 2"));
+                    _semesters.Add(new IdNamePair<int>(3, "Học kỳ hè"));
+                }
+
+                return _semesters;
+            }
+        }
+
+        static private BindingList<IdNamePair<int>> _schoolYears;
+        static public BindingList<IdNamePair<int>> SchoolYears
+        {
+            get
+            {
+                if(_schoolYears == null)
+                {
+                    _schoolYears = new BindingList<IdNamePair<int>>();
+
+                    // CuteTN Note: a const for 2000 maybe better...
+                    for(int i = DateTime.Now.Year; i >= 2000; i--)
+                    {
+                        _schoolYears.Add(new IdNamePair<int>(i, $"{i} - {i+1}"));
+                    }
+                }
+
+                return _schoolYears;
+            }
+        }
+
+        static private BindingList<IdNamePair<int>> _daysOfWeek = null;
+        static public BindingList<IdNamePair<int>> DaysOfWeek
+        {
+            get
+            {
+                if(_daysOfWeek == null)
+                {
+                    _daysOfWeek = new BindingList<IdNamePair<int>>();
+
+                    _daysOfWeek.Add(new IdNamePair<int>(NullIntId, "[Tự động]"));
+                    _daysOfWeek.Add(new IdNamePair<int>((int)DayOfWeek.Monday, "Thứ hai"));
+                    _daysOfWeek.Add(new IdNamePair<int>((int)DayOfWeek.Tuesday, "Thứ ba"));
+                    _daysOfWeek.Add(new IdNamePair<int>((int)DayOfWeek.Wednesday, "Thứ tư"));
+                    _daysOfWeek.Add(new IdNamePair<int>((int)DayOfWeek.Thursday, "Thứ năm"));
+                    _daysOfWeek.Add(new IdNamePair<int>((int)DayOfWeek.Friday, "Thứ sáu"));
+                    _daysOfWeek.Add(new IdNamePair<int>((int)DayOfWeek.Saturday, "Thứ bảy"));
+                    _daysOfWeek.Add(new IdNamePair<int>((int)DayOfWeek.Sunday, "Chủ nhật"));
+                }
+
+                return _daysOfWeek;
+            }
+        }
+
+        /// <summary>
+        /// return the element with a specified Id from a bindinglist of IdNamePair
+        /// </summary>
+        /// <typeparam name="IdType"></typeparam>
+        /// <param name=""></param>
+        /// <returns></returns>
+        static public IdNamePair<IdType> GetElementById<IdType>(BindingList<IdNamePair<IdType>> items, IdType id)
+        {
+            try
+            { 
+                return items.Where(x => x.Id.Equals(id)).ElementAt(0);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        static public IdNamePair<IdType> GetElementByName<IdType>(BindingList<IdNamePair<IdType>> items, string name, bool caseSensitive = false)
+        {
+            try
+            {
+                return items.Where
+                    (
+                        x => 
+                        { 
+                            if(caseSensitive)
+                                return x.Name == name;
+                            else
+                                return x.Name.ToUpper() == name.ToUpper();
+                        }
+
+                    ).ElementAt(0);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        #endregion
+
+        #region print test
+        static public string  Convert2DListToString(List<List<string>> list)
+        {
+            string result = list.Select
+                (
+                    x => x.Aggregate((s1, s2) => s1 + "\t\t" + s2)
+                ).Aggregate((s1, s2) => s1 + "\n" + s2);
+
+            return result;
+        }
 
         #endregion
     }
 }
+#endregion

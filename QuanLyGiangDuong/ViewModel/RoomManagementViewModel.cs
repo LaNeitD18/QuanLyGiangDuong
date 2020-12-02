@@ -139,7 +139,7 @@ namespace QuanLyGiangDuong.ViewModel
             var room = new ROOM()
             {
                 RoomID = RoomID,
-                Status_ = "",
+                Status_ = "Còn sử dụng",
                 Capacity = Int32.Parse(Capacity),
                 Description_ = Description
             };
