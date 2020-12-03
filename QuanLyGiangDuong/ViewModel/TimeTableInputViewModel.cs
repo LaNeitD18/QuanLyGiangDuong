@@ -129,17 +129,6 @@ namespace QuanLyGiangDuong.ViewModel
             }
         }
 
-        private string _lecturerId = "001";
-        public string LecturerId
-        {
-            get => _lecturerId;
-            set
-            {
-                _lecturerId = value;
-                OnPropertyChanged();
-            }
-        }
-
         private DateTime _startDate;
         public DateTime StartDate
         {
@@ -537,6 +526,47 @@ namespace QuanLyGiangDuong.ViewModel
         }
         #endregion
 
+        #region lecturer List
+        private BindingList<LECTURER> LoadLecturers()
+        {
+            BindingList<LECTURER> result = new BindingList<LECTURER>(DataProvider.Ins.DB.LECTURERs.ToList());
+            return result;
+        }
+
+        private BindingList<LECTURER> _listLecturer = null;
+        public BindingList<LECTURER> ListLecturer
+        {
+            get
+            {
+                if (_listLecturer == null)
+                    _listLecturer = LoadLecturers();
+                return _listLecturer;
+            }
+            set
+            {
+                _listLecturer = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private LECTURER _selectedLecturer = null;
+        public LECTURER SelectedLecturer
+        {
+            get
+            {
+                if (_selectedLecturer == null)
+                    _selectedLecturer = DataProvider.Ins.DB.LECTURERs.Find(Utils.NullStringId);
+
+                return _selectedLecturer;
+            }
+            set
+            {
+                _selectedLecturer = value;
+                OnPropertyChanged();
+            }
+        }
+        #endregion
+
         #endregion
 
         #region button handler
@@ -851,7 +881,7 @@ namespace QuanLyGiangDuong.ViewModel
             c.StartDate = StartDate;
             c.EndDate = EndDate;
             c.Population_ = Population;
-            c.LecturerID = LecturerId;
+            c.LecturerID = SelectedLecturer.LecturerID;
             c.Description_ = Description;
 
             if (isNewClass)

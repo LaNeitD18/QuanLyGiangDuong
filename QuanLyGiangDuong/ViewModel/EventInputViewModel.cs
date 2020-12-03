@@ -127,17 +127,6 @@ namespace QuanLyGiangDuong.ViewModel
             }
         }
 
-        private string _lecturerId = "001";
-        public string LecturerId
-        {
-            get => _lecturerId;
-            set
-            {
-                _lecturerId = value;
-                OnPropertyChanged();
-            }
-        }
-
         private DateTime _dateOccurs = DateTime.Now;
         public DateTime DateOccurs
         {
@@ -374,6 +363,48 @@ namespace QuanLyGiangDuong.ViewModel
 
         #endregion
 
+
+        #region Lecturer list
+        private BindingList<LECTURER> LoadLecturers()
+        {
+            BindingList<LECTURER> result = new BindingList<LECTURER>(DataProvider.Ins.DB.LECTURERs.ToList());
+            return result;
+        }
+
+        private BindingList<LECTURER> _listLecturer = null;
+        public BindingList<LECTURER> ListLecturer
+        {
+            get
+            {
+                if (_listLecturer == null)
+                    _listLecturer = LoadLecturers();
+                return _listLecturer;
+            }
+            set
+            {
+                _listLecturer = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private LECTURER _selectedLecturer = null;
+        public LECTURER SelectedLecturer
+        {
+            get
+            {
+                if (_selectedLecturer == null)
+                    _selectedLecturer = DataProvider.Ins.DB.LECTURERs.Find(Utils.NullStringId);
+
+                return _selectedLecturer;
+            }
+            set
+            {
+                _selectedLecturer = value;
+                OnPropertyChanged();
+            }
+        }
+        #endregion
+
         #endregion
 
         #region button handler
@@ -600,7 +631,7 @@ namespace QuanLyGiangDuong.ViewModel
                 e = new EVENT_();            
 
             e.EventName = EventName;
-            e.LecturerID = LecturerId;
+            e.LecturerID = SelectedLecturer.LecturerID;
             e.Population_ = Population;
             e.Description_ = Description;
 
@@ -667,7 +698,7 @@ namespace QuanLyGiangDuong.ViewModel
         {
             UsingEventId = null;
             SelectedEvent = null;
-            LecturerId = DefaultLecturerId;
+            SelectedLecturer = null;
             DateOccurs = DateTime.Today;
             SelectedStartTimeRange = null;
             Duration = 45;
@@ -689,7 +720,7 @@ namespace QuanLyGiangDuong.ViewModel
             string toPrint = "";
             toPrint += "Event Id = " + SelectedEvent.EventID + "\n";
             toPrint += "Event Name = " + EventName + "\n";
-            toPrint += "Lecturer = " + LecturerId + "\n";
+            toPrint += "Lecturer = " + SelectedLecturer.LecturerName + "\n";
             toPrint += "Date = " + DateOccurs.Date.ToString() + "\n";
             toPrint += "Population = " + Population.ToString() + "\n";
             toPrint += "From = " + SelectedStartTimeRange.PeriodName.ToString() + "\n";
@@ -751,7 +782,7 @@ namespace QuanLyGiangDuong.ViewModel
             UsingEventId = usingEvent.UsingEventID;
             SelectedEvent = usingEvent.EVENT_;
             EventName = usingEvent.EVENT_.EventName;
-            LecturerId = usingEvent.EVENT_.LecturerID;
+            SelectedLecturer = usingEvent.EVENT_.LECTURER;
             DateOccurs = usingEvent.Date_;
             Population = usingEvent.EVENT_.Population_;
             SelectedStartTimeRange = usingEvent.PERIOD_TIMERANGE;  

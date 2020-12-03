@@ -425,6 +425,11 @@ namespace QuanLyGiangDuong.ViewModel
 
         private void ApproveUsingExam()
         {
+            // CuteTN + Basa code
+            // validation before approving
+            if(!Utils.ValidateForApprove(SelectedUsingExam))
+                return;
+
             SelectedUsingExam.Status_ = (int)Enums.UsingStatus.Approved;
             DataProvider.Ins.DB.SaveChanges();
 

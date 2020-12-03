@@ -255,15 +255,23 @@
                         </StackPanel>
                     </Grid>
                     <Grid Grid.Row="0" Grid.Column="1">
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <TextBox 
-                                Width="200" 
-                                FontSize="18" 
-                                materialDesign:HintAssist.Hint="Người đăng ký" 
-                                IsReadOnly="True"
-                                Style="{StaticResource MaterialDesignFloatingHintTextBox}" Foreground="{StaticResource SecondaryAccentBrush}" VerticalAlignment="Center"
-                                Text="{Binding LecturerId, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-                        </StackPanel>
+                        <ComboBox 
+                            Margin="20,5,20,5"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Center"
+                            materialDesign:HintAssist.Hint="Giảng viên" 
+                            Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                            ItemsSource="{Binding ListLecturer}" 
+                            KeyboardNavigation.TabIndex="1" 
+                            SelectedItem="{Binding SelectedLecturer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }" >
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding LecturerName}"></TextBlock>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
                     </Grid>
                     <Grid Grid.Row="2" Grid.Column="0">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">

@@ -236,16 +236,23 @@
                         </ComboBox>
                     </Grid>
                     <Grid Grid.Row="0" Grid.Column="1">
-                        <TextBox 
+                        <ComboBox 
                             Margin="20,5,20,5"
                             HorizontalAlignment="Stretch"
                             VerticalAlignment="Center"
-                            FontSize="18" 
                             materialDesign:HintAssist.Hint="Giảng viên" 
-                            IsReadOnly="True"
-                            Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
-                            Foreground="{StaticResource SecondaryAccentBrush}" 
-                            Text="{Binding SelectedClass.LECTURER.LecturerName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                            Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                            ItemsSource="{Binding ListLecturer}" 
+                            KeyboardNavigation.TabIndex="1" 
+                            SelectedItem="{Binding SelectedLecturer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }" >
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding LecturerName}"></TextBlock>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
                     </Grid>
 
                     <Grid Grid.Row="1" Grid.Column="1">
