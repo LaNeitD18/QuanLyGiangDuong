@@ -709,7 +709,7 @@ namespace QuanLyGiangDuong.ViewModel
         {
             var dlgRes = System.Windows.MessageBox.Show("Bạn có chắc muốn duyệt các đăng ký phòng học này không?", "Duyệt", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
             if (dlgRes == MessageBoxResult.Yes)
-                SetStatusSelectedUsingClasses(Enums.UsingStatus.Approved, x => true);
+                SetStatusSelectedUsingClasses(Enums.UsingStatus.Approved, Utils.ValidateForApprove);
         }
         private ICommand _approveCmd = null;
         public ICommand ApproveCmd
@@ -799,6 +799,7 @@ namespace QuanLyGiangDuong.ViewModel
             UsingClassId = null;
             SelectedSubject = null;
             SelectedTrainingProgram = null;
+            SelectedLecturer = null;
             // SelectedSemester = null; 
             // SelectedSchoolYear = null;  // keeping old value would be cool
             StartDate = DateTime.Today;
@@ -923,6 +924,9 @@ namespace QuanLyGiangDuong.ViewModel
             uc.Status_ = (int)Enums.UsingStatus.Pending;
             uc.Description_ = Description;
 
+            uc.StartDate = StartDate;
+            uc.EndDate = EndDate;
+
             if (isNewUsingClass)
             {
                 uc.UsingClassID = Utils.GenerateStringId(DataProvider.Ins.DB.USINGCLASSes);
@@ -942,6 +946,7 @@ namespace QuanLyGiangDuong.ViewModel
 
             SelectedClass = usingClass.CLASS;
             ClassName = usingClass.CLASS.ClassName;
+            SelectedLecturer = usingClass.CLASS.LECTURER;
             SelectedTrainingProgram = usingClass.CLASS.TRAINING_PROGRAM;
             SelectedDayOfWeek = Utils.GetElementById(ListDayOfWeek, usingClass.Day_);
             SelectedSemester = Utils.GetElementById(ListSemester, usingClass.CLASS.Semester);
@@ -1018,10 +1023,12 @@ namespace QuanLyGiangDuong.ViewModel
             foreach (var uc in SelectedUsingClasses)
             {
                 if(validateFunc(uc))
+                { 
                     uc.Status_ = (int)newStatus;
+                    SaveDB();
+                }
             }
 
-            SaveDB();
             ListUsingClass = LoadUsingClasses();
         }
 

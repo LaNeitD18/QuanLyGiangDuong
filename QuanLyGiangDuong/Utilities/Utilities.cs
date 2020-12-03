@@ -519,6 +519,47 @@ namespace QuanLyGiangDuong.Utilities
             return null;
         }
 
+        static USINGCLASS CheckOverlapApprovedUsingClass(USINGCLASS usingClass, CLASS class_)
+        {
+            var startPeriod = (from period in DataProvider.Ins.DB.PERIOD_TIMERANGE
+                               where period.PeriodID == usingClass.StartPeriod
+                               select period).Single();
+
+            var listUsingClassMayOverlap = (from usgClass in DataProvider.Ins.DB.USINGCLASSes
+                                            join Class in DataProvider.Ins.DB.CLASSes on usgClass.ClassID equals Class.ClassID
+                                            join StartPeriod in DataProvider.Ins.DB.PERIOD_TIMERANGE on usgClass.StartPeriod equals StartPeriod.PeriodID
+                                            where usgClass.RoomID == usingClass.RoomID &&
+                                                  usgClass.Day_ == usingClass.Day_ &&
+                                                  usgClass.Status_ == (int)Enums.UsingStatus.Approved
+                                            select new { usgClass, Class, StartPeriod }).ToList();
+
+            listUsingClassMayOverlap = listUsingClassMayOverlap.FindAll(x =>
+                {
+                    // var cmcm = !(x.StartPeriod.StartTime + x.usgClass.Duration < startPeriod.StartTime || x.StartPeriod.StartTime > startPeriod.StartTime + usingClass.Duration);
+
+                    return
+                    !(x.usgClass.EndDate < usingClass.StartDate || x.usgClass.StartDate > usingClass.EndDate) &&
+                    !(x.StartPeriod.StartTime + x.usgClass.Duration <= startPeriod.StartTime || x.StartPeriod.StartTime >= startPeriod.StartTime + usingClass.Duration);
+                });
+
+            
+
+            foreach (var usingClassMayOverlap in listUsingClassMayOverlap)
+            {
+                if (usingClass.RepeatCycle != usingClassMayOverlap.usgClass.RepeatCycle)
+                {
+                    return usingClassMayOverlap.usgClass;
+                }
+                // have the same repeat cycle but start after
+                else if ((((DateTime)usingClass.StartDate - (DateTime)usingClassMayOverlap.usgClass.StartDate).Days / 7) % usingClass.RepeatCycle == 0)
+                {
+                    return usingClassMayOverlap.usgClass;
+                }
+            }
+
+            return null;
+        }
+
         static USINGCLASS CheckOverlapLecturerTimeUsingClass(USINGCLASS usingClass, CLASS class_)
         {
             var startPeriod = (from period in DataProvider.Ins.DB.PERIOD_TIMERANGE
@@ -559,6 +600,48 @@ namespace QuanLyGiangDuong.Utilities
             return null;
         }
 
+        static USINGCLASS CheckOverlapApprovedLecturerTimeUsingClass(USINGCLASS usingClass, CLASS class_)
+        {
+            var startPeriod = (from period in DataProvider.Ins.DB.PERIOD_TIMERANGE
+                               where period.PeriodID == usingClass.StartPeriod
+                               select period).Single();
+
+            var listUsingClassMayOverlap = (from usgClass in DataProvider.Ins.DB.USINGCLASSes
+                                            join Class in DataProvider.Ins.DB.CLASSes on usgClass.ClassID equals Class.ClassID
+                                            join StartPeriod in DataProvider.Ins.DB.PERIOD_TIMERANGE on usgClass.StartPeriod equals StartPeriod.PeriodID
+                                            where Class.LecturerID == class_.LecturerID &&
+                                                  usgClass.Day_ == usingClass.Day_ &&
+                                                  usgClass.Status_ == (int)Enums.UsingStatus.Approved
+                                            select new { usgClass, Class, StartPeriod }).ToList();
+
+            listUsingClassMayOverlap = listUsingClassMayOverlap.FindAll(x =>
+            {
+                var cmcm = !(x.StartPeriod.StartTime + x.usgClass.Duration < startPeriod.StartTime || x.StartPeriod.StartTime > startPeriod.StartTime + usingClass.Duration);
+
+                return
+                !(x.usgClass.EndDate < usingClass.StartDate || x.usgClass.StartDate > usingClass.EndDate) &&
+                !(x.StartPeriod.StartTime + x.usgClass.Duration <= startPeriod.StartTime || x.StartPeriod.StartTime >= startPeriod.StartTime + usingClass.Duration);
+            });
+
+
+
+            foreach (var usingClassMayOverlap in listUsingClassMayOverlap)
+            {
+                if (usingClass.RepeatCycle != usingClassMayOverlap.usgClass.RepeatCycle)
+                {
+                    return usingClassMayOverlap.usgClass;
+                }
+                // have the same repeat cycle but start after
+                else if ((((DateTime)usingClass.StartDate - (DateTime)usingClassMayOverlap.usgClass.StartDate).Days / 7) % usingClass.RepeatCycle == 0)
+                {
+                    return usingClassMayOverlap.usgClass;
+                }
+            }
+
+            return null;
+
+        }
+
         static public List<USINGEVENT> CheckOverLapEvent(USINGCLASS usingClass, CLASS class_)
         {
             List<USINGEVENT> listOverlappedEvent = new List<USINGEVENT>();
@@ -588,6 +671,39 @@ namespace QuanLyGiangDuong.Utilities
             }
 
             return listOverlappedEvent;
+        }
+
+        static public List<USINGEVENT> CheckOverlapApprovedEvent(USINGCLASS usingClass, CLASS class_)
+        {
+            List<USINGEVENT> listOverlappedEvent = new List<USINGEVENT>();
+
+            var listEventMayOverlap = (from UsingEvent in DataProvider.Ins.DB.USINGEVENTs
+                                       join StartPeriod in DataProvider.Ins.DB.PERIOD_TIMERANGE on UsingEvent.StartPeriod equals StartPeriod.PeriodID
+                                       where UsingEvent.RoomID == usingClass.RoomID &&
+                                             UsingEvent.Status_ == (int)Enums.UsingStatus.Approved
+                                       select new { UsingEvent, StartPeriod }).ToList();
+
+            listEventMayOverlap = listEventMayOverlap.FindAll(x =>
+            {
+                int dayOfWeek = (int)x.UsingEvent.Date_.DayOfWeek;
+                var startPeriod = (from period in DataProvider.Ins.DB.PERIOD_TIMERANGE
+                                   where period.PeriodID == usingClass.StartPeriod
+                                   select period).Single();
+
+                return
+                ((x.UsingEvent.Date_ - ((DateTime)usingClass.StartDate)).Days / 7) % usingClass.RepeatCycle == 0 &&
+                dayOfWeek == usingClass.Day_ &&
+                (x.UsingEvent.Date_ >= usingClass.StartDate && x.UsingEvent.Date_ <= usingClass.EndDate) &&
+                !(x.StartPeriod.StartTime + x.UsingEvent.Duration <= startPeriod.StartTime || x.StartPeriod.StartTime >= startPeriod.StartTime + usingClass.Duration);
+            });
+
+            foreach(var event_ in listEventMayOverlap)
+            {
+                listOverlappedEvent.Add(event_.UsingEvent);
+            }
+
+            return listOverlappedEvent;
+
         }
 
         static public List<USINGEXAM> CheckOverlapExam(USINGEXAM usingExam)
@@ -902,6 +1018,20 @@ namespace QuanLyGiangDuong.Utilities
             ue.Duration = usingExam.Duration;
 
             return ValidateForApprove(ue);
+        }
+
+        public static bool ValidateForApprove(USINGCLASS usingClass)
+        {
+            CLASS class_ = usingClass.CLASS;
+
+            if(CheckOverlapApprovedUsingClass(usingClass, class_) == null &&
+               CheckOverlapApprovedLecturerTimeUsingClass(usingClass, class_) == null &&
+               CheckOverlapApprovedEvent(usingClass, class_).Count == 0)
+            {
+                return true;
+            }
+
+            return false;
         }
         #endregion
     }

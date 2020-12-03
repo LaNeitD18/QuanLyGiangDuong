@@ -741,10 +741,12 @@ namespace QuanLyGiangDuong.ViewModel
             foreach (var ue in SelectedUsingEvents)
             {
                 if (validateFunc(ue))
+                {
                     ue.Status_ = (int)newStatus;
+                    SaveDB();
+                }
             }
 
-            SaveDB();
             ListUsingEvent = LoadUsingEvents();
         }
 
