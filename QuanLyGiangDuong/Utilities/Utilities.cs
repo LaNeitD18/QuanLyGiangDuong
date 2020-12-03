@@ -724,6 +724,8 @@ namespace QuanLyGiangDuong.Utilities
 
             return listSplitedUsingClass;
         }
+        #endregion
+
         #region data that is int for db but string for UI
         /// <summary>
         /// using keyvalue pair is actually the same, but wrapping this would make the code more readable
@@ -856,6 +858,51 @@ namespace QuanLyGiangDuong.Utilities
         }
 
         #endregion
+
+        #region validate for changing using rooms status
+        public static bool ValidateForApprove(USINGEVENT usingEvent)
+        {
+            DateTime dateOccurs = usingEvent.Date_;
+            ROOM room = usingEvent.ROOM;
+
+            var listPeriod = GetListPeriodTimeRange(usingEvent.StartPeriod, usingEvent.Duration);
+
+            TimeTableViewModel ttvm = new TimeTableViewModel();
+            ttvm.selectedDay = dateOccurs.Day;
+            ttvm.selectedMonth.monthValue = dateOccurs.Month;
+            ttvm.selectedYear = dateOccurs.Year;
+
+            ttvm.GetTimeTable();
+
+            var TimeTable = ttvm.tb;
+
+            if(TimeTable.Where(x => x.roomID == room.RoomID).ToList().Count == 0) return true;
+
+            table TimeTableRoom = TimeTable.Where(x =>  x.roomID == room.RoomID).First();
+
+            foreach(var period in listPeriod)
+            {
+                if(TimeTableRoom.tiet[period.PeriodID - 1] != null)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        public static bool ValidateForApprove(USINGEXAM usingExam)
+        {
+            // dry DRY DRYYYYYYYYYYYYYYY
+            USINGEVENT ue = new USINGEVENT();
+            ue.Date_ = usingExam.Date_;
+            ue.RoomID = usingExam.RoomID;
+
+            ue.StartPeriod = usingExam.StartPeriod;
+            ue.Duration = usingExam.Duration;
+
+            return ValidateForApprove(ue);
+        }
+        #endregion
     }
 }
-#endregion

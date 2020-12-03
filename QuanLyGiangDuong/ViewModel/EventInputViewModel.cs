@@ -31,7 +31,7 @@ namespace QuanLyGiangDuong.ViewModel
             get
             {
                 if(_defaultLecturerId == null)
-                    _defaultLecturerId = "001";
+                    _defaultLecturerId = "admin";
                 return _defaultLecturerId;
             }
         }
@@ -517,7 +517,7 @@ namespace QuanLyGiangDuong.ViewModel
         {
             var dlgRes = MessageBox.Show("Bạn có chắc muốn duyệt các đăng ký sự kiện này không?", "Duyệt", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
             if (dlgRes == MessageBoxResult.Yes)
-                SetStatusSelectedUsingEvents(Enums.UsingStatus.Approved, x => true);
+                SetStatusSelectedUsingEvents(Enums.UsingStatus.Approved, Utils.ValidateForApprove);
         }
         private ICommand _approveCmd = null;
         public ICommand ApproveCmd
@@ -563,6 +563,8 @@ namespace QuanLyGiangDuong.ViewModel
         #endregion
 
         #region Utils
+
+
         /// <summary>
         /// return a list of strings to notify error message. if all the fields are valid, return an empty list
         /// </summary>

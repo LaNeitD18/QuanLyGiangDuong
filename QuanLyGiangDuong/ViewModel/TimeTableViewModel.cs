@@ -288,7 +288,8 @@ namespace QuanLyGiangDuong.ViewModel
             // Select all needed info from USINGCLASS that fit selected Date
             var data = (from u in DataProvider.Ins.DB.USINGCLASSes
                         join c in DataProvider.Ins.DB.CLASSes on u.ClassID equals c.ClassID
-                        where targetDate >= u.StartDate && targetDate <= u.EndDate &&
+                        where u.Status_ == (int)Enums.UsingStatus.Approved &&
+                              targetDate >= u.StartDate && targetDate <= u.EndDate &&
                               (int)targetDate.DayOfWeek == u.Day_ && // satisfied the day of week
                               (DbFunctions.DiffDays(targetDate, c.StartDate) / 7) % u.RepeatCycle == 0 // satisfied the repeat cycle
                         select new { u.UsingClassID, u.RoomID, c.ClassName, u.StartPeriod, u.Duration }).ToList();
@@ -319,7 +320,8 @@ namespace QuanLyGiangDuong.ViewModel
             // Select all needed info from USINGCLASS that fit selected Date
             var data = (from u in DataProvider.Ins.DB.USINGEVENTs
                         join e in DataProvider.Ins.DB.EVENT_ on u.EventID equals e.EventID
-                        where u.Date_ == targetDate
+                        where u.Date_ == targetDate &&
+                              u.Status_ == (int)Enums.UsingStatus.Approved
                         select new { u.UsingEventID, u.RoomID, e.EventName, u.StartPeriod, u.Duration }).ToList();
 
             data.Sort((a, b) => { return string.Compare(a.RoomID, b.RoomID); });
@@ -349,7 +351,8 @@ namespace QuanLyGiangDuong.ViewModel
             var data = (from u in DataProvider.Ins.DB.USINGEXAMs
                         join e in DataProvider.Ins.DB.EXAMs on u.ExamID equals e.ExamID
                         join c in DataProvider.Ins.DB.CLASSes on e.ClassID equals c.ClassID
-                        where u.Date_ == targetDate
+                        where u.Date_ == targetDate &&
+                              u.Status_ == (int)Enums.UsingStatus.Approved
                         select new { u.UsingExamID, u.RoomID, c.ClassName, u.StartPeriod, u.Duration }).ToList();
 
             data.Sort((a, b) => { return string.Compare(a.RoomID, b.RoomID); });
