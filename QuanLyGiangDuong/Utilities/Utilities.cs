@@ -197,7 +197,7 @@ namespace QuanLyGiangDuong.Utilities
         ///     If success, return list of new UsingClass that auto scheduled
         ///     Otherwise, return null
         /// </returns>
-        static public List<USINGCLASS> AutoMakeSchedule(USINGCLASS usingClass, CLASS class_, ROOM selectedRoom)
+        static private List<USINGCLASS> AutoMakeSchedule(USINGCLASS usingClass, CLASS class_, ROOM selectedRoom)
         {
             List<USINGCLASS> result = null;
 
@@ -252,8 +252,7 @@ namespace QuanLyGiangDuong.Utilities
                 List<USINGEVENT> listOverlappedEvent = new List<USINGEVENT>();
 
                 if (overlappedUsingClass == null && overlappedLecturerUsingClass == null)
-                {
-                    // we found an empty room and time, finish here
+                {                        // we found an empty room and time, finish here
                     result = HandleOverlapEvent(usingClass, class_,out listOverlappedEvent);
 
                     if (result != null)
@@ -302,6 +301,8 @@ namespace QuanLyGiangDuong.Utilities
                             newStartPeriod = 6;
                             endPeriod = CalcEndPeriod(newStartPeriod, usingClass.Duration);
                         }
+                        
+                        if(endPeriod == -1) break;
 
                         usingClass.StartPeriod = newStartPeriod;
 
@@ -327,8 +328,14 @@ namespace QuanLyGiangDuong.Utilities
             return result;
         }
 
-        static public List<USINGCLASS> AutoMakeSchedule(USINGCLASS usingClass, CLASS class_, ROOM selectedRoom, int selectedStartPeriod)
+        static private List<USINGCLASS> AutoMakeSchedule(USINGCLASS usingClass, CLASS class_, ROOM selectedRoom, int selectedStartPeriod)
         {
+            if(CalcEndPeriod(selectedStartPeriod, usingClass.Duration) > 5 && selectedStartPeriod <= 5 ||
+                CalcEndPeriod(selectedStartPeriod, usingClass.Duration) == -1)
+            {
+                return null;
+            }
+
             List<USINGCLASS> result = null;
 
             var beginningRoomID = usingClass.RoomID;

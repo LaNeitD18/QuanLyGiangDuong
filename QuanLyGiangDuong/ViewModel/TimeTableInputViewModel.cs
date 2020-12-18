@@ -581,6 +581,7 @@ namespace QuanLyGiangDuong.ViewModel
             if (errors.Count == 0)
             {
                 // PrintClassInfoTest();
+                // auto schedule
                 AddClassToPendingList();
                 Reset();
             }
@@ -788,8 +789,9 @@ namespace QuanLyGiangDuong.ViewModel
             if (Population <= 0)
                 result.Add("Vui lòng nhập số người dự tính hợp lệ (số nguyên dương)");
 
-            if (Duration <= 0)
-                result.Add("Vui lòng nhập thời lượng hợp lệ (số nguyên dương)");
+            // CuteTN Note: magic number
+            if (Duration <= 0 || Duration > 45 * 5)
+                result.Add("Vui lòng nhập thời lượng hợp lệ (Thời lượng là một số nguyên dương nhỏ hơn 225 phút (5 tiết))");
 
             return result;
         }
@@ -930,8 +932,11 @@ namespace QuanLyGiangDuong.ViewModel
             if (isNewUsingClass)
             {
                 uc.UsingClassID = Utils.GenerateStringId(DataProvider.Ins.DB.USINGCLASSes);
-                DataProvider.Ins.DB.USINGCLASSes.Add(uc);
+                ScheduleAndAdd(uc, true);
             }
+            
+            // CuteTN Note:
+            // when editting old using class, it's not neccessary to validate, since we would do that when approving yey.
 
             SaveDB();
         }
@@ -1087,6 +1092,7 @@ namespace QuanLyGiangDuong.ViewModel
         {
             var dlg = new OpenFileDialog();
             dlg.Filter = "Excel file (*.xlsx;*.xls)|*.xlsx;*.xls|All files (*.*)|*.*";
+                
             var dlgRes = dlg.ShowDialog();
 
             if(dlgRes != DialogResult.OK)
@@ -1135,6 +1141,7 @@ namespace QuanLyGiangDuong.ViewModel
                     {
                     }
 
+                    // if this class was created before
                     if (tempClass != null)
                     {
                         parsedClass.ClassID = tempClass.ClassID;
@@ -1150,13 +1157,15 @@ namespace QuanLyGiangDuong.ViewModel
                         parsedClass.ClassID = Utils.GenerateStringId(DataProvider.Ins.DB.CLASSes);
                         DataProvider.Ins.DB.CLASSes.AddOrUpdate(parsedClass); // using System.Data.Entity.Migrations
                     }
-
+                    SaveDB();
 
                     parsedUsingClass.UsingClassID = Utils.GenerateStringId(DataProvider.Ins.DB.USINGCLASSes);
                     parsedUsingClass.ClassID = parsedClass.ClassID;
-                    DataProvider.Ins.DB.USINGCLASSes.Add(parsedUsingClass);
+                    
+                    // DataProvider.Ins.DB.USINGCLASSes.Add(parsedUsingClass);
+                    ScheduleAndAdd(parsedUsingClass, false);
 
-                    DataProvider.Ins.DB.SaveChanges();
+                    SaveDB();
                 }
                 catch
                 {
@@ -1175,6 +1184,42 @@ namespace QuanLyGiangDuong.ViewModel
             Reset();
         }
 
+        private List<USINGCLASS> AutoMakeSchedule(USINGCLASS uc)
+        {
+            CLASS class_ = DataProvider.Ins.DB.CLASSes.Find(uc.ClassID);
+
+            ROOM room = null;
+            if(uc.RoomID != Utils.NullStringId)
+                room = DataProvider.Ins.DB.ROOMs.Find(uc.RoomID);
+
+            DayOfWeek? dow = null;
+            if(uc.Day_ != Utils.NullIntId)
+                dow = (DayOfWeek)uc.Day_;
+
+            Nullable<int> sp = null;
+            if(uc.StartPeriod != Utils.NullIntId)
+                sp = uc.StartPeriod;
+
+            return Utils.AutoMakeSchedule(uc, class_, room, dow, sp);
+        }
+
+        private void ScheduleAndAdd(USINGCLASS uc, bool enableShowError)
+        {
+            List<USINGCLASS> ucs = AutoMakeSchedule(uc);
+
+            if (ucs == null)
+            {
+                if(enableShowError)
+                    System.Windows.MessageBox.Show("Không thể tự động sắp phòng học");
+
+                DataProvider.Ins.DB.USINGCLASSes.Add(uc);
+            }
+            else
+                foreach (var temp in ucs)
+                {
+                    DataProvider.Ins.DB.USINGCLASSes.Add(temp);
+                }
+        }
         #endregion
     }
 }
