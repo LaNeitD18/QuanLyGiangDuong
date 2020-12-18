@@ -16,6 +16,31 @@ namespace QuanLyGiangDuong.ViewModel
 {
     class ExamInputViewModel : BaseViewModel
     {
+        #region Date fields
+        private DateTime _selectedStartTime = DateTime.Now;
+        public DateTime SelectedStartDate
+        {
+            get => _selectedStartTime;
+            set
+            {
+                _selectedStartTime = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private DateTime _selectedEndTime = DateTime.Now;
+        public DateTime SelectedEndDate
+        {
+            get => _selectedEndTime;
+            set
+            {
+                _selectedEndTime = value;
+                OnPropertyChanged();
+            }
+        }
+
+        #endregion
+
         #region Variables
         private ObservableCollection<ROOM> _ListRoom;
         public ObservableCollection<ROOM> ListRoom
@@ -355,12 +380,20 @@ namespace QuanLyGiangDuong.ViewModel
                 Duration = TimeSpan.FromMinutes(Convert.ToInt32(ExamTime)),
                 Status_ = 0,
             };
-            MessageBox.Show(StartDate);
-            DataProvider.Ins.DB.USINGEXAMs.Add(usingExam);
+            // MessageBox.Show(StartDate);
+            // DataProvider.Ins.DB.USINGEXAMs.Add(usingExam);
+            if(StartDate == "")
+                ScheduleAndAdd(usingExam, SelectedStartDate, SelectedEndDate, true);
+            else
+            {
+                DateTime examDate = Convert.ToDateTime(StartDate);
+                ScheduleAndAdd(usingExam, examDate, examDate, true);
+            }
+
             DataProvider.Ins.DB.SaveChanges();
 
             // add to display
-            ListUsingExam.Add(usingExam);
+            // ListUsingExam.Add(usingExam);
         }
 
         private void EditExam() {
@@ -802,6 +835,43 @@ namespace QuanLyGiangDuong.ViewModel
                     );
 
             ResetAll();
+        }
+        #endregion
+
+        // CuteTN + HCT
+        #region Auto Schedule
+        private USINGEXAM AutoMakeSchedule(USINGEXAM ue, DateTime startDate, DateTime endDate)
+        {
+            EXAM exam = DataProvider.Ins.DB.EXAMs.Find(ue.ExamID);
+
+            ROOM room = null;
+            if (ue.RoomID != Utils.NullStringId)
+                room = DataProvider.Ins.DB.ROOMs.Find(ue.RoomID);
+
+            Nullable<int> sp = null;
+            if (ue.StartPeriod != Utils.NullIntId)
+                sp = ue.StartPeriod;
+
+            return Utils.AutoMakeExam(ue, exam, startDate, endDate);
+        }
+
+        private void ScheduleAndAdd(USINGEXAM ue, DateTime startDate, DateTime endDate, bool enableShowError)
+        {
+            var ue_ = AutoMakeSchedule(ue, startDate, endDate);
+
+            if (ue_ == null)
+            {
+                if (enableShowError)
+                    System.Windows.MessageBox.Show("Không thể tự động sắp phòng thi");
+
+                DataProvider.Ins.DB.USINGEXAMs.Add(ue);
+                ListUsingExam.Add(ue);
+            }
+            else
+            {
+                DataProvider.Ins.DB.USINGEXAMs.Add(ue_);
+                ListUsingExam.Add(ue_);
+            }
         }
         #endregion
     }

@@ -146,8 +146,10 @@ namespace QuanLyGiangDuong.Utilities
         ///     If success, return list of new UsingClass that auto scheduled
         ///     Otherwise, return null
         /// </returns>
-        static public List<USINGCLASS> AutoMakeSchedule(USINGCLASS usingClass, CLASS class_, ROOM selectedRoom, DayOfWeek? selectedDayOfWeek, Nullable<int> selectedStartPeriod)
+        static public List<USINGCLASS> AutoMakeSchedule(USINGCLASS usingClass_, CLASS class_, ROOM selectedRoom, DayOfWeek? selectedDayOfWeek, Nullable<int> selectedStartPeriod)
         {
+            USINGCLASS usingClass = new USINGCLASS(usingClass_);
+
             List<int> listDayOfWeekToChoose = new List<int>();
 
             if(selectedDayOfWeek == null)
@@ -404,8 +406,10 @@ namespace QuanLyGiangDuong.Utilities
         }
 
 
-        static public USINGEXAM AutoMakeExam(USINGEXAM usingExam, EXAM exam, DateTime startdate, DateTime endDate)
+        static public USINGEXAM AutoMakeExam(USINGEXAM usingExam_, EXAM exam, DateTime startdate, DateTime endDate)
         {
+            USINGEXAM usingExam = new USINGEXAM(usingExam_);
+
             DateTime selectedDate = startdate;
             List<ROOM> listRoomFiltered = (from r in DataProvider.Ins.DB.ROOMs
                                            where r.Capacity >= exam.Population_

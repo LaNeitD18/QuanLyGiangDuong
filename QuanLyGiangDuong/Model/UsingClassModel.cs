@@ -11,6 +11,7 @@ namespace QuanLyGiangDuong.Model
 {
     public partial class USINGCLASS : IUsing
     {
+
         public USINGCLASS(USINGCLASS uSINGCLASS)
         {
             UsingClassID = uSINGCLASS.UsingClassID;

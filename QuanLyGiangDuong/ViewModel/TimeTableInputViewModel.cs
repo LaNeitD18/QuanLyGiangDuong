@@ -1075,6 +1075,7 @@ namespace QuanLyGiangDuong.ViewModel
             outputClass.LecturerID = dict["MÃ GIẢNG VIÊN"];
             outputClass.StartDate = DateTime.ParseExact(dict["NGÀY BẮT ĐẦU"], "dd/MM/yyyy", CultureInfo.InvariantCulture);
             outputClass.EndDate = DateTime.ParseExact(dict["NGÀY KẾT THÚC"], "dd/MM/yyyy", CultureInfo.InvariantCulture);
+
             outputClass.Population_ = int.Parse(dict["SĨ SỐ"]);
 
             outputUsingClass.Duration = TimeSpan.FromMinutes(int.Parse(dict["THỜI LƯỢNG"]));
@@ -1084,6 +1085,8 @@ namespace QuanLyGiangDuong.ViewModel
             outputUsingClass.RoomID = Utils.NullStringId;
             outputUsingClass.StartPeriod = Utils.NullIntId;
             outputUsingClass.Day_ = Utils.NullIntId;
+            outputUsingClass.StartDate = outputClass.StartDate;
+            outputUsingClass.EndDate = outputClass.EndDate;
             outputUsingClass.RepeatCycle = 1;
             outputUsingClass.Status_ = (int)Enums.UsingStatus.Pending;
         }
@@ -1113,12 +1116,12 @@ namespace QuanLyGiangDuong.ViewModel
             // var testStr = Utils.Convert2DListToString(importedData);
             // System.Windows.MessageBox.Show(testStr.ToUpper());
 
-            CLASS parsedClass, tempClass;
-            USINGCLASS parsedUsingClass;
             List<int> errorLines = new List<int>();
 
             for(int i = 1; i < importedData.Count; i++)
             {
+                CLASS parsedClass, tempClass;
+                USINGCLASS parsedUsingClass;
 
                 try
                 { 

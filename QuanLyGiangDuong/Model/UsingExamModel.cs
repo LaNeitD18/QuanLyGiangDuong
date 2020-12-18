@@ -9,6 +9,27 @@ namespace QuanLyGiangDuong.Model
 {
     public partial class USINGEXAM : IUsing
     {
+        public USINGEXAM()
+        {
+
+        }
+
+        public USINGEXAM(USINGEXAM usingExam)
+        {
+            UsingExamID = usingExam.UsingExamID;
+            RoomID = usingExam.RoomID;
+            ExamID = usingExam.ExamID;
+            Date_ = usingExam.Date_;
+            StartPeriod = usingExam.StartPeriod;
+            Duration = usingExam.Duration;
+            Status_ = usingExam.Status_;
+            Description_ = usingExam.Description_;
+
+            EXAM = usingExam.EXAM;
+            ROOM = usingExam.ROOM;
+            PERIOD_TIMERANGE = usingExam.PERIOD_TIMERANGE;
+        }
+
         private string _displayName;
         public string DisplayName
         {

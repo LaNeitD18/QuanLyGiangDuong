@@ -78,9 +78,26 @@
                 </materialDesign:Card>
             </Grid>
         </Grid>
+        <Grid Grid.Row="1" Grid.ColumnSpan="7">
+            <DatePicker
+                Width="200"
+                FontSize="18"
+                materialDesign:HintAssist.Hint="Tu ngay"
+                Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
+                SelectedDate="{Binding SelectedStartDate}"/>
+        </Grid>
+        <Grid Grid.Row="1" Grid.Column="8" Grid.ColumnSpan="7">
+            <DatePicker
+                Width="200"
+                FontSize="18"
+                materialDesign:HintAssist.Hint="Den ngay"
+                Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
+                SelectedDate="{Binding SelectedEndDate}"
+                />
+        </Grid>
         <Grid
             Grid.Column="0" Grid.ColumnSpan="15"
-            Grid.Row="1" Grid.RowSpan="12"
+            Grid.Row="2" Grid.RowSpan="12"
             Margin="0,10,0,0">
             <DataGrid 
                 x:Name="listUsingExamDatagrid"
