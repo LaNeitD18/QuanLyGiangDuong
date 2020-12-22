@@ -14,7 +14,10 @@
       
       d:DesignHeight="640" d:DesignWidth="1200"
       Title="HomePage">
-
+    <Page.Resources>
+        <local:ValueToColorBackgroundConverter x:Key="ValueToColorBackgroundConverter" />
+        <local:ValueToColorBorderBrush x:Key="ValueToColorBorderBrush"/>
+    </Page.Resources>
     <Grid x:Name="homePage" Background="WhiteSmoke">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -106,21 +109,181 @@
         </Grid>
         <Grid Grid.Column="0" Grid.ColumnSpan="31" Grid.Row="3" Grid.RowSpan="14">
             <materialDesign:Card>
-                <syncfusion:SfDataGrid ColumnSizer="Star">
+                <syncfusion:SfDataGrid 
+                x:Name="dataGrid" 
+                SelectionUnit="Cell" 
+                SelectedItem="{Binding selectedTB}" 
+                NavigationMode="Cell" Height="329" 
+                ColumnSizer="Star" 
+                ItemsSource="{Binding tb}" 
+                QueryCoveredRange="sfDataGrid1_QueryCoveredRange"
+                RowHeight="40"
+                HeaderRowHeight="30"
+                >
+                    <syncfusion:SfDataGrid.HeaderStyle>
+                        <Style TargetType="syncfusion:GridHeaderCellControl">
+                            <Setter Property="BorderBrush" Value="LightGreen"/>
+                            <Setter Property="BorderThickness" Value="1,1,1,1"/>
+                        </Style>
+                    </syncfusion:SfDataGrid.HeaderStyle>
                     <syncfusion:SfDataGrid.Columns>
-                        <syncfusion:GridCheckBoxColumn DisplayBinding="{x:Null}" FilteredFrom="None" HeaderText="Phòng" ValueBinding="{x:Null}" TextAlignment="Center"/>
-                        <syncfusion:GridCheckBoxColumn DisplayBinding="{x:Null}" FilteredFrom="None" HeaderText="Tiết 1" ValueBinding="{x:Null}" TextAlignment="Center"/>
-                        <syncfusion:GridCheckBoxColumn DisplayBinding="{x:Null}" FilteredFrom="None" HeaderText="Tiết 2" ValueBinding="{x:Null}" TextAlignment="Center"/>
-                        <syncfusion:GridCheckBoxColumn DisplayBinding="{x:Null}" FilteredFrom="None" HeaderText="Tiết 3" ValueBinding="{x:Null}" TextAlignment="Center"/>
-                        <syncfusion:GridCheckBoxColumn DisplayBinding="{x:Null}" FilteredFrom="None" HeaderText="Tiết 4" ValueBinding="{x:Null}" TextAlignment="Center"/>
-                        <syncfusion:GridCheckBoxColumn DisplayBinding="{x:Null}" FilteredFrom="None" HeaderText="Tiết 5" ValueBinding="{x:Null}" TextAlignment="Center"/>
-                        <syncfusion:GridCheckBoxColumn DisplayBinding="{x:Null}" FilteredFrom="None" HeaderText="Tiết 6" ValueBinding="{x:Null}" TextAlignment="Center"/>
-                        <syncfusion:GridCheckBoxColumn DisplayBinding="{x:Null}" FilteredFrom="None" HeaderText="Tiết 7" ValueBinding="{x:Null}" TextAlignment="Center"/>
-                        <syncfusion:GridCheckBoxColumn DisplayBinding="{x:Null}" FilteredFrom="None" HeaderText="Tiết 8" ValueBinding="{x:Null}" TextAlignment="Center"/>
-                        <syncfusion:GridCheckBoxColumn DisplayBinding="{x:Null}" FilteredFrom="None" HeaderText="Tiết 9" ValueBinding="{x:Null}" TextAlignment="Center"/>
-                        <syncfusion:GridCheckBoxColumn DisplayBinding="{x:Null}" FilteredFrom="None" HeaderText="Tiết 10" ValueBinding="{x:Null}" TextAlignment="Center"/>
+                        <syncfusion:GridTextColumn 
+                        DisplayBinding="{x:Null}" 
+                        MappingName="roomID" 
+                        FilteredFrom="None" 
+                        HeaderText="Phòng" 
+                        ValueBinding="{x:Null}"
+                        TextAlignment="Center"
+                        AllowFocus="False"
+                        >
+                            <syncfusion:GridTextColumn.CellStyle>
+                                <Style TargetType="syncfusion:GridCell">
+                                    <Setter Property="BorderBrush" Value="LightGreen"/>
+                                    <Setter Property="BorderThickness" Value="2,0,2,2"/>
+                                </Style>
+                            </syncfusion:GridTextColumn.CellStyle>
+                        </syncfusion:GridTextColumn>
+                        <syncfusion:GridTemplateColumn MappingName="tiet[0]" HeaderText="Tiết 1">
+                            <syncfusion:GridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Label Content="{Binding tiet[0].Item2}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </DataTemplate>
+                            </syncfusion:GridTemplateColumn.CellTemplate>
+                            <syncfusion:GridTemplateColumn.CellStyle>
+                                <Style TargetType="syncfusion:GridCell">
+                                    <Setter Property="Background" Value="{Binding tiet[0], Converter={StaticResource ValueToColorBackgroundConverter}}"/>
+                                    <Setter Property="BorderBrush" Value="{Binding tiet[0], Converter={StaticResource ValueToColorBorderBrush}}"/>
+                                    <Setter Property="BorderThickness" Value="1,1,1,1"/>
+                                </Style>
+                            </syncfusion:GridTemplateColumn.CellStyle>
+                        </syncfusion:GridTemplateColumn>
+                        <syncfusion:GridTemplateColumn MappingName="tiet[1]" HeaderText="Tiết 2">
+                            <syncfusion:GridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Label HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding tiet[1].Item2}"/>
+                                </DataTemplate>
+                            </syncfusion:GridTemplateColumn.CellTemplate>
+                            <syncfusion:GridTemplateColumn.CellStyle>
+                                <Style TargetType="syncfusion:GridCell">
+                                    <Setter Property="Background" Value="{Binding tiet[1], Converter={StaticResource ValueToColorBackgroundConverter}}"/>
+                                    <Setter Property="BorderBrush" Value="{Binding tiet[1], Converter={StaticResource ValueToColorBorderBrush}}"/>
+                                    <Setter Property="BorderThickness" Value="1,1,1,1"/>
+                                </Style>
+                            </syncfusion:GridTemplateColumn.CellStyle>
+                        </syncfusion:GridTemplateColumn>
+                        <syncfusion:GridTemplateColumn MappingName="tiet[2]" HeaderText="Tiết 3">
+                            <syncfusion:GridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Label HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding tiet[2].Item2}"/>
+                                </DataTemplate>
+                            </syncfusion:GridTemplateColumn.CellTemplate>
+                            <syncfusion:GridTemplateColumn.CellStyle>
+                                <Style TargetType="syncfusion:GridCell">
+                                    <Setter Property="Background" Value="{Binding tiet[2], Converter={StaticResource ValueToColorBackgroundConverter}}"/>
+                                    <Setter Property="BorderBrush" Value="{Binding tiet[2], Converter={StaticResource ValueToColorBorderBrush}}"/>
+                                    <Setter Property="BorderThickness" Value="1,1,1,1"/>
+                                </Style>
+                            </syncfusion:GridTemplateColumn.CellStyle>
+                        </syncfusion:GridTemplateColumn>
+                        <syncfusion:GridTemplateColumn MappingName="tiet[3]" HeaderText="Tiết 4">
+                            <syncfusion:GridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Label HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding tiet[3].Item2}"/>
+                                </DataTemplate>
+                            </syncfusion:GridTemplateColumn.CellTemplate>
+                            <syncfusion:GridTemplateColumn.CellStyle>
+                                <Style TargetType="syncfusion:GridCell">
+                                    <Setter Property="Background" Value="{Binding tiet[3], Converter={StaticResource ValueToColorBackgroundConverter}}"/>
+                                    <Setter Property="BorderBrush" Value="{Binding tiet[3], Converter={StaticResource ValueToColorBorderBrush}}"/>
+                                    <Setter Property="BorderThickness" Value="1,1,1,1"/>
+                                </Style>
+                            </syncfusion:GridTemplateColumn.CellStyle>
+                        </syncfusion:GridTemplateColumn>
+                        <syncfusion:GridTemplateColumn MappingName="tiet[4]" HeaderText="Tiết 5">
+                            <syncfusion:GridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Label HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding tiet[4].Item2}"/>
+                                </DataTemplate>
+                            </syncfusion:GridTemplateColumn.CellTemplate>
+                            <syncfusion:GridTemplateColumn.CellStyle>
+                                <Style TargetType="syncfusion:GridCell">
+                                    <Setter Property="Background" Value="{Binding tiet[4], Converter={StaticResource ValueToColorBackgroundConverter}}"/>
+                                    <Setter Property="BorderBrush" Value="{Binding tiet[4], Converter={StaticResource ValueToColorBorderBrush}}"/>
+                                    <Setter Property="BorderThickness" Value="1,1,1,1"/>
+                                </Style>
+                            </syncfusion:GridTemplateColumn.CellStyle>
+                        </syncfusion:GridTemplateColumn>
+                        <syncfusion:GridTemplateColumn MappingName="tiet[5]" HeaderText="Tiết 6">
+                            <syncfusion:GridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Label HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding tiet[5].Item2}"/>
+                                </DataTemplate>
+                            </syncfusion:GridTemplateColumn.CellTemplate>
+                            <syncfusion:GridTemplateColumn.CellStyle>
+                                <Style TargetType="syncfusion:GridCell">
+                                    <Setter Property="Background" Value="{Binding tiet[5], Converter={StaticResource ValueToColorBackgroundConverter}}"/>
+                                    <Setter Property="BorderBrush" Value="{Binding tiet[5], Converter={StaticResource ValueToColorBorderBrush}}"/>
+                                    <Setter Property="BorderThickness" Value="1,1,1,1"/>
+                                </Style>
+                            </syncfusion:GridTemplateColumn.CellStyle>
+                        </syncfusion:GridTemplateColumn>
+                        <syncfusion:GridTemplateColumn MappingName="tiet[6]" HeaderText="Tiết 7">
+                            <syncfusion:GridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Label HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding tiet[6].Item2}"/>
+                                </DataTemplate>
+                            </syncfusion:GridTemplateColumn.CellTemplate>
+                            <syncfusion:GridTemplateColumn.CellStyle>
+                                <Style TargetType="syncfusion:GridCell">
+                                    <Setter Property="Background" Value="{Binding tiet[6], Converter={StaticResource ValueToColorBackgroundConverter}}"/>
+                                    <Setter Property="BorderBrush" Value="{Binding tiet[6], Converter={StaticResource ValueToColorBorderBrush}}"/>
+                                    <Setter Property="BorderThickness" Value="1,1,1,1"/>
+                                </Style>
+                            </syncfusion:GridTemplateColumn.CellStyle>
+                        </syncfusion:GridTemplateColumn>
+                        <syncfusion:GridTemplateColumn MappingName="tiet[7]" HeaderText="Tiết 8">
+                            <syncfusion:GridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Label HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding tiet[7].Item2}"/>
+                                </DataTemplate>
+                            </syncfusion:GridTemplateColumn.CellTemplate>
+                            <syncfusion:GridTemplateColumn.CellStyle>
+                                <Style TargetType="syncfusion:GridCell">
+                                    <Setter Property="Background" Value="{Binding tiet[7], Converter={StaticResource ValueToColorBackgroundConverter}}"/>
+                                    <Setter Property="BorderBrush" Value="{Binding tiet[7], Converter={StaticResource ValueToColorBorderBrush}}"/>
+                                    <Setter Property="BorderThickness" Value="1,1,1,1"/>
+                                </Style>
+                            </syncfusion:GridTemplateColumn.CellStyle>
+                        </syncfusion:GridTemplateColumn>
+                        <syncfusion:GridTemplateColumn MappingName="tiet[8]" HeaderText="Tiết 9">
+                            <syncfusion:GridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Label HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding tiet[8].Item2}"/>
+                                </DataTemplate>
+                            </syncfusion:GridTemplateColumn.CellTemplate>
+                            <syncfusion:GridTemplateColumn.CellStyle>
+                                <Style TargetType="syncfusion:GridCell">
+                                    <Setter Property="Background" Value="{Binding tiet[8], Converter={StaticResource ValueToColorBackgroundConverter}}"/>
+                                    <Setter Property="BorderBrush" Value="{Binding tiet[8], Converter={StaticResource ValueToColorBorderBrush}}"/>
+                                    <Setter Property="BorderThickness" Value="1,1,1,1"/>
+                                </Style>
+                            </syncfusion:GridTemplateColumn.CellStyle>
+                        </syncfusion:GridTemplateColumn>
+                        <syncfusion:GridTemplateColumn MappingName="tiet[9]" HeaderText="Tiết 10">
+                            <syncfusion:GridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Label HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding tiet[9].Item2}"/>
+                                </DataTemplate>
+                            </syncfusion:GridTemplateColumn.CellTemplate>
+                            <syncfusion:GridTemplateColumn.CellStyle>
+                                <Style TargetType="syncfusion:GridCell">
+                                    <Setter Property="Background" Value="{Binding tiet[9], Converter={StaticResource ValueToColorBackgroundConverter}}"/>
+                                    <Setter Property="BorderBrush" Value="{Binding tiet[9], Converter={StaticResource ValueToColorBorderBrush}}"/>
+                                    <Setter Property="BorderThickness" Value="1,1,1,1"/>
+                                </Style>
+                            </syncfusion:GridTemplateColumn.CellStyle>
+                        </syncfusion:GridTemplateColumn>
                     </syncfusion:SfDataGrid.Columns>
-
                 </syncfusion:SfDataGrid>
             </materialDesign:Card>
         </Grid>
