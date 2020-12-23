@@ -127,7 +127,7 @@ namespace QuanLyGiangDuong.ViewModel
         #region Function
         private void LoadData()
         {
-            var listRoom = DataProvider.Ins.DB.ROOMs;
+            var listRoom = DataProvider.Ins.DB.ROOMs.Where(x => x.RoomID != "[NULL]");
             ListRoom = new ObservableCollection<ROOM>(listRoom);
             ListSelectedRoom = new ObservableCollection<ROOM>();
 
@@ -356,19 +356,19 @@ namespace QuanLyGiangDuong.ViewModel
             });
 
             SearchRoomCommand = new RelayCommand((p) => {
-                //var room = DataProvider.Ins.DB.ROOMs.Find(RoomIDForSearching);
+                var room = DataProvider.Ins.DB.ROOMs.Find(RoomIDForSearching);
 
-                //if(room != null) {
-                //    SelectedRoom = room;
+                if (room != null)
+                {
+                    SelectedRoom = room;
 
-                //    SetValueForTextbox();
-                //}
+                    SetValueForTextbox();
+                }
 
                 //for(int i=0; i<SelectedRoom.Count(); i++)
                 //{
                 //    MessageBox.Show(ListRoom[i].RoomID);
                 //}
-                MessageBox.Show(ListSelectedRoom.Count().ToString());
             });
 
             // confirm button is enabled only when adding, editing or deleting

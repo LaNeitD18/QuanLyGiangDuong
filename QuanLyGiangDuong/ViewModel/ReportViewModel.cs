@@ -131,7 +131,7 @@ namespace QuanLyGiangDuong.ViewModel
             SelectedMonth = DateTime.Now.Month;
 
             ListYear = new ObservableCollection<int>();
-            for(int i=DateTime.Now.Year; i>=2000; i--) {
+            for(int i=DateTime.Now.Year + 2; i>=2000; i--) {
                 ListYear.Add(i);
             }
             SelectedYear = DateTime.Now.Year;

@@ -296,41 +296,49 @@ namespace QuanLyGiangDuong.ViewModel
             Home_Page_SelectedCommand = new RelayCommand((p) => {
                 Title = "Trang chủ";
                 FrameContent = new HomePage();
+                FrameContent.DataContext = new HomePage_ViewModel();
             });
 
             TimeTable_Page_SelectedCommand = new RelayCommand((p) => {
                 Title = "Lịch dạng TKB";
                 FrameContent = new TimeTablePage();
+                FrameContent.DataContext = new TimeTableViewModel();
             });
 
             Room_Page_SelectedCommand = new RelayCommand((p) => {
                 Title = "Lịch dạng phòng";
                 FrameContent = new RoomPage();
+                FrameContent.DataContext = new RoomViewModel();
             });
 
             TimeTableInput_Page_SelectedCommand = new RelayCommand((p) => {
                 Title = "Nhập phòng học";
                 FrameContent = new TimeTableInputPage();
+                FrameContent.DataContext = new TimeTableInputViewModel();
             });
 
             EventInput_Page_SelectedCommand = new RelayCommand((p) => {
                 Title = "Nhập sự kiện";
                 FrameContent = new EventInputPage();
+                FrameContent.DataContext = new EventInputViewModel();
             });
 
             ExamInput_Page_SelectedCommand = new RelayCommand((p) => {
                 Title = "Nhập phòng thi";
                 FrameContent = new ExamInputPage();
+                FrameContent.DataContext = new ExamInputViewModel();
             });
 
             RoomManagement_Page_SelectedCommand = new RelayCommand((p) => {
                 Title = "Quản lý phòng";
                 FrameContent = new RoomManagementPage();
+                FrameContent.DataContext = new RoomManagementViewModel();
             });
 
             Report_Page_SelectedCommand = new RelayCommand((p) => {
                 Title = "Lập báo cáo";
                 FrameContent = new ReportPage();
+                FrameContent.DataContext = new ReportViewModel();
             });
 
             Menu_Click_Command = new RelayCommand((p) => {
