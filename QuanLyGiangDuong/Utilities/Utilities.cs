@@ -990,7 +990,16 @@ namespace QuanLyGiangDuong.Utilities
         public static bool ValidateForApprove(USINGEVENT usingEvent)
         {
             DateTime dateOccurs = usingEvent.Date_;
-            ROOM room = usingEvent.ROOM;
+            ROOM room = null;
+
+            try
+            {
+                room = DataProvider.Ins.DB.ROOMs.Where(x => x.RoomID == usingEvent.RoomID).First();
+            }
+            catch
+            {
+                return false;
+            }
 
             var listPeriod = GetListPeriodTimeRange(usingEvent.StartPeriod, usingEvent.Duration);
 

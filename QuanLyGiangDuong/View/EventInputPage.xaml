@@ -226,7 +226,7 @@
                     </Grid>
                     <Grid Grid.Row="1" Grid.Column="0">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <ComboBox Width="200" materialDesign:HintAssist.Hint="Mã sự kiện" VerticalAlignment="Center" Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                            <ComboBox Width="200" FontSize="18" materialDesign:HintAssist.Hint="Mã sự kiện" VerticalAlignment="Center" Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                   ItemsSource="{Binding ListEvent}" KeyboardNavigation.TabIndex="1" SelectedItem="{Binding SelectedEvent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }" >
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
@@ -256,7 +256,7 @@
                     </Grid>
                     <Grid Grid.Row="0" Grid.Column="1">
                         <ComboBox 
-                            Margin="20,5,20,5"
+                            Margin="20,5,20,5" FontSize="18"
                             HorizontalAlignment="Stretch"
                             VerticalAlignment="Center"
                             materialDesign:HintAssist.Hint="Giảng viên" 
@@ -276,7 +276,7 @@
                     <Grid Grid.Row="2" Grid.Column="0">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                             <DatePicker
-                                Width="200"
+                                Width="200" FontSize="18"
                                 materialDesign:HintAssist.Hint="Ngày tổ chức"
                                 Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
                                 SelectedDate="{Binding DateOccurs, StringFormat='dd MM yyyy'}">
@@ -312,7 +312,7 @@
                     </Grid>
                     <Grid Grid.Row="3" Grid.Column="0">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <ComboBox Width="200" materialDesign:HintAssist.Hint="Tiết bắt đầu" VerticalAlignment="Center" Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                            <ComboBox Width="200" FontSize="18" materialDesign:HintAssist.Hint="Tiết bắt đầu" VerticalAlignment="Center" Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                   ItemsSource="{Binding ListTimeRange}" KeyboardNavigation.TabIndex="1" SelectedItem="{Binding SelectedStartTimeRange, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }" >
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
@@ -342,7 +342,7 @@
                     </Grid>
                     <Grid Grid.Row="4" Grid.Column="0">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <ComboBox Width="200" materialDesign:HintAssist.Hint="Địa điểm tổ chức" VerticalAlignment="Center" Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                            <ComboBox Width="200" FontSize="18" materialDesign:HintAssist.Hint="Địa điểm tổ chức" VerticalAlignment="Center" Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                   ItemsSource="{Binding ListRoom}" KeyboardNavigation.TabIndex="1" SelectedItem="{Binding SelectedRoom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }" >
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>

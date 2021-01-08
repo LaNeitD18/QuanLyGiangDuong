@@ -218,7 +218,7 @@
                     </Grid>
                     <Grid Grid.Row="1" Grid.Column="0">
                         <ComboBox 
-                            Margin="20,5,20,5"
+                            Margin="20,5,20,5" FontSize="18"
                             HorizontalAlignment="Stretch"
                             VerticalAlignment="Center"
                             materialDesign:HintAssist.Hint="Môn học" 
@@ -237,7 +237,7 @@
                     </Grid>
                     <Grid Grid.Row="0" Grid.Column="1">
                         <ComboBox 
-                            Margin="20,5,20,5"
+                            Margin="20,5,20,5" FontSize="18"
                             HorizontalAlignment="Stretch"
                             VerticalAlignment="Center"
                             materialDesign:HintAssist.Hint="Giảng viên" 
@@ -269,7 +269,7 @@
                     </Grid>
                     <Grid Grid.Row="2" Grid.Column="0">
                         <ComboBox 
-                            Margin="20,5,20,5"
+                            Margin="20,5,20,5" FontSize="18"
                             HorizontalAlignment="Stretch"
                             VerticalAlignment="Center"
                             materialDesign:HintAssist.Hint="Hệ" 
@@ -289,7 +289,7 @@
                     
                     <Grid Grid.Row="2" Grid.Column="1">
                         <ComboBox 
-                            Margin="20,5,20,5"
+                            Margin="20,5,20,5" FontSize="18"
                             HorizontalAlignment="Stretch"
                             VerticalAlignment="Center"
                             materialDesign:HintAssist.Hint="Ngày trong tuần" 
@@ -309,7 +309,7 @@
 
                     <Grid Grid.Row="3" Grid.Column="0">
                         <ComboBox 
-                            Margin="20,5,20,5"
+                            Margin="20,5,20,5" FontSize="18"
                             HorizontalAlignment="Stretch"
                             VerticalAlignment="Center"
                             materialDesign:HintAssist.Hint="Học kỳ" 
@@ -328,7 +328,7 @@
                     </Grid>
                     <Grid Grid.Row="3" Grid.Column="1">
                         <ComboBox 
-                            Margin="20,5,20,5"
+                            Margin="20,5,20,5" FontSize="18"
                             HorizontalAlignment="Stretch"
                             VerticalAlignment="Center"
                             materialDesign:HintAssist.Hint="Năm học" 
@@ -348,7 +348,7 @@
                     <Grid Grid.Row="4" Grid.Column="0">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                             <DatePicker
-                                Width="244"
+                                Width="270" FontSize="18"
                                 materialDesign:HintAssist.Hint="Từ ngày"
                                 Style="{StaticResource MaterialDesignFloatingHintDatePicker}" Margin="20,5,20,5"
                                 SelectedDate="{Binding StartDate}"/>
@@ -357,7 +357,7 @@
                     <Grid Grid.Row="4" Grid.Column="1">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                             <DatePicker
-                                Width="246"
+                                Width="270" FontSize="18"
                                 materialDesign:HintAssist.Hint="Đến ngày"
                                 Style="{StaticResource MaterialDesignFloatingHintDatePicker}" Margin="20,5,20,5"
                                 SelectedDate="{Binding EndDate}"/>
@@ -414,7 +414,7 @@
                     <!-- CuteTN Note: forgive me I'm just testing -->
                     <Grid Grid.Row="6" Grid.Column="0">
                         <ComboBox 
-                            Margin="20,5,20,5"
+                            Margin="20,5,20,5" FontSize="18"
                             HorizontalAlignment="Stretch"
                             VerticalAlignment="Center"
                             materialDesign:HintAssist.Hint="Mã lớp" 
@@ -447,7 +447,7 @@
 
                     <Grid Grid.Row="7" Grid.Column="0">
                         <ComboBox 
-                            Margin="20,5,20,5" 
+                            Margin="20,5,20,5" FontSize="18"
                             HorizontalAlignment="Stretch"
                             VerticalAlignment="Center"
                             materialDesign:HintAssist.Hint="Tiết bắt đầu" 
@@ -467,7 +467,7 @@
 
                     <Grid Grid.Row="7" Grid.Column="1">
                         <ComboBox 
-                            Margin="20,5,20,5"                            
+                            Margin="20,5,20,5" FontSize="18"                    
                             HorizontalAlignment="Stretch"
                             VerticalAlignment="Center"
                             materialDesign:HintAssist.Hint="Phòng" 

@@ -84,7 +84,7 @@
                             <DataTemplate>
                                 <StackPanel>
                                     <Label Content="Thứ 2" HorizontalAlignment="Center"/>
-                                    <Label Content="14/09/2020"/>
+                                    
                                 </StackPanel>
                             </DataTemplate>
                         </syncfusion:GridTemplateColumn.HeaderTemplate>
@@ -110,7 +110,7 @@
                             <DataTemplate>
                                 <StackPanel>
                                     <Label Content="Thứ 3" HorizontalAlignment="Center"/>
-                                    <Label Content="14/09/2020"/>
+                                    
                                 </StackPanel>
                             </DataTemplate>
                         </syncfusion:GridTemplateColumn.HeaderTemplate>
@@ -136,7 +136,7 @@
                             <DataTemplate>
                                 <StackPanel>
                                     <Label Content="Thứ 4" HorizontalAlignment="Center"/>
-                                    <Label Content="14/09/2020"/>
+                                    
                                 </StackPanel>
                             </DataTemplate>
                         </syncfusion:GridTemplateColumn.HeaderTemplate>
@@ -162,7 +162,7 @@
                             <DataTemplate>
                                 <StackPanel>
                                     <Label Content="Thứ 5" HorizontalAlignment="Center"/>
-                                    <Label Content="14/09/2020"/>
+                                    
                                 </StackPanel>
                             </DataTemplate>
                         </syncfusion:GridTemplateColumn.HeaderTemplate>
@@ -188,7 +188,7 @@
                             <DataTemplate>
                                 <StackPanel>
                                     <Label Content="Thứ 6" HorizontalAlignment="Center"/>
-                                    <Label Content="14/09/2020"/>
+                                    
                                 </StackPanel>
                             </DataTemplate>
                         </syncfusion:GridTemplateColumn.HeaderTemplate>
@@ -214,7 +214,7 @@
                             <DataTemplate>
                                 <StackPanel>
                                     <Label Content="Thứ 7" HorizontalAlignment="Center"/>
-                                    <Label Content="14/09/2020"/>
+                                    
                                 </StackPanel>
                             </DataTemplate>
                         </syncfusion:GridTemplateColumn.HeaderTemplate>
@@ -240,7 +240,7 @@
                             <DataTemplate>
                                 <StackPanel>
                                     <Label Content="Chủ nhật" HorizontalAlignment="Center"/>
-                                    <Label Content="14/09/2020"/>
+                                    
                                 </StackPanel>
                             </DataTemplate>
                         </syncfusion:GridTemplateColumn.HeaderTemplate>
