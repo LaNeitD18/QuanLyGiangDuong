@@ -1,9 +1,0 @@
-E:\MW\WPF\QuanLyGiangDuong\QuanLyGiangDuong\obj\Release\QuanLyGiangDuong.csprojAssemblyReference.cache
-E:\MW\WPF\QuanLyGiangDuong\QuanLyGiangDuong\obj\Release\MainWindow.g.cs
-E:\MW\WPF\QuanLyGiangDuong\QuanLyGiangDuong\obj\Release\View\EventInputPage.g.cs
-E:\MW\WPF\QuanLyGiangDuong\QuanLyGiangDuong\obj\Release\View\MainPage.g.cs
-E:\MW\WPF\QuanLyGiangDuong\QuanLyGiangDuong\obj\Release\View\RoomPage.g.cs
-E:\MW\WPF\QuanLyGiangDuong\QuanLyGiangDuong\obj\Release\View\TimeTableInputPage.g.cs
-E:\MW\WPF\QuanLyGiangDuong\QuanLyGiangDuong\obj\Release\View\TimeTablePage.g.cs
-E:\MW\WPF\QuanLyGiangDuong\QuanLyGiangDuong\obj\Release\QuanLyGiangDuong_MarkupCompile.cache
-E:\MW\WPF\QuanLyGiangDuong\QuanLyGiangDuong\obj\Release\QuanLyGiangDuong_MarkupCompile.lref
